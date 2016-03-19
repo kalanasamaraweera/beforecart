@@ -39,7 +39,17 @@
                  url: "/beforeResetPwd",
                  templateUrl: "app/templates/view-beforeresetpwd.html",
                  controller: "beforeResetPwdCtrl"
-             });
+             })
+                .state("app.changeAccount", {
+                    url: "/changeAccount",
+                    templateUrl: "app/templates/view-account-settings.html",
+                    controller: "changeAccountCtrl"
+                })
+            .state("app.mainCatelog", {
+                url: "/mainCatelog",
+                templateUrl: "app/templates/view-maincatelog.html",
+                controller: "mainCatelogCtrl"
+            });
 
             $urlRouterProvider.otherwise("/app/home");
         });
