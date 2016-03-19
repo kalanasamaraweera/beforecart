@@ -34,7 +34,13 @@
                 url: "/resetPwd",
                 templateUrl: "app/templates/view-resetpassword.html",
                 controller: "resetPwdCtrl"
-            });
+            })
+             .state("app.beforeResetPwd", {
+                 url: "/beforeResetPwd",
+                 templateUrl: "app/templates/view-beforeresetpwd.html",
+                 controller: "beforeResetPwdCtrl"
+             });
+
             $urlRouterProvider.otherwise("/app/home");
         });
 })();

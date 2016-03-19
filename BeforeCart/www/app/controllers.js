@@ -25,6 +25,12 @@
                 $scope.$broadcast("scroll.refreshComplete");
             };
         }])
+        .controller("beforeResetPwdCtrl", ["$scope", "$state", function ($scope, $state) {
+            $scope.refresh = function () {
+                //refresh binding
+                $scope.$broadcast("scroll.refreshComplete");
+            };
+        }])
         
         
 
