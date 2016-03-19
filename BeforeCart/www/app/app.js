@@ -29,6 +29,11 @@
                 url: "/signup",
                 templateUrl: "app/templates/view-signup.html",
                 controller: "signupCtrl"
+            })
+            .state("app.resetPwd", {
+                url: "/resetPwd",
+                templateUrl: "app/templates/view-resetpassword.html",
+                controller: "resetPwdCtrl"
             });
             $urlRouterProvider.otherwise("/app/home");
         });
