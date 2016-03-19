@@ -13,6 +13,14 @@
             $scope.$broadcast("scroll.refreshComplete");
         };
     }])
+         .controller("signupCtrl", ["$scope", "$state", function ($scope, $state) {
+             $scope.refresh = function () {
+                 //refresh binding
+                 $scope.$broadcast("scroll.refreshComplete");
+             };
+         }])
+        
+
 
     //errorCtrl managed the display of error messages bubbled up from other controllers, directives, myappService
     .controller("errorCtrl", ["$scope", "myappService", function ($scope, myappService) {

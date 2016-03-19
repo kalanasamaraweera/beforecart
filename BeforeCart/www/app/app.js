@@ -24,6 +24,11 @@
                 url: "/home",
                 templateUrl: "app/templates/view-home.html",
                 controller: "homeCtrl"
+            })
+            .state("app.signup", {
+                url: "/signup",
+                templateUrl: "app/templates/view-signup.html",
+                controller: "signupCtrl"
             });
             $urlRouterProvider.otherwise("/app/home");
         });
