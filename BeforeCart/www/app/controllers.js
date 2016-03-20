@@ -9,12 +9,7 @@
    { id: 1 },
    { id: 2 },
    { id: 3 },
-   { id: 4 },
-   { id: 5 },
-   { id: 6 },
-   { id: 7 }
-  
-
+   { id: 4 }
         ];
 
         
@@ -72,8 +67,109 @@
                 $scope.$broadcast("scroll.refreshComplete");
             };
         }])
+        .controller("chatViewCtrl", ["$scope", "$state", function ($scope, $state) {
+            $scope.refresh = function () {
+                //refresh binding
+                $scope.$broadcast("scroll.refreshComplete");
+            };
+        }])
+        .controller('Messages', function ($scope, $timeout, $ionicScrollDelegate) {
+
+            $scope.showTime = true;
+
+            var alternate,
+              isIOS = ionic.Platform.isWebView() && ionic.Platform.isIOS();
+
+            $scope.sendMessage = function () {
+                alternate = !alternate;
+
+                var d = new Date();
+                d = d.toLocaleTimeString().replace(/:\d+ /, ' ');
+
+                $scope.messages.push({
+                    userId: alternate ? '12345' : '54321',
+                    text: $scope.data.message,
+                    time: d
+                });
+
+                delete $scope.data.message;
+                $ionicScrollDelegate.scrollBottom(true);
+
+            };
+
+
+            $scope.inputUp = function () {
+                if (isIOS) $scope.data.keyboardHeight = 216;
+                $timeout(function () {
+                    $ionicScrollDelegate.scrollBottom(true);
+                }, 300);
+
+            };
+
+            $scope.inputDown = function () {
+                if (isIOS) $scope.data.keyboardHeight = 0;
+                $ionicScrollDelegate.resize();
+            };
+
+            $scope.closeKeyboard = function () {
+                // cordova.plugins.Keyboard.close();
+            };
+
+
+            $scope.data = {};
+            $scope.myId = '12345';
+            $scope.messages = [];
+
+        })
         
-        
+        .controller('Messages', function($scope, $timeout, $ionicScrollDelegate) {
+
+    $scope.showTime = true;
+
+    var alternate,
+      isIOS = ionic.Platform.isWebView() && ionic.Platform.isIOS();
+
+    $scope.sendMessage = function() {
+        alternate = !alternate;
+
+        var d = new Date();
+        d = d.toLocaleTimeString().replace(/:\d+ /, ' ');
+
+        $scope.messages.push({
+            userId: alternate ? '12345' : '54321',
+            text: $scope.data.message,
+            time: d
+        });
+
+        delete $scope.data.message;
+        $ionicScrollDelegate.scrollBottom(true);
+
+    };
+
+
+    $scope.inputUp = function() {
+        if (isIOS) $scope.data.keyboardHeight = 216;
+        $timeout(function() {
+            $ionicScrollDelegate.scrollBottom(true);
+        }, 300);
+
+    };
+
+    $scope.inputDown = function() {
+        if (isIOS) $scope.data.keyboardHeight = 0;
+        $ionicScrollDelegate.resize();
+    };
+
+    $scope.closeKeyboard = function() {
+        // cordova.plugins.Keyboard.close();
+    };
+
+
+    $scope.data = {};
+    $scope.myId = '12345';
+    $scope.messages = [];
+
+})
 
 
     //errorCtrl managed the display of error messages bubbled up from other controllers, directives, myappService
