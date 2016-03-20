@@ -48,6 +48,11 @@
                 templateUrl: "app/templates/view-maincatelog.html",
                 controller: "mainCatelogCtrl"
             })
+            .state("app.askfriend", {
+                url: "/askfriend",
+                templateUrl: "app/templates/view-suggested-friendlist.html",
+                controller: "askFriendCtrl"
+            })
 
             .state('app.changeAccount', {
                 url: '/changeAccount',

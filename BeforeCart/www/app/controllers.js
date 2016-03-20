@@ -4,6 +4,27 @@
     angular.module("myapp.controllers", [])
 
     .controller("appCtrl", ["$scope", function ($scope) {
+
+        $scope.items = [
+   { id: 1 },
+   { id: 2 },
+   { id: 3 },
+   { id: 4 },
+   { id: 5 },
+   { id: 6 },
+   { id: 7 }
+  
+
+        ];
+
+        
+
+        $scope.moveItem = function (item, fromIndex, toIndex) {
+            $scope.items.splice(fromIndex, 1);
+            $scope.items.splice(toIndex, 0, item);
+        };
+
+
     }])
 
     //homeCtrl provides the logic for the home screen
@@ -45,6 +66,14 @@
                  $scope.$broadcast("scroll.refreshComplete");
              };
          }])
+        .controller("askFriendCtrl", ["$scope", "$state", function ($scope, $state) {
+            $scope.refresh = function () {
+                //refresh binding
+                $scope.$broadcast("scroll.refreshComplete");
+            };
+        }])
+        
+        
 
 
     //errorCtrl managed the display of error messages bubbled up from other controllers, directives, myappService
