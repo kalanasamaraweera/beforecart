@@ -12,6 +12,8 @@
                 }
             });
         })
+        
+        
         .config(function ($stateProvider, $urlRouterProvider) {
             $stateProvider
             .state("app", {
@@ -40,17 +42,22 @@
                  templateUrl: "app/templates/view-beforeresetpwd.html",
                  controller: "beforeResetPwdCtrl"
              })
-                .state("app.changeAccount", {
-                    url: "/changeAccount",
-                    templateUrl: "app/templates/view-account-settings.html",
-                    controller: "changeAccountCtrl"
-                })
+                
             .state("app.mainCatelog", {
                 url: "/mainCatelog",
                 templateUrl: "app/templates/view-maincatelog.html",
                 controller: "mainCatelogCtrl"
+            })
+
+            .state('app.changeAccount', {
+                url: '/changeAccount',
+               
+                templateUrl: 'app/templates/view-account-settings.html',
+                controller: "changeAccountCtrl"
             });
+
 
             $urlRouterProvider.otherwise("/app/home");
         });
+    
 })();
