@@ -25,10 +25,17 @@
 
                                 <div class="item item-body">
                                     <img class="full-image" src="../../images/products/blue-shirt.jpg">
-                                    
                                     <p>
-                                        <a href="#" class="subdued">1 Like</a>
-                                        <a href="#" class="subdued">5 Comments</a>
+                                        <a href="#" class="subdued"><i class="ion-android-favorite"></i> Awsome</a>
+                                        <a href="#" class="subdued"><i class="ion-android-happy"></i> Good</a>
+                                        <a href="#" class="subdued"><i class="ion-android-sad"></i> Bad</a>
+                                        
+                                    </p>
+                                    <p>
+                                        <a href="#" class="subdued">4 Awsome</a>
+                                        <a href="#" class="subdued">12 Good</a>
+                                        <a href="#" class="subdued">1 Bad</a>
+                                        <a href="#" class="button icon-right ion-chevron-right button-outline button-small button-assertive">2 Comments</a>
                                     </p>
                                     <p>
 
@@ -70,34 +77,37 @@
                                 <input type="text" placeholder="Search">
                             </label>
                         </div>
+                        <h4>Your Friends</h4>
                       <ion-list>
                             <ion-item class="item item-avatar"  ng-repeat="item in items">
                                                                    
                                         <img src="../../images/friends/bill.jpg">
                                         <h2> Bill Gates &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Online <img src="../../images/online.png" /></h2>
                                         <p>Expert in T-shirts</p>
-                                        
-                                   
-                                 
+                           </ion-item>
+                     </ion-list>
+                        <h4>Suggested Friends</h4>
+                        <ion-item class="item item-avatar" ng-repeat="item in items">
 
-                            </ion-item>
-                        </ion-list>
-                        
+                            <img src="../../images/friends/obama.jpg">
+                            <h2> Barrak Obama  &nbsp;&nbsp; &nbsp;<button class="button button-outline button-small button-balanced">Send Request</button></h2>
+                            <p>Expert in Shoes</p>
+                            
+                        </ion-item>
                     </form>
                 </ion-content>
                
 </ion-tab>
-<ion-tab title="Invitations" icon-on="icon ion-ios-bell" icon-off="ion-ios-bell-outline" badge-style="badge-assertive" badge="7">
-    
-
-</ion-tab>
-
+       <ion-tab title="Notifications" icon-on="icon ion-ios-bell" icon-off="ion-ios-bell-outline" badge-style="badge-assertive" badge="7">
+           <ion-list>
+               <ion-item class="item item-avatar" ng-repeat="item in items">
 
 
+                   </ion-item>
+               </ion-list>
 
-
-
-                <ion-tab title="My Account" icon-on="ion-ios-gear" icon-off="ion-ios-gear-outline">
+       </ion-tab>
+<ion-tab title="My Account" icon-on="ion-ios-gear" icon-off="ion-ios-gear-outline">
                     <br />
                     <ion-content class="padding">
                         <form action="#">
