@@ -9,9 +9,14 @@
    { id: 1 },
    { id: 2 },
    { id: 3 },
-   { id: 4 }
-        ];
+   { id: 4 },
+        { id: 5 },
+        { id: 6 },
+        { id: 7 }
 
+
+        ];
+        
         
 
         $scope.moveItem = function (item, fromIndex, toIndex) {
@@ -21,6 +26,7 @@
 
 
     }])
+
 
     //homeCtrl provides the logic for the home screen
     .controller("homeCtrl", ["$scope", "$state", function ($scope, $state) {

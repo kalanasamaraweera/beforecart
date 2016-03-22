@@ -1,192 +1,190 @@
-﻿<ion-nav-view>
-   <ion-tabs class="tabs-dark tabs-icon-top">
+﻿
 
-            <ion-tab title="Products" icon-on="icon ion-tshirt" icon-off="ion-tshirt-outline">
-                <br /><br /><br /><br />
-                <ion-content class="padding">
-                    <form action="">
-                        <div class="list list-inset">
-                            <label class="item item-input">
-                                <i class="icon ion-search placeholder-icon"></i>
-                                <input type="text" placeholder="Search">
-                            </label>
-                        </div>
-                    </form>
-                    <ion-list>
-                        <ion-item class="list card" ng-repeat="item in items">
-                           
-                            
-                                <div class="item item-thumbnail-left">
-                                    <img src="../../images/products/fasionbug.jpg">
-                                    <h2> Fasion Bug</h2>
-                                    <p><i class="ion-ios-location-outline"></i> Maradana Road, Colombo </p>
-                                  <p><i class="ion-ios-telephone-outline"></i> 011 2 809900 </p>
-                                </div>
-
-                                <div class="item item-body">
-                                    <img class="full-image" src="../../images/products/blue-shirt.jpg">
-                                    <p>
-                                        <a href="#" class="subdued"><i class="ion-android-favorite"></i> Awsome</a>
-                                        <a href="#" class="subdued"><i class="ion-android-happy"></i> Good</a>
-                                        <a href="#" class="subdued"><i class="ion-android-sad"></i> Bad</a>
-                                        
-                                    </p>
-                                    <p>
-                                        <a href="#" class="subdued">4 Awsome</a>
-                                        <a href="#" class="subdued">12 Good</a>
-                                        <a href="#" class="subdued">1 Bad</a>
-                                        <a href="#" class="button icon-right ion-chevron-right button-outline button-small button-assertive">2 Comments</a>
-                                    </p>
-                                    <p>
-
-                                        <a href="#/app/askfriend"  class="button button-small button-assertive">
-                                            Ask Friend
-                                        </a>
-                                        <a class="button button-small button-assertive">
-                                           Popularity
-                                        </a>
-                                        <a class="button button-small button-assertive">
-                                            Add Wishlist
-                                        </a>
-                                        <a class="button button-small button-energized">
-                                            Add Cart
-                                        </a>
-                                        
-                                    </p>
-                                </div>
-
-                         
-
-                        </ion-item>
-                    </ion-list>
-
-                </ion-content>
+<br /><br /><br /><br />
+<ion-header-bar class="bar bar-header bar-dark item-input-inset">
+    <br /><br /><br />
+    <label class="item-input-wrapper">
+        <i class="icon ion-ios-search placeholder-icon"></i>
+        <input type="search" placeholder="Search">
+    </label>
+</ion-header-bar>
 
 
 
 
-</ion-tab>
 
-            <ion-tab title="My Friends" icon-on="ion-ios-people" icon-off="ion-ios-people-outline">
-                <br /><br /><br /><br />
-                <ion-content class="padding">
-                    <form action="">
-                        <div class="list list-inset">
-                            <label class="item item-input">
-                                <i class="icon ion-search placeholder-icon"></i>
-                                <input type="text" placeholder="Search">
-                            </label>
-                        </div>
-                        <h4>Your Friends</h4>
-                      <ion-list>
-                            <ion-item class="item item-avatar"  ng-repeat="item in items">
-                                                                   
-                                        <img src="../../images/friends/bill.jpg">
-                                        <h2> Bill Gates &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Online <img src="../../images/online.png" /></h2>
-                                        <p>Expert in T-shirts</p>
-                           </ion-item>
-                     </ion-list>
-                        <h4>Suggested Friends</h4>
-                        <ion-item class="item item-avatar" ng-repeat="item in items">
+<ion-tabs class="tabs-dark tabs-icon-left">
 
-                            <img src="../../images/friends/obama.jpg">
-                            <h2> Barrak Obama  &nbsp;&nbsp; &nbsp;<button class="button button-outline button-small button-balanced">Send Request</button></h2>
-                            <p>Expert in Shoes</p>
-                            
-                        </ion-item>
-                    </form>
-                </ion-content>
-               
-</ion-tab>
-       <ion-tab title="Notifications" icon-on="icon ion-ios-bell" icon-off="ion-ios-bell-outline" badge-style="badge-assertive" badge="7">
-           <ion-list>
-               <ion-item class="item item-avatar" ng-repeat="item in items">
+    <br /><br /><br />
+    <ion-tab title="Products" icon-on="icon ion-tshirt" icon-off="ion-tshirt-outline">
+
+        <ion-content class="padding">
+            <form action="">
+                <div class="list list-inset">
+                    <label class="item item-input">
+                        <i class="icon ion-search placeholder-icon"></i>
+                        <input type="text" placeholder="Search">
+                    </label>
+                </div>
+            </form>
+            <ion-list>
+                <ion-item class="list card" ng-repeat="item in items">
 
 
-                   </ion-item>
-               </ion-list>
+                    <div class="item item-thumbnail-left">
+                        <img src="../../images/products/fasionbug.jpg">
+                        <h2> Fasion Bug</h2>
+                        <p><i class="ion-ios-location-outline"></i> Maradana Road, Colombo </p>
+                        <p><i class="ion-ios-telephone-outline"></i> 011 2 809900 </p>
+                    </div>
+                    <div class="item item-body">
+                        <img class="full-image" src="../../images/products/blue-shirt.jpg">
+                        <p>
+                            <a href="#" class="subdued"><i class="ion-android-favorite"></i> Awsome</a>
+                            <a href="#" class="subdued"><i class="ion-android-happy"></i> Good</a>
+                            <a href="#" class="subdued"><i class="ion-android-sad"></i> Bad</a>
 
-       </ion-tab>
-<ion-tab title="My Account" icon-on="ion-ios-gear" icon-off="ion-ios-gear-outline">
-                    <br />
-                    <ion-content class="padding">
-                        <form action="#">
-                            <h4> Change your Information</h4>
-                            <a class="item item-avatar">
-                                <img src="images/avatar.png">
-                                <h5>Profile Picture</h5>
-                                <button class="button icon-left ion-ios-upload-outline">Upload</button>
-
+                        </p>
+                        <p>
+                            <a href="#" class="subdued">4 Awsome</a>
+                            <a href="#" class="subdued">12 Good</a>
+                            <a href="#" class="subdued">1 Bad</a>
+                            <a href="#" class="button icon-right ion-chevron-right button-outline button-small button-assertive">2 Comments</a>
+                        </p>
+                        <p>
+                            <a href="#/app/askfriend" class="button button-small button-assertive">
+                                Ask Friend
+                            </a>
+                            <a class="button button-small button-assertive">
+                                Popularity
+                            </a>
+                            <a class="button button-small button-assertive">
+                                Add Wishlist
+                            </a>
+                            <a class="button button-small button-energized">
+                                Add Cart
                             </a>
 
-                            <label class="item item-input">
-                                <span class="input-label">Username</span>
-                                <input type="text">
-                            </label>
-                            <label class="item item-input">
-                                <span class="input-label">Password</span>
-                                <input type="password" maxlength="20">
-                            </label>
-                            <label class="item item-input">
-                                <span class="input-label">Confirm Password</span>
-                                <input type="password" maxlength="20">
-                            </label>
-                            <br />
-                            <h4>Persoanal Details</h4>
+                        </p>
+                    </div>
 
-                            <label class="item item-input">
-                                <span class="input-label">First Name</span>
-                                <input type="text">
-                            </label>
-                            <label class="item item-input">
-                                <span class="input-label">Last Name</span>
-                                <input type="text">
-                            </label>
-                            <label class="item item-input">
-                                <span class="input-label">Email</span>
-                                <input type="text">
-                            </label>
-                            <label class="item item-input">
-                                <span class="input-label">Phone</span>
-                                <input type="text">
-                            </label>
-                            <label class="item item-input">
-                                <span class="input-label">Address</span>
-                                <input type="text">
-                            </label>
-                            <label class="item item-input">
-                                <span class="input-label">Postal/Zip Code</span>
-                                <input type="text" maxlength="20">
-                            </label>
-                            <label class="item item-input">
-                                <span class="input-label">City</span>
-                                <input type="text">
-                            </label>
-                            <label class="item item-input">
-                                <span class="input-label">State</span>
-                                <input type="text">
-                            </label>
-                            <button class="button button-full button-balanced">
-                                Save Changes
-                            </button>
-                        </form>
+                </ion-item>
+            </ion-list>
+        </ion-content>
 
-                        <h4><i class="ion-ios-trash"></i> Remove Account</h4>
-                        <form nav-clear menu-close action="#/app/home">
-                            <ion-item nav-clear menu-close class="item item-avatar ">
 
-                                <img src="../../images/avatar.png">
-                                <h2>Avatar</h2>
-                                <p>sample@address.com</p>
-                                <button class="button button-outline button-assertive">Remove Account</button>
+    </ion-tab>
+    <ion-tab title="My Friends" icon-on="ion-ios-people" icon-off="ion-ios-people-outline">
+        <br /><br />
+        <ion-content class="padding">
+            <form action="">
+                
+                <h4>Your Friends</h4>
+                <ion-list>
+                    <ion-item class="item item-avatar" ng-repeat="item in items">
 
-                            </ion-item>
-                        </form>
-                    </ion-content>
-                </ion-tab>
+                        <img src="../../images/friends/bill.jpg">
+                        <h2> Bill Gates &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Online <img src="../../images/online.png" /></h2>
+                        <p>Expert in T-shirts</p>
+                    </ion-item>
+                </ion-list>
+                <h4>Suggested Friends</h4>
+                <ion-item class="item item-avatar" ng-repeat="item in items">
+                    <img src="../../images/friends/obama.jpg">
+                    <h2> Barrak Obama  &nbsp;&nbsp; &nbsp;<button class="button button-outline button-small button-balanced">Send Request</button></h2>
+                    <p>Expert in Shoes</p>
 
+                </ion-item>
+            </form>
+        </ion-content>
+
+    </ion-tab>
+    <ion-tab title="Notices" icon-on="icon ion-ios-bell" icon-off="ion-ios-bell-outline" badge-style="badge-assertive" badge="7">
+        <ion-content class="padding">
+
+            <ion-item class="item item-avatar" ng-repeat="item in items">
+                <img src="../../images/friends/bill.jpg">
+                <h2>Friend Request</h2>
+                <p> Bill Gates asks to become a friend<br /> of you</p>
+                <p class="item-note"> Expert in Shirts</p>
+                <button class="button button-small button-balanced button-outline">Confirm</button>
+                <button class="button button-outline button-small button-assertive">Reject</button>
+
+            </ion-item>
+
+    </ion-tab>
+    <ion-tab title="My Account" icon-on="ion-ios-gear" icon-off="ion-ios-gear-outline">
+        <br />
+        <ion-content class="padding">
+            <form action="#">
+                <h4> Change your Information</h4>
+                <a class="item item-avatar">
+                    <img src="images/avatar.png">
+                    <h5>Profile Picture</h5>
+                    <button class="button icon-left ion-ios-upload-outline">Upload</button>
+                </a>
+                <label class="item item-input">
+                    <span class="input-label">Username</span>
+                    <input type="text">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Password</span>
+                    <input type="password" maxlength="20">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Confirm Password</span>
+                    <input type="password" maxlength="20">
+                </label>
+                <br />
+                <h4>Persoanal Details</h4>
+                <label class="item item-input">
+                    <span class="input-label">First Name</span>
+                    <input type="text">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Last Name</span>
+                    <input type="text">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Email</span>
+                    <input type="text">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Phone</span>
+                    <input type="text">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Address</span>
+                    <input type="text">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Postal/Zip Code</span>
+                    <input type="text" maxlength="20">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">City</span>
+                    <input type="text">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">State</span>
+                    <input type="text">
+                </label>
+                <button class="button button-full button-balanced">
+                    Save Changes
+                </button>
+            </form>
+            <h4><i class="ion-ios-trash"></i> Remove Account</h4>
+            <form nav-clear menu-close action="#/app/home">
+                <ion-item nav-clear menu-close class="item item-avatar ">
+                    <img src="../../images/avatar.png">
+                    <h2>Avatar</h2>
+                    <p>sample@address.com</p>
+                    <button class="button button-outline button-assertive">Remove Account</button>
+                </ion-item>
+            </form>
+        </ion-content>
+    </ion-tab>
 </ion-tabs>
 
-
-</ion-nav-view>
+</ion-panel>
 

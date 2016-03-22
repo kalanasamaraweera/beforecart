@@ -52,7 +52,7 @@
     }
 })
 
-
+   
 
         
         .config(function ($stateProvider, $urlRouterProvider) {
