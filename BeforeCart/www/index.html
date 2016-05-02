@@ -8,20 +8,21 @@
     <link href="css/app.css" rel="stylesheet">
 </head>
 <body>
-    <div class="bar bar-header bar-balanced" ng-controller="errorCtrl" ng-show="activeError" style="z-index: 1000">
+    <div class="bar bar-header bar-dark" ng-controller="errorCtrl" ng-show="activeError" style="z-index: 1000">
         <h1 class="title">Loading Please Wait...</h1>
         <button class="button icon ion-close-round" ng-click="dismissError()">Why am I pending?</button>
-           </div>
+       
+    </div>
     <ion-nav-view>
 
-       
-
-
-    </ion-nav-view>
     <div class="spinner">
         <ion-spinner icon="android" class="spinnerSpinner"></ion-spinner>
         <div class="spinnerBackground"></div>
     </div>
+
+
+    </ion-nav-view>
+   
 
     <!-- Other Library/Framework references -->
     <script src="scripts/jquery-2.1.4.min.js"></script>
