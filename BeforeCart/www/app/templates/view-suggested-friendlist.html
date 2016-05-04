@@ -1,23 +1,21 @@
-﻿  <ion-view view-title="BeforeCart">
-    <ion-content title="Welcome to BeforeCart" class="padding">
+﻿  <br /><br />
+<ion-header-bar class="bar bar-header bar-dark item-input-inset">
+    <h1 class="title">Shopping Tour</h1>
+    <label class="item-input-wrapper">
+        <i class="icon ion-ios-search placeholder-icon"></i>
+        <input type="search" placeholder="Find Friends">
+    </label>
+    <form action="#/app/mainCatelog">
+        <button nav-clear menu-close class="button button-balanced">Finish Tour</button>
+       
+    </form>
+</ion-header-bar>
+
+
+      <ion-content  class="padding">
         <br /><br />
-        <form action="">
-            <div class="list list-inset">
-
-
-                <!--<div class="row">
-                    <div class="col col-25 ">
-                        <button class="button icon-left ion-chevron-left button-clear button-dark " href="#/app/mainCatelog">Back</button>
-                    </div>
-
-                </div>-->
-                <i class="icon ion-search placeholder-icon"></i>
-                <input type="text" placeholder="Search">
-
-            </div>
-            <br />
-        </form>
-        <ion-list>
+      
+       <ion-list>
             <ion-item class="item item-avatar" ng-repeat="item in items">
 
                 <img src="images/friends/bill.jpg">
@@ -34,15 +32,14 @@
         </ion-list>
 
 
-
-        <a class="button button-full button-balanced icon-right ion-chevron-right " href="#/app/chatView">Continue</a>
-
-
-
+          <form action="#/app/chatView">
+              <button nav-clear menu-close class="button button-full button-balanced icon-right ion-chevron-right " >Continue</button>
+           </form>
 
 
 
 
-    </ion-content>
 
-</ion-view>
+
+</ion-content>
+

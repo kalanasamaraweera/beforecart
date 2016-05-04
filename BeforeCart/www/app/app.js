@@ -113,6 +113,12 @@
                
                 templateUrl: 'app/templates/view-popularity.html',
                 controller: "popularityCtrl"
+            })
+            .state('app.commentview', {
+                url: '/commentview',
+               
+                templateUrl: 'app/templates/view-comment-list.html',
+                controller: "commentCtrl"
             });
 
             $urlRouterProvider.otherwise("/app/home");

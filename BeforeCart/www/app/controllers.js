@@ -85,6 +85,13 @@
                 $scope.$broadcast("scroll.refreshComplete");
             };
         }])
+
+        .controller("commentCtrl", ["$scope", "$state", function ($scope, $state) {
+            $scope.refresh = function () {
+                //refresh binding
+                $scope.$broadcast("scroll.refreshComplete");
+            };
+        }])
         .controller('Messages', function ($scope, $timeout, $ionicScrollDelegate) {
 
             $scope.showTime = true;

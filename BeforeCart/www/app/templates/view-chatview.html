@@ -1,9 +1,14 @@
-﻿<ion-nav-viw></ion-nav-viw>
-<ion-view></ion-view>
-<ion-pane ng-controller="Messages" class="messaging-view">
-<ion-header-bar class="bar-calm">
-    <h1 class="title">Chat View</h1>
+﻿<br /><br />
+<ion-header-bar class="bar bar-header bar-dark item-input-inset">
+    <form action="#/app/mainCatelog">
+        <button nav-clear menu-close class="button icon-left ion-home button-balanced">Finish Tour</button>
+   </form>
+    <form action="#/app/askfriend">
+        <button nav-clear menu-close class="button   icon-left ion-plus button-balanced">Pick Friends</button>
+    </form>
 </ion-header-bar>
+<ion-pane ng-controller="Messages" class="messaging-view">
+
 <ion-content class="content-stable"
              on-tap="showTime = !showTime">
     <div ng-repeat="message in messages"
