@@ -107,8 +107,13 @@
                
                 templateUrl: 'app/templates/view-chatview.html',
                 controller: "chatViewCtrl"
+            })
+            .state('app.popularity', {
+                url: '/popularity',
+               
+                templateUrl: 'app/templates/view-popularity.html',
+                controller: "popularityCtrl"
             });
-
 
             $urlRouterProvider.otherwise("/app/home");
         });
