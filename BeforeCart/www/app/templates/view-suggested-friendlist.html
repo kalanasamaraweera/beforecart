@@ -1,25 +1,27 @@
-﻿    <ion-content title="Welcome to BeforeCart" class="padding">
+﻿  <ion-view view-title="BeforeCart">
+    <ion-content title="Welcome to BeforeCart" class="padding">
         <br /><br />
         <form action="">
             <div class="list list-inset">
-                
-                <label class="item item-input">
-                    <div class="row">
+
+
+                <!--<div class="row">
                     <div class="col col-25 ">
-                        <a class="button icon-left ion-chevron-left button-clear button-dark " href="#/app/mainCatelog">Back</a>
+                        <button class="button icon-left ion-chevron-left button-clear button-dark " href="#/app/mainCatelog">Back</button>
                     </div>
-                </div>
-                    <i class="icon ion-search placeholder-icon"></i>
-                    <input type="text" placeholder="Search">
-                </label>
+
+                </div>-->
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" placeholder="Search">
+
             </div>
             <br />
         </form>
         <ion-list>
             <ion-item class="item item-avatar" ng-repeat="item in items">
 
-                <img src="../../images/friends/bill.jpg">
-                <h2> Bill Gates &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Online <img src="../../images/online.png" /></h2>
+                <img src="images/friends/bill.jpg">
+                <h2> Bill Gates &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Online <img src="images/online.png" /></h2>
                 <p>Expert in shirts</p>
 
                 <li class="item item-checkbox  checkbox-balanced">
@@ -43,3 +45,4 @@
 
     </ion-content>
 
+</ion-view>
