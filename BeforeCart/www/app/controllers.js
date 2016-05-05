@@ -2,7 +2,7 @@
     "use strict";
 
     angular.module("myapp.controllers", [])
-
+         // created by kalana -starts
     .controller("appCtrl", ["$scope", function ($scope) {
         $scope.shouldShowDelete = false;
         $scope.shouldShowReorder = false;
@@ -10,13 +10,12 @@
         $scope.data = {
             showDelete: false
         };
-
-        $scope.comments = function (item) {
-            alert('Comments: ' + item.id);
+       
+        $scope.viewComments = function (item) {
+            window.location = "#/app/home";
+          //  alert('Comments: ' + item.id);
         };
-        $scope.delete = function (item) {
-            alert('Share Item: ' + item.id);
-        };
+       
 
         $scope.moveItem = function (item, fromIndex, toIndex) {
             $scope.items.splice(fromIndex, 1);
@@ -122,6 +121,21 @@
                 $scope.$broadcast("scroll.refreshComplete");
             };
         }])
+       
+         .controller("myproductCommentsCtrl", ["$scope", "$state", function ($scope, $state) {
+             $scope.refresh = function () {
+                 //refresh binding
+                 $scope.$broadcast("scroll.refreshComplete");
+             };
+         }])
+        .controller("changeproductCtrl", ["$scope", "$state", function ($scope, $state) {
+            $scope.refresh = function () {
+                //refresh binding
+                $scope.$broadcast("scroll.refreshComplete");
+            };
+        }])
+  
+              // created by kalana -ends
 
         .controller('Messages', function ($scope, $timeout, $ionicScrollDelegate) {
 

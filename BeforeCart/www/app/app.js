@@ -126,8 +126,20 @@
 
                 templateUrl: 'app/templates/view-comment-list.html',
                 controller: "commentCtrl"
+            })
+                .state('app.changeproduct', {
+                    url: '/changeproduct',
+
+                    templateUrl: 'app/templates/view-change-product.html',
+                    controller: "changeproductCtrl"
+                })
+
+            .state('app.myproductComments', {
+                url: '/myproductComments',
+
+                templateUrl: 'app/templates/view-others-comments.html',
+                controller: "myproductCommentsCtrl"
             });
-           
 
             $urlRouterProvider.otherwise("/app/home");
         });
