@@ -4,6 +4,29 @@
     angular.module("myapp.controllers", [])
 
     .controller("appCtrl", ["$scope", function ($scope) {
+        $scope.shouldShowDelete = false;
+        $scope.shouldShowReorder = false;
+        $scope.listCanSwipe = true
+        $scope.data = {
+            showDelete: false
+        };
+
+        $scope.comments = function (item) {
+            alert('Comments: ' + item.id);
+        };
+        $scope.delete = function (item) {
+            alert('Share Item: ' + item.id);
+        };
+
+        $scope.moveItem = function (item, fromIndex, toIndex) {
+            $scope.items.splice(fromIndex, 1);
+            $scope.items.splice(toIndex, 0, item);
+        };
+
+        $scope.onItemDelete = function (item) {
+            $scope.items.splice($scope.items.indexOf(item), 1);
+        };
+
 
         $scope.items = [
    { id: 1 },
@@ -19,13 +42,14 @@
         
         
 
-        $scope.moveItem = function (item, fromIndex, toIndex) {
-            $scope.items.splice(fromIndex, 1);
-            $scope.items.splice(toIndex, 0, item);
-        };
+        //$scope.moveItem = function (item, fromIndex, toIndex) {
+        //    $scope.items.splice(fromIndex, 1);
+        //    $scope.items.splice(toIndex, 0, item);
+        //};
 
 
     }])
+    
 
 
     //homeCtrl provides the logic for the home screen
@@ -65,7 +89,12 @@
                 $scope.$broadcast("scroll.refreshComplete");
             };
         }])
-        
+        .controller("stallCtrl", ["$scope", "$state", function ($scope, $state) {
+            $scope.refresh = function () {
+                //refresh binding
+                $scope.$broadcast("scroll.refreshComplete");
+            };
+        }])
 
          .controller("changeAccountCtrl", ["$scope", "$state", function ($scope, $state) {
              $scope.refresh = function () {
@@ -85,6 +114,7 @@
                 $scope.$broadcast("scroll.refreshComplete");
             };
         }])
+        
 
         .controller("commentCtrl", ["$scope", "$state", function ($scope, $state) {
             $scope.refresh = function () {
@@ -92,6 +122,7 @@
                 $scope.$broadcast("scroll.refreshComplete");
             };
         }])
+
         .controller('Messages', function ($scope, $timeout, $ionicScrollDelegate) {
 
             $scope.showTime = true;

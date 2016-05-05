@@ -83,7 +83,7 @@
                  templateUrl: "app/templates/view-beforeresetpwd.html",
                  controller: "beforeResetPwdCtrl"
              })
-                
+
             .state("app.mainCatelog", {
                 url: "/mainCatelog",
                 templateUrl: "app/templates/view-maincatelog.html",
@@ -97,29 +97,37 @@
 
             .state('app.changeAccount', {
                 url: '/changeAccount',
-               
+
                 templateUrl: 'app/templates/view-account-settings.html',
                 controller: "changeAccountCtrl"
             })
 
             .state('app.chatView', {
                 url: '/chatView',
-               
+
                 templateUrl: 'app/templates/view-chatview.html',
                 controller: "chatViewCtrl"
             })
             .state('app.popularity', {
                 url: '/popularity',
-               
+
                 templateUrl: 'app/templates/view-popularity.html',
                 controller: "popularityCtrl"
             })
+            .state('app.stall', {
+                url: '/stall',
+
+                templateUrl: 'app/templates/view-stall.html',
+                controller: "stallCtrl"
+            })
+
             .state('app.commentview', {
                 url: '/commentview',
-               
+
                 templateUrl: 'app/templates/view-comment-list.html',
                 controller: "commentCtrl"
             });
+           
 
             $urlRouterProvider.otherwise("/app/home");
         });

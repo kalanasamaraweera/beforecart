@@ -1,0 +1,102 @@
+﻿<br /><br /><br /><br />
+<ion-header-bar class="bar bar-header bar-balanced">
+   
+
+</ion-header-bar>
+<ion-tabs class="tabs-dark tabs-icon-left">
+    
+    <ion-tab title="My Products" icon-on="icon ion-tshirt" icon-off="ion-tshirt-outline">
+        
+        <ion-content class="padding">
+           <br /><br /><br /><br />
+            
+             <ion-list class="list" ng-controller="appCtrl"
+          show-delete="shouldShowDelete"
+          show-reorder="shouldShowReorder"
+          can-swipe="listCanSwipe" >
+                 
+                 <div class="item item-divider" >
+                    Shirts
+                 </div>
+                <ion-item ng-repeat="item in items" class="item item-icon-left">
+                   
+                    <h2>Orange Shirt </h2>
+                    <p>
+                        <a href="#" class="subdued"><i class="ion-thumbsup"></i> 23</a>
+                        <a href="#" class="subdued"><i class="ion-thumbsdown"></i> 1</a>
+                        <a href="#" class="subdued"><i class="ion-android-textsms"></i> 3 Comments</a>
+                    </p>
+                    
+                    <ion-option-button class="button-assertive ion-android-delete" ng-click="onItemDelete(item)">  Remove</ion-option-button>
+                    <ion-option-button class="button-info ion-android-textsms" ng-click="comments(item)">  Comments</ion-option-button>
+                </ion-list>
+        
+        
+        
+        </ion-content>
+
+</ion-tab>
+
+            
+
+            
+
+    
+    <ion-tab title="Share Product" icon-on="ion-ios-plus" icon-off="ion-ios-plus-outline">
+        <br /><br /><br /><br />
+        <ion-content class="padding">
+            <ul class="list">
+                <li class="list">
+                    <h4> Upload New Product</h4>
+                    <a class="item item-thumbnail-left">
+                        <img src="images/products/blue-shirt.jpg">
+                        <h5>Product Image</h5>
+                        <button class="button icon-left ion-ios-upload-outline">Upload</button>
+                    </a>
+                    <label class="item item-input item-select">
+                        <div class="input-label">
+                            Product Category
+                        </div>
+                        <select>
+                            <option>Shirt</option>
+                            <option selected>Trouser</option>
+                            <option>Shoe</option>
+                        </select>
+                    </label>
+                    <label class="item item-input item-floating-label">
+                        <span class="input-label">Product Name</span>
+                        <input type="text" maxlength="100" placeholder="What's the item ?">
+                    </label>
+                    <label class="item item-input item-floating-label">
+                        <span class="input-label">Stall Name</span>
+                        <input type="text" maxlength="100" placeholder="Where you saw it?">
+                    </label>
+                    <label class="item item-input item-floating-label">
+                        <span class="input-label">Date Saw</span>
+                        <input type="text" maxlength="100" placeholder="When you saw it?">
+                    </label>
+                    <label class="item item-input item-floating-label">
+                        <span class="input-label">Price</span>
+                        <input type="text" maxlength="100" placeholder="How much is it?">
+                    </label>
+                    <label class="item item-input item-floating-label">
+                        <span class="input-label">Email of stall</span>
+                        <input type="text" maxlength="100" placeholder="Email of stall?">
+                    </label>
+                    <label class="item item-input item-floating-label">
+                        <span class="input-label">Phone</span>
+                        <input type="text" maxlength="10" placeholder="Any contact numbers?">
+                    </label>
+                    <button class="button button-block button-balanced">
+                        Share It
+                    </button>
+
+                </li>
+                
+               
+            </ul>
+
+
+            </ion-content>
+</ion-tab>
+</ion-tabs>
