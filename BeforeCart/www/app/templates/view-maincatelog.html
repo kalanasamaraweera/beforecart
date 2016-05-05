@@ -26,7 +26,7 @@
 
                     <br /><br />
                     <div class="item item-avatar">
-                        <img src="images/products/fasionbug.jpg">
+                        <img src="images/friends/obama.jpg">
                         <h2> Blue Shirt </h2>
                         <h3> Shirt</h3>
                         <h3>Seen At FasionBug </h3>
@@ -77,23 +77,24 @@
 
     </ion-tab>
     <ion-tab title="My Friends" icon-on="ion-ios-people" icon-off="ion-ios-people-outline">
-        <br /><br />
+        <br /><br /><br /><br />
         <ion-content class="padding">
+            <br /><br />
             <form action="">
                 
                 <h4>Your Friends</h4>
-                <ion-list>
+                <ion-list class="list" ng-controller="appCtrl">
                     <ion-item class="item item-avatar" ng-repeat="item in items">
 
                         <img src="images/friends/bill.jpg">
                         <h2> Bill Gates &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Online <img src="images/online.png" /></h2>
-                        <p>Expert in T-shirts</p>
+                        <p>Expert in T-shirts <button ng-click="onItemDelete(item)" class="button button-outline button-small button-balanced">Unfriend</button></p>
                     </ion-item>
                 </ion-list>
                 <h4>Suggested Friends</h4>
                 <ion-item class="item item-avatar" ng-repeat="item in items">
                     <img src="images/friends/obama.jpg">
-                    <h2> Barrak Obama  &nbsp;&nbsp; &nbsp;<button class="button button-outline button-small button-balanced">Send Request</button></h2>
+                    <h2> Barrak Obama  &nbsp;&nbsp; &nbsp;<button ng-click="onItemDelete(item)"  class="button button-outline button-small button-balanced">Send Request</button></h2>
                     <p>Expert in Shoes</p>
 
                 </ion-item>
@@ -103,17 +104,17 @@
     </ion-tab>
     <ion-tab title="Notices" icon-on="icon ion-ios-bell" icon-off="ion-ios-bell-outline" badge-style="badge-assertive" badge="7">
         <ion-content class="padding">
+            <ion-list class="list" ng-controller="appCtrl">
+                <ion-item class="item item-avatar" ng-repeat="item in items">
+                    <img src="images/friends/bill.jpg">
+                    <h2>Friend Request</h2>
+                    <p> Bill Gates asks to become a friend<br /> of you</p>
+                    <p class="item-note"> Expert in Shirts</p>
+                    <button class="button button-small button-balanced button-outline">Confirm</button>
+                    <button ng-click="onItemDelete(item)" class="button button-outline button-small button-assertive">Reject</button>
 
-            <ion-item class="item item-avatar" ng-repeat="item in items">
-                <img src="images/friends/bill.jpg">
-                <h2>Friend Request</h2>
-                <p> Bill Gates asks to become a friend<br /> of you</p>
-                <p class="item-note"> Expert in Shirts</p>
-                <button class="button button-small button-balanced button-outline">Confirm</button>
-                <button class="button button-outline button-small button-assertive">Reject</button>
-
-            </ion-item>
-
+                </ion-item>
+            </ion-list>
     </ion-tab>
     
 </ion-tabs>
