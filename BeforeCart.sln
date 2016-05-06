@@ -7,6 +7,8 @@ Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "BeforeCart", "BeforeCart\Be
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MobileApplication", "MobileApplication", "{AC82E368-8654-4AA7-8778-2A4F879B9C73}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RecommendationSystem", "RecommendationSystem", "{8868FDFB-0477-4773-A1A2-A0F282A912D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Android = Debug|Android
