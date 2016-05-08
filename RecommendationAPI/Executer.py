@@ -8,9 +8,9 @@ def buildNetworkOfFriendsFRS():
 
 
 #delete existing friendship between two user nodes 
-def breakExistingRelationship(em1,em2):
+def breakExistingRelationshipServiceFRS(em1,em2):
     b =FriendshipBuilderFRS()
-    b.removeExistingRelationship(em1,em2)
+    return b.removeExistingRelationship(em1,em2)
 
 #breakExistingRelationship()
 
@@ -23,22 +23,22 @@ def makeNewRelationshipServiceFRS(em1,em2):
 
 def sendRequestServiceFRS(em1,em2):
     b = FriendshipBuilderFRS()
-    b.sendFriendRequestFRS(em1,em2)
+    return  b.sendFriendRequestFRS(em1,em2)
 
 #Cancel friend request sent by sender
 def cancelRequestBySenderServiceFRS(em1,em2):
     b =FriendshipBuilderFRS()
-    b.cancelFriendRequestBySenderFRS(em1,em2)
+    return b.cancelFriendRequestBySenderFRS(em1,em2)
 
 #Reject request by reciver
 def cancelRequestByReciverServiceFRS(em1,em2):
     b =FriendshipBuilderFRS()
-    b.cancelRequestByRecieverFRS(em1,em2)
+    return b.cancelRequestByRecieverFRS(em1,em2)
 
 #Upgrade [:Requested] relationship to[:FRIEND_OF] 
 def  acceptRequestServiceFRS(em1,em2):
     b =FriendshipBuilderFRS()
-    b.acceptNewFriendshipFRS(em1,em2)
+    return b.acceptNewFriendshipFRS(em1,em2)
 
 
 #return all the friend nodes of User node
@@ -56,13 +56,12 @@ eml1="rebbecca.didio@didio.com.au"
 eml2="stevie.hallo@hotmail.com" 
 eml3="gerardo_woodka@hotmail.com"
 
-x= checkFriendship(eml1,eml3)
-print  x
-#sendRequestServiceFRS(eml1,eml2)
-#cancelRequestBySenderServiceFRS(eml2,eml1)
-#cancelRequestByReciverServiceFRS(eml2,eml1)
-#acceptRequestServiceFRS(em1,em2)
-#breakExistingRelationshipServiceFRS(eml2,eml1)
+
+#print sendRequestServiceFRS(eml1,eml2)
+#print cancelRequestBySenderServiceFRS(eml2,eml1)
+#print cancelRequestByReciverServiceFRS(eml1,eml2)
+#print acceptRequestServiceFRS(eml2,eml1)
+#print breakExistingRelationshipServiceFRS(eml1,eml2)
 #getAllFriendsServiceFRS(eml2)
 #getAllFriendsServiceFRS(eml1)
 #makeNewRelationshipFRSServiceFRS(eml3,eml1)
