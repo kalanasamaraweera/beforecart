@@ -78,7 +78,7 @@ class FriendshipBuilderFRS(object):
         
 
     #Cancel a friend request
-    def cancelFriendRequestBySenderFRS(self,sender,reciver):
+    def cancelFriendRequestFRS(self,sender,reciver):
         alredyRequested = self.checkExistingRequestFRS(sender,reciver)
         try:
             if alredyRequested ==1:
@@ -97,26 +97,7 @@ class FriendshipBuilderFRS(object):
                return True
             else :return False
     
-    #In here  sequence of em1,em2 does not matter what ever [:REQUESTED] type connection gets destroyed
-    def cancelRequestByRecieverFRS(self,sender,reciever):
-        try:
-            alredyRequested = self.checkExistingRequestFRS(sender,reciever)
-            if alredyRequested ==1:
-                #authenticate("localhost:7474","neo4j","neo4j")
-                graph=Graph("http://beforecat:OI7WawWOA8YC2My2iLNu@beforecat.sb02.stations.graphenedb.com:24789/db/data/")
-                batch = graph.cypher.begin()
-                query = """START n=node(*) MATCH n-[rel:REQUESTED]->r WHERE n.email='"""+sender+"""' AND r.email='"""+reciever+"""' DELETE rel"""          
-                batch.append(query,{"sender":sender,"reciever":reciever})
-                batch.process()
-                batch.commit()
-               
-                
-        except Exception:
-            return False        
-        finally:
-            if alredyRequested ==1:
-                return True
-            else:return False
+   
     
           
     

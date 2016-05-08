@@ -28,12 +28,9 @@ def sendRequestServiceFRS(em1,em2):
 #Cancel friend request sent by sender
 def cancelRequestBySenderServiceFRS(em1,em2):
     b =FriendshipBuilderFRS()
-    return b.cancelFriendRequestBySenderFRS(em1,em2)
+    return b.cancelFriendRequestFRS(em1,em2)
 
-#Reject request by reciver
-def cancelRequestByReciverServiceFRS(em1,em2):
-    b =FriendshipBuilderFRS()
-    return b.cancelRequestByRecieverFRS(em1,em2)
+
 
 #Upgrade [:Requested] relationship to[:FRIEND_OF] 
 def  acceptRequestServiceFRS(em1,em2):
@@ -69,7 +66,7 @@ eml3="gerardo_woodka@hotmail.com"
 #print getAllRequstsTowardUser(eml1)
 #print getAllSentRequestsByUser(eml2)
 #print cancelRequestBySenderServiceFRS(eml1,eml2)
-#print cancelRequestByReciverServiceFRS(eml1,eml2)
+
 #print acceptRequestServiceFRS(eml3,eml1)
 #print breakExistingRelationshipServiceFRS(eml2,eml1)
 #print getAllFriendsServiceFRS(eml1)
