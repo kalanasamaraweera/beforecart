@@ -3,6 +3,7 @@ from py2neo import Graph ,authenticate
 from neo4jrestclient import client
 import csv
 import time
+import json
 
 #FriendshipBuilderFRS class implements CRUD operations in  Friends Neo4j database
 
@@ -209,10 +210,15 @@ class FriendshipBuilderFRS(object):
         graphDatabase = GraphDatabase("http://localhost:7474","neo4j","neo4j")
         query = "MATCH (fu:User)<-[rel:REQUESTED]-(su:User) Where  rel.strength=0 AND fu.email ='"+email+"' return fu, type(rel), su,rel.strength"
         results =  graphDatabase.query(query,returns = (client.Node,str,client.Node))
+        json_object=[]
         for r in results:
-            #print  "(%s)-[%s]->(%s)" % (r[0]["email"],r[1],r[2]["email"])
-            print "(%s)-STRENGTH:%s" % (r[2]["email"],r[3])
-   
+           
+           #print "(%s)-STRENGTH:%s" % (r[2]["email"],r[3])
+           element={}
+           element['email']=r[2]["email"]
+           element['userId']=r[2]["userId"]
+           json_object.append(element)
+        return json.dumps(json_object)
     
 
 

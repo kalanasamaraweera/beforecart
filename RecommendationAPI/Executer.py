@@ -66,8 +66,8 @@ eml3="gerardo_woodka@hotmail.com"
 
 
 #print sendRequestServiceFRS(eml3,eml2)
-#print getAllRequstsTowardUser(eml2)
-print getAllSentRequestsByUser(eml1)
+print getAllRequstsTowardUser(eml2)
+#print getAllSentRequestsByUser(eml1)
 #print cancelRequestBySenderServiceFRS(eml2,eml1)
 #print cancelRequestByReciverServiceFRS(eml1,eml2)
 #print acceptRequestServiceFRS(eml3,eml1)
