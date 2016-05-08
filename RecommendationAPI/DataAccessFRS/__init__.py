@@ -1,0 +1,1 @@
+from FriendshipBuilderFRS import FriendshipBuilderFRS
