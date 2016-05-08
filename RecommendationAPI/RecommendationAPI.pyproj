@@ -26,18 +26,18 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DataAccessFRS\__init__.py">
+    <Compile Include="DataAccess\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Executer.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataAccessFRS\FriendshipBuilderFRS.py">
+    <Compile Include="DataAccess\FriendshipBuilderFRS.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DataAccessFRS\" />
+    <Folder Include="DataAccess\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AU-import2.csv" />

@@ -1,4 +1,4 @@
-from DataAccessFRS import FriendshipBuilderFRS 
+from DataAccess import FriendshipBuilderFRS 
 
 # delete all existing nodes and re-build network in databse server using AU-import2.csv
 def buildNetworkOfFriendsFRS():
