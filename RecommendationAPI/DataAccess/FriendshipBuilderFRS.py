@@ -117,14 +117,7 @@ class FriendshipBuilderFRS(object):
                 return True
             else:return False
     
-        # Return list of Pending requests 
-    def getAllPendingFriendRequests(self,email):
-        graphDatabase = GraphDatabase("http://localhost:7474","neo4j","neo4j")
-        query = "MATCH (fu:User)-[rel:REQUESTED]->(su:User) Where  fu.email ='"+email+"' return fu, type(rel), su,rel.strength"
-        results =  graphDatabase.query(query,returns = (client.Node,str,client.Node))
-        for r in results:
-            #print  "(%s)-[%s]->(%s)" % (r[0]["email"],r[1],r[2]["email"])
-            print "(%s)-STRENGTH:%s" % (r[2]["email"],r[3])           
+          
     
         #Remove existing  [:REQUESTED] type connection and create [:FRIEND_OF] connection ;Build friendship
     def acceptNewFriendshipFRS(self,email1,email2):
@@ -199,17 +192,24 @@ class FriendshipBuilderFRS(object):
     def selectAllFriends(self,email):
         
         graphDatabase = GraphDatabase("http://localhost:7474","neo4j","neo4j")
-        query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where  rel.strength=0 AND fu.email ='"+email+"' return fu, type(rel), su,rel.strength"
+        query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where  rel.strength=0 AND fu.email ='"+email+"' return  su,rel.strength"
         results =  graphDatabase.query(query,returns = (client.Node,str,client.Node))
+        json_object = []
         for r in results:
-            #print  "(%s)-[%s]->(%s)" % (r[0]["email"],r[1],r[2]["email"])
-            print "(%s)-STRENGTH:%s" % (r[2]["email"],r[3])
-        return results
+            element={}
+            element['email']=r[0]["email"]
+            element['userId']=r[0]["userId"]
+            element['strength'] =r[1]
+            json_object.append(element)
+                       
+        if len(json_object)!=0:
+            return json.dumps(json_object)
+        else:return 0
 
     def getAllFriendRecievedRequests(self,email):
         graphDatabase = GraphDatabase("http://localhost:7474","neo4j","neo4j")
         query = "MATCH (fu:User)<-[rel:REQUESTED]-(su:User) Where  rel.strength=0 AND fu.email ='"+email+"' return fu, type(rel), su,rel.strength"
-        results =  graphDatabase.query(query,returns = (client.Node,str,client.Node))
+        results =  graphDatabase.query(query,returns = (client.Node,str,client.Node,str))
         json_object=[]
         for r in results:
            
@@ -218,9 +218,24 @@ class FriendshipBuilderFRS(object):
            element['email']=r[2]["email"]
            element['userId']=r[2]["userId"]
            json_object.append(element)
-        return json.dumps(json_object)
+        if len(json_object)!=0: return json.dumps(json_object)
+        else : return 0
     
-
+        # Return list of Pending requests 
+    def getAllPendingFriendRequests(self,email):
+        graphDatabase = GraphDatabase("http://localhost:7474","neo4j","neo4j")
+        query = "MATCH (fu:User)-[rel:REQUESTED]->(su:User) Where  fu.email ='"+email+"' return fu, su,rel.strength"
+        results =  graphDatabase.query(query,returns = (client.Node,client.Node,str))
+        json_object = []
+        for r in results:
+           element={}
+           element['email']=r[1]["email"]
+           element['userId']=r[1]["userId"]
+           element['strength']=r[2]
+           json_object.append(element)
+        if len(json_object)!=0: return json.dumps(json_object)
+        else:return 0
+         
 
 #removes non utf-8 chars from string within cell
     def strip(string):
