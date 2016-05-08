@@ -46,13 +46,18 @@ def getAllFriendsServiceFRS(em1):
     
      b= FriendshipBuilderFRS()
      b.selectAllFriends(em1)
- 
+
+def checkFriendship(em1,em2):
+    b = FriendshipBuilderFRS()
+    return b.checkExistingFriendshipFRS(em1,em2)
        
 
 eml1="rebbecca.didio@didio.com.au"
 eml2="stevie.hallo@hotmail.com" 
 eml3="gerardo_woodka@hotmail.com"
 
+x= checkFriendship(eml1,eml3)
+print  x
 #sendRequestServiceFRS(eml1,eml2)
 #cancelRequestBySenderServiceFRS(eml2,eml1)
 #cancelRequestByReciverServiceFRS(eml2,eml1)

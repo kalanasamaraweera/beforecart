@@ -91,8 +91,29 @@ class FriendshipBuilderFRS(object):
         batch.process()
         batch.commit()
 
-    
-    
+    #Returns 1 [:FRIEND_OF] conn exists; 0 if not exists ; -1 for exception
+    def checkExistingFriendshipFRS(self,userEmail,friendEmail):
+        try:
+            graphDatabase = GraphDatabase("http://localhost:7474","neo4j","neo4j")
+            response = 0
+            query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where  su.email='"+friendEmail+"' AND fu.email ='"+userEmail+"' return fu,su"
+            results = graphDatabase.query(query,returns = (client.Node,client.Node))
+            for r in results:
+                if r[1]["email"] != "":
+                   response =1
+                   return response
+            
+            
+        except Exception:
+            response =-1
+            return response
+        finally:
+            return response
+
+          
+        
+
+    # Returns select  all  friends of user
     def selectAllFriends(self,email):
         
         graphDatabase = GraphDatabase("http://localhost:7474","neo4j","neo4j")
