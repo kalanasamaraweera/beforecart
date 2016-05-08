@@ -3,6 +3,7 @@ from py2neo import Graph ,authenticate
 from neo4jrestclient import client
 import csv
 import time
+import datetime
 import json
 
 #FriendshipBuilderFRS class implements CRUD operations in  Friends Neo4j database
@@ -61,12 +62,12 @@ class FriendshipBuilderFRS(object):
         alredyRequested = self.checkExistingRequestFRS(email1,email2)
         try:
             if friendshipExists == 0 and alredyRequested == 0 :
-                self.cancelRequestByRecieverFRS(email1,email2)
+                
                 #authenticate("localhost:7474","neo4j","neo4j")
                 graph=Graph("http://beforecat:OI7WawWOA8YC2My2iLNu@beforecat.sb02.stations.graphenedb.com:24789/db/data/")
                 batch = graph.cypher.begin()     
                 query = """MATCH (u1:User {email:'"""+email1+"""'}), (u2:User{email:'"""+email2+"""'}) CREATE (u1)-[:REQUESTED{strength:0}]->(u2)"""
-                batch.append(query,{"em1":email1,"em2":email2})
+                batch.append(query,{"email1":email1,"email2":email2})
                 batch.process()
                 batch.commit()
         except Exception:
@@ -109,7 +110,7 @@ class FriendshipBuilderFRS(object):
         makeSts=False
         if alredyRequested ==1 and isFriend ==0: 
             
-           cancelSts= self.cancelRequestByRecieverFRS(email1,email2)
+           cancelSts= self.cancelFriendRequestFRS(email1,email2)
            makeSts=self.makeNewFriendship(email1,email2) 
         if cancelSts ==True and makeSts == True:      
             return True
@@ -121,7 +122,9 @@ class FriendshipBuilderFRS(object):
             #authenticate("localhost:7474","neo4j","neo4j")
             graph=Graph("http://beforecat:OI7WawWOA8YC2My2iLNu@beforecat.sb02.stations.graphenedb.com:24789/db/data/")       
             batch = graph.cypher.begin()
-            query = """MATCH (u1:User {email:'"""+email1+"""'}), (u2:User{email:'"""+email2+"""'}) CREATE (u1)-[:FRIEND_OF{strength:0}]->(u2)"""
+            now = datetime.datetime.now()
+           
+            query = """MATCH (u1:User {email:'"""+email1+"""'}), (u2:User{email:'"""+email2+"""'}) CREATE (u1)-[:FRIEND_OF{strength:0,pvotes:0,nvotes:0,chats:0,duration:0,started:'"""+str(now)+""""'}]->(u2)"""
             batch.append(query,{"em1":email1,"em2":email2})
             batch.process()
             batch.commit()

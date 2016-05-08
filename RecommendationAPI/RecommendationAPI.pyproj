@@ -29,6 +29,9 @@
     <Compile Include="DataAccess\FriendshipBuilderFRS_Test.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DataAccess\FriendshipGaugeFRS.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DataAccess\__init__.py">
       <SubType>Code</SubType>
     </Compile>

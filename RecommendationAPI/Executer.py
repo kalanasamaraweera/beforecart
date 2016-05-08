@@ -59,16 +59,16 @@ def checkFriendship(em1,em2):
 
 eml1="rebbecca.didio@didio.com.au"
 eml2="stevie.hallo@hotmail.com" 
-eml3="gerardo_woodka@hotmail.com"
+eml3="laurene_bennett@gmail.com"
 
 
-#print sendRequestServiceFRS(eml1,eml2)
+#print sendRequestServiceFRS(eml1,eml3)
 #print getAllRequstsTowardUser(eml1)
 #print getAllSentRequestsByUser(eml2)
 #print cancelRequestBySenderServiceFRS(eml1,eml2)
 
-#print acceptRequestServiceFRS(eml3,eml1)
-#print breakExistingRelationshipServiceFRS(eml2,eml1)
+print acceptRequestServiceFRS(eml1,eml3)
+#print breakExistingRelationshipServiceFRS(eml1,eml3)
 #print getAllFriendsServiceFRS(eml1)
 
 #makeNewRelationshipFRSServiceFRS(eml3,eml1)
