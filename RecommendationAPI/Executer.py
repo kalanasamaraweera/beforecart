@@ -65,13 +65,13 @@ eml2="stevie.hallo@hotmail.com"
 eml3="gerardo_woodka@hotmail.com"
 
 
-#print sendRequestServiceFRS(eml3,eml2)
+#print sendRequestServiceFRS(eml1,eml2)
 #print getAllRequstsTowardUser(eml1)
 #print getAllSentRequestsByUser(eml2)
-#print cancelRequestBySenderServiceFRS(eml2,eml1)
+#print cancelRequestBySenderServiceFRS(eml1,eml2)
 #print cancelRequestByReciverServiceFRS(eml1,eml2)
 #print acceptRequestServiceFRS(eml3,eml1)
-#print breakExistingRelationshipServiceFRS(eml3,eml1)
+#print breakExistingRelationshipServiceFRS(eml2,eml1)
 #print getAllFriendsServiceFRS(eml1)
 
 #makeNewRelationshipFRSServiceFRS(eml3,eml1)

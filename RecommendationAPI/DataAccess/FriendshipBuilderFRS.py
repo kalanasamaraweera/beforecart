@@ -14,7 +14,7 @@ class FriendshipBuilderFRS(object):
        
     #load the users from csv to server database(500 records)
     def fillUserNodesFromCsvFRS(self):
-        graphDatabase = GraphDatabase("http://localhost:7474","neo4j","neo4j")
+        graphDatabase = GraphDatabase("http://beforecat.sb02.stations.graphenedb.com:24789/db/data/","beforecat","OI7WawWOA8YC2My2iLNu")
         try:
              
             with open("AU-import2.csv", "rb") as infile:
@@ -39,8 +39,8 @@ class FriendshipBuilderFRS(object):
             isFriend = self.checkExistingFriendshipFRS(email1,email2)
             status =False
             if isFriend == 1:
-                authenticate("localhost:7474","neo4j","neo4j")
-                graph = Graph("http://localhost:7474/db/data/")       
+                #authenticate("localhost:7474","neo4j","neo4j")
+                graph = Graph("http://beforecat:OI7WawWOA8YC2My2iLNu@beforecat.sb02.stations.graphenedb.com:24789/db/data/")       
                 batch = graph.cypher.begin()
                 query = """START n=node(*) MATCH n-[rel:FRIEND_OF]-r WHERE n.email='"""+email1+"""' AND r.email='"""+email2+"""' DELETE rel"""
                 batch.append(query,{"em1":email1,"em2":email2})
@@ -62,8 +62,8 @@ class FriendshipBuilderFRS(object):
         try:
             if friendshipExists == 0 and alredyRequested == 0 :
                 self.cancelRequestByRecieverFRS(email1,email2)
-                authenticate("localhost:7474","neo4j","neo4j")
-                graph=Graph("http://localhost:7474/db/data/")
+                #authenticate("localhost:7474","neo4j","neo4j")
+                graph=Graph("http://beforecat:OI7WawWOA8YC2My2iLNu@beforecat.sb02.stations.graphenedb.com:24789/db/data/")
                 batch = graph.cypher.begin()     
                 query = """MATCH (u1:User {email:'"""+email1+"""'}), (u2:User{email:'"""+email2+"""'}) CREATE (u1)-[:REQUESTED{strength:0}]->(u2)"""
                 batch.append(query,{"em1":email1,"em2":email2})
@@ -78,15 +78,15 @@ class FriendshipBuilderFRS(object):
         
 
     #Cancel a friend request
-    def cancelFriendRequestBySenderFRS(self,email1,email2):
-        alredyRequested = self.checkExistingRequestFRS(email1,email2)
+    def cancelFriendRequestBySenderFRS(self,sender,reciver):
+        alredyRequested = self.checkExistingRequestFRS(sender,reciver)
         try:
             if alredyRequested ==1:
-                authenticate("localhost:7474","neo4j","neo4j")
-                graph=Graph("http://localhost:7474/db/data/")
+                #authenticate("localhost:7474","neo4j","neo4j")
+                graph=Graph("http://beforecat:OI7WawWOA8YC2My2iLNu@beforecat.sb02.stations.graphenedb.com:24789/db/data/")
                 batch = graph.cypher.begin()
-                query = """START n=node(*) MATCH n-[rel:REQUESTED]->r WHERE n.email='"""+email1+"""' AND r.email='"""+email2+"""' DELETE rel"""          
-                batch.append(query,{"em1":email1,"em2":email2})
+                query = """START n=node(*) MATCH n-[rel:REQUESTED]->r WHERE n.email='"""+sender+"""' AND r.email='"""+reciver+"""' DELETE rel"""          
+                batch.append(query,{"sender":sender,"reciver":reciver})
                 batch.process()
                 batch.commit()
                 return True
@@ -98,17 +98,18 @@ class FriendshipBuilderFRS(object):
             else :return False
     
     #In here  sequence of em1,em2 does not matter what ever [:REQUESTED] type connection gets destroyed
-    def cancelRequestByRecieverFRS(self,email1,email2):
+    def cancelRequestByRecieverFRS(self,sender,reciever):
         try:
-            alredyRequested = self.checkExistingRequestFRS(email1,email2)
+            alredyRequested = self.checkExistingRequestFRS(sender,reciever)
             if alredyRequested ==1:
-                authenticate("localhost:7474","neo4j","neo4j")
-                graph=Graph("http://localhost:7474/db/data/")
+                #authenticate("localhost:7474","neo4j","neo4j")
+                graph=Graph("http://beforecat:OI7WawWOA8YC2My2iLNu@beforecat.sb02.stations.graphenedb.com:24789/db/data/")
                 batch = graph.cypher.begin()
-                query = """START n=node(*) MATCH n-[rel:REQUESTED]-r WHERE n.email='"""+email1+"""' AND r.email='"""+email2+"""' DELETE rel"""          
-                batch.append(query,{"em1":email1,"em2":email2})
+                query = """START n=node(*) MATCH n-[rel:REQUESTED]->r WHERE n.email='"""+sender+"""' AND r.email='"""+reciever+"""' DELETE rel"""          
+                batch.append(query,{"sender":sender,"reciever":reciever})
                 batch.process()
                 batch.commit()
+               
                 
         except Exception:
             return False        
@@ -136,8 +137,8 @@ class FriendshipBuilderFRS(object):
     #Make a friendship between two nodes
     def makeNewFriendship(self,email1,email2):
         try:
-            authenticate("localhost:7474","neo4j","neo4j")
-            graph=Graph("http://localhost:7474/db/data/")       
+            #authenticate("localhost:7474","neo4j","neo4j")
+            graph=Graph("http://beforecat:OI7WawWOA8YC2My2iLNu@beforecat.sb02.stations.graphenedb.com:24789/db/data/")       
             batch = graph.cypher.begin()
             query = """MATCH (u1:User {email:'"""+email1+"""'}), (u2:User{email:'"""+email2+"""'}) CREATE (u1)-[:FRIEND_OF{strength:0}]->(u2)"""
             batch.append(query,{"em1":email1,"em2":email2})
@@ -151,7 +152,7 @@ class FriendshipBuilderFRS(object):
     #Returns 1 [:FRIEND_OF] conn exists; 0 if not exists ; -1 for exception
     def checkExistingFriendshipFRS(self,userEmail,friendEmail):
         try:
-            graphDatabase = GraphDatabase("http://localhost:7474","neo4j","neo4j")
+            graphDatabase = GraphDatabase("http://beforecat.sb02.stations.graphenedb.com:24789/db/data/","beforecat","OI7WawWOA8YC2My2iLNu")
             response = 0
             query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where  su.email='"+friendEmail+"' AND fu.email ='"+userEmail+"' return fu,su"
             results = graphDatabase.query(query,returns = (client.Node,client.Node))
@@ -170,7 +171,7 @@ class FriendshipBuilderFRS(object):
     #Returns 1 [:FRIEND_OF] conn exists; 0 if not exists ; -1 for exception
     def checkExistingRequestFRS(self,senderEmail,reciverEmail):
         try:
-            graphDatabase = GraphDatabase("http://localhost:7474","neo4j","neo4j")
+            graphDatabase = GraphDatabase("http://beforecat.sb02.stations.graphenedb.com:24789/db/data/","beforecat","OI7WawWOA8YC2My2iLNu")
             response = 0
             query = "MATCH (fu:User)-[rel:REQUESTED]->(su:User) Where  su.email='"+reciverEmail+"' AND fu.email ='"+senderEmail+"' return fu,su"
             results = graphDatabase.query(query,returns = (client.Node,client.Node))
@@ -191,7 +192,7 @@ class FriendshipBuilderFRS(object):
     # Returns select  all  friends of user
     def selectAllFriends(self,email):
         
-        graphDatabase = GraphDatabase("http://localhost:7474","neo4j","neo4j")
+        graphDatabase = GraphDatabase("http://beforecat.sb02.stations.graphenedb.com:24789/db/data/","beforecat","OI7WawWOA8YC2My2iLNu")
         query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where  rel.strength=0 AND fu.email ='"+email+"' return  su,rel.strength"
         results =  graphDatabase.query(query,returns = (client.Node,str,client.Node))
         json_object = []
@@ -207,7 +208,7 @@ class FriendshipBuilderFRS(object):
         else:return 0
 
     def getAllFriendRecievedRequests(self,email):
-        graphDatabase = GraphDatabase("http://localhost:7474","neo4j","neo4j")
+        graphDatabase = GraphDatabase("http://beforecat.sb02.stations.graphenedb.com:24789/db/data/","beforecat","OI7WawWOA8YC2My2iLNu")
         query = "MATCH (fu:User)<-[rel:REQUESTED]-(su:User) Where  rel.strength=0 AND fu.email ='"+email+"' return fu, type(rel), su,rel.strength"
         results =  graphDatabase.query(query,returns = (client.Node,str,client.Node,str))
         json_object=[]
@@ -223,7 +224,7 @@ class FriendshipBuilderFRS(object):
     
         # Return list of Pending requests 
     def getAllPendingFriendRequests(self,email):
-        graphDatabase = GraphDatabase("http://localhost:7474","neo4j","neo4j")
+        graphDatabase = GraphDatabase("http://beforecat.sb02.stations.graphenedb.com:24789/db/data/","beforecat","OI7WawWOA8YC2My2iLNu")
         query = "MATCH (fu:User)-[rel:REQUESTED]->(su:User) Where  fu.email ='"+email+"' return fu, su,rel.strength"
         results =  graphDatabase.query(query,returns = (client.Node,client.Node,str))
         json_object = []
