@@ -45,7 +45,15 @@ def  acceptRequestServiceFRS(em1,em2):
 def getAllFriendsServiceFRS(em1):
     
      b= FriendshipBuilderFRS()
-     b.selectAllFriends(em1)
+     return b.selectAllFriends(em1)
+
+def getAllRequstsTowardUser(em1):
+    b =FriendshipBuilderFRS()
+    return b.getAllFriendRecievedRequests(em1)
+
+def getAllSentRequestsByUser(em1):
+    b =FriendshipBuilderFRS()
+    return b.getAllPendingFriendRequests(em1) 
 
 def checkFriendship(em1,em2):
     b = FriendshipBuilderFRS()
@@ -57,11 +65,13 @@ eml2="stevie.hallo@hotmail.com"
 eml3="gerardo_woodka@hotmail.com"
 
 
-#print sendRequestServiceFRS(eml1,eml2)
+#print sendRequestServiceFRS(eml3,eml2)
+#print getAllRequstsTowardUser(eml2)
+print getAllSentRequestsByUser(eml1)
 #print cancelRequestBySenderServiceFRS(eml2,eml1)
 #print cancelRequestByReciverServiceFRS(eml1,eml2)
-#print acceptRequestServiceFRS(eml2,eml1)
-#print breakExistingRelationshipServiceFRS(eml1,eml2)
+#print acceptRequestServiceFRS(eml3,eml1)
+#print breakExistingRelationshipServiceFRS(eml3,eml1)
 #getAllFriendsServiceFRS(eml2)
 #getAllFriendsServiceFRS(eml1)
 #makeNewRelationshipFRSServiceFRS(eml3,eml1)

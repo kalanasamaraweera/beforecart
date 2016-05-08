@@ -45,11 +45,13 @@ class FriendshipBuilderFRS(object):
                 batch.append(query,{"em1":email1,"em2":email2})
                 batch.process()
                 batch.commit()
-                staus =True
+                
             
         except Exception:
             return False
-        finally: return status
+        finally:
+            if isFriend ==1 :return True
+            return False
 
     #Send a friend request to  a user
     #Create new [:REQUESTED] type connection
@@ -115,26 +117,27 @@ class FriendshipBuilderFRS(object):
             else:return False
     
         # Return list of Pending requests 
-    def getAllPendingRequests(self,email):
+    def getAllPendingFriendRequests(self,email):
         graphDatabase = GraphDatabase("http://localhost:7474","neo4j","neo4j")
-        query = "MATCH (fu:User)-[rel:REQUESTED]-(su:User) Where  fu.email ='"+email+"' return fu, type(rel), su,rel.strength"
+        query = "MATCH (fu:User)-[rel:REQUESTED]->(su:User) Where  fu.email ='"+email+"' return fu, type(rel), su,rel.strength"
         results =  graphDatabase.query(query,returns = (client.Node,str,client.Node))
         for r in results:
             #print  "(%s)-[%s]->(%s)" % (r[0]["email"],r[1],r[2]["email"])
             print "(%s)-STRENGTH:%s" % (r[2]["email"],r[3])           
     
-        #Remove existing  [:REQUESTED] type connection and create [:FRIEND_OF] connection
+        #Remove existing  [:REQUESTED] type connection and create [:FRIEND_OF] connection ;Build friendship
     def acceptNewFriendshipFRS(self,email1,email2):
         alredyRequested = self.checkExistingRequestFRS(email1,email2)
         isFriend = self.checkExistingFriendshipFRS(email1,email2)
-        
-        if alredyRequested ==1: 
+        cancelSts=False
+        makeSts=False
+        if alredyRequested ==1 and isFriend ==0: 
             
-            self.cancelRequestByRecieverFRS(email1,email2)
-            self.makeNewFriendship(email1,email2) 
-             
-        return True
-        
+           cancelSts= self.cancelRequestByRecieverFRS(email1,email2)
+           makeSts=self.makeNewFriendship(email1,email2) 
+        if cancelSts ==True and makeSts == True:      
+            return True
+        else: return False
 
     #Make a friendship between two nodes
     def makeNewFriendship(self,email1,email2):
@@ -171,11 +174,11 @@ class FriendshipBuilderFRS(object):
             return response
 
     #Returns 1 [:FRIEND_OF] conn exists; 0 if not exists ; -1 for exception
-    def checkExistingRequestFRS(self,userEmail,friendEmail):
+    def checkExistingRequestFRS(self,senderEmail,reciverEmail):
         try:
             graphDatabase = GraphDatabase("http://localhost:7474","neo4j","neo4j")
             response = 0
-            query = "MATCH (fu:User)-[rel:REQUESTED]->(su:User) Where  su.email='"+friendEmail+"' AND fu.email ='"+userEmail+"' return fu,su"
+            query = "MATCH (fu:User)-[rel:REQUESTED]->(su:User) Where  su.email='"+reciverEmail+"' AND fu.email ='"+senderEmail+"' return fu,su"
             results = graphDatabase.query(query,returns = (client.Node,client.Node))
             for r in results:
                 if r[1]["email"] != "":
@@ -200,10 +203,11 @@ class FriendshipBuilderFRS(object):
         for r in results:
             #print  "(%s)-[%s]->(%s)" % (r[0]["email"],r[1],r[2]["email"])
             print "(%s)-STRENGTH:%s" % (r[2]["email"],r[3])
+        return results
 
-    def getAllFriendRequests(self,email):
+    def getAllFriendRecievedRequests(self,email):
         graphDatabase = GraphDatabase("http://localhost:7474","neo4j","neo4j")
-        query = "MATCH (fu:User)-[rel:REQUESTED]-(su:User) Where  rel.strength=0 AND fu.email ='"+email+"' return fu, type(rel), su,rel.strength"
+        query = "MATCH (fu:User)<-[rel:REQUESTED]-(su:User) Where  rel.strength=0 AND fu.email ='"+email+"' return fu, type(rel), su,rel.strength"
         results =  graphDatabase.query(query,returns = (client.Node,str,client.Node))
         for r in results:
             #print  "(%s)-[%s]->(%s)" % (r[0]["email"],r[1],r[2]["email"])
