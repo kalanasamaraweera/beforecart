@@ -14,14 +14,16 @@
                             Product Category
                         </div>
                         <select>
-                            <option>Shirt</option>
-                            <option selected>Trouser</option>
-                            <option>Shoe</option>
+                            <option ng-repeat="item in items">Shirt</option>
                         </select>
                     </label>
-                    <label class="item item-input item-floating-label">
-                        <span class="input-label">Product Name</span>
-                        <input type="text" maxlength="100" placeholder="What's the item ?">
+                    <label class="item item-input item-select">
+                        <div class="input-label">
+                            Product Name
+                        </div>
+                        <select>
+                            <option ng-repeat="item in items">Emerald Shirt</option>
+                        </select>
                     </label>
                     <label class="item item-input item-floating-label">
                         <span class="input-label">Stall Name</span>

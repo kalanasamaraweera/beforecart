@@ -1,12 +1,9 @@
 ﻿<br /><br /><br /><br />
-<ion-header-bar class="bar bar-header bar-balanced">
-   
 
-</ion-header-bar>
 <ion-tabs class="tabs-dark tabs-icon-left">
     
     <ion-tab title="My Products" icon-on="icon ion-tshirt" icon-off="ion-tshirt-outline">
-        
+
         <ion-content class="padding">
            <br /><br /><br /><br />
             
@@ -51,24 +48,25 @@
                 <li class="list">
                     <h4> Upload New Product</h4>
                     <form action="#/app/stall" nav-clear menu-close>
-                        <a class="item item-thumbnail-left">
-                            <img src="images/products/blue-shirt.jpg">
-                            <h5>Product Image</h5>
-                            <button class="button icon-left ion-ios-upload-outline">Upload</button>
-                        </a>
+                        
                         <label class="item item-input item-select">
                             <div class="input-label">
                                 Product Category
                             </div>
                             <select>
-                                <option>Shirt</option>
-                                <option selected>Trouser</option>
-                                <option>Shoe</option>
+                                <option ng-repeat="item in items">Shirt</option>
                             </select>
                         </label>
-                        <label class="item item-input item-floating-label">
-                            <span class="input-label">Product Name</span>
-                            <input type="text" maxlength="100" placeholder="What's the item ?">
+                        <label class="item item-input item-select">
+                            <div class="input-label">
+                                Product Name
+                            </div>
+                            <select>
+                                <option ng-repeat="item in items"><a class="item item-thumbnail-left"><img src="images/products/blue-shirt.jpg">
+    <h5>Product Image</h5>
+
+</a></option>
+                            </select>
                         </label>
                         <label class="item item-input item-floating-label">
                             <span class="input-label">Stall Name</span>

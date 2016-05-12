@@ -1,4 +1,4 @@
-#class FriendshipGaugeFRS(object):
+# class FriendshipGaugeFRS(object):
  
 
 
