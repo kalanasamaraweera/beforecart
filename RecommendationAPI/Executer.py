@@ -1,9 +1,9 @@
 from DataAccess import FriendshipBuilderFRS 
 
 # delete all existing nodes and re-build network in databse server using AU-import2.csv
-def buildNetworkOfFriendsFRS():
+def buildUserNodesFRS():
     b = FriendshipBuilderFRS()
-    b.fillUserNodesFromCsvFRS()
+    b.buildInitUserNodesFromCsvFRS()
 
 
 
@@ -55,7 +55,11 @@ def getAllSentRequestsByUser(em1):
 def checkFriendship(em1,em2):
     b = FriendshipBuilderFRS()
     return b.checkExistingFriendshipFRS(em1,em2)
-       
+ 
+
+def createNetworkFRS():
+    b= FriendshipBuilderFRS()
+    b.buildInitFriendsNetworkFRS()      
 
 eml1="rebbecca.didio@didio.com.au"
 eml2="stevie.hallo@hotmail.com" 
@@ -67,9 +71,11 @@ eml3="laurene_bennett@gmail.com"
 #print getAllSentRequestsByUser(eml2)
 #print cancelRequestBySenderServiceFRS(eml1,eml2)
 
-print acceptRequestServiceFRS(eml1,eml3)
+#print acceptRequestServiceFRS(eml1,eml3)
 #print breakExistingRelationshipServiceFRS(eml1,eml3)
 #print getAllFriendsServiceFRS(eml1)
 
 #makeNewRelationshipFRSServiceFRS(eml3,eml1)
 #buildNetworkOfFriendsFRS()
+#createNetworkFRS()
+#buildUserNodesFRS()
