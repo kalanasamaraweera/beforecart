@@ -1,4 +1,5 @@
-from DataAccess import FriendshipBuilderFRS 
+from DataAccess import FriendshipBuilderFRS
+from DataAccess import ChatHistoryFRS 
 
 # delete all existing nodes and re-build network in databse server using AU-import2.csv
 def buildUserNodesFRS():
@@ -20,7 +21,7 @@ def makeNewRelationshipServiceFRS(em1,em2):
     b.removeExistingRelationship(em1,em2)
     b.makeNewFriendship(em1,em2)
     
-
+#Send friend request
 def sendRequestServiceFRS(em1,em2):
     b = FriendshipBuilderFRS()
     return  b.sendFriendRequestFRS(em1,em2)
@@ -79,3 +80,25 @@ eml3="laurene_bennett@gmail.com"
 #buildNetworkOfFriendsFRS()
 #createNetworkFRS()
 #buildUserNodesFRS()
+
+#ChatHistoryFRS--------
+
+def saveChat(email,friendList,conv):
+    b = ChatHistoryFRS()
+    print b.saveChatHistoryFRS(email,friendList,conv)
+
+def getChats(uid):
+    b = ChatHistoryFRS()
+    print  b.getAllChatsOfUser(uid)
+
+friendlist=[{'1':'laurene_bennett@gmail.com','2':'stevie.hallo@hotmail.com'}]
+user=eml1
+conv =[{'1':'Whats Up','2':'Problem','3':'Tell Me','user':'Which is better?','4':'That one'}]
+saveChat(user,friendlist,conv)
+
+
+#cus =getChats('rebbecca.didio@didio.com.au')
+#print cus
+
+
+

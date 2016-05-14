@@ -26,10 +26,25 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\ChatHistoryFRS.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DataAccess\FriendshipBuilderFRS_Test.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataAccess\FriendshipGaugeFRS.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataAccess\FriendshipGaugeFRSTest.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataAccess\MySqlConnection.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataAccess\MySqlConnectionTest.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataAccess\UserManagerFRS.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataAccess\__init__.py">

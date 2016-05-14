@@ -34,7 +34,7 @@ class FriendshipBuilderFRS(object):
         finally:
             reader.close()
     
-    #create the relationships between users in database
+    #create the relationships between users in database refered to friendsNetwork3.txt
     def buildInitFriendsNetworkFRS(self):
          lines = [line.rstrip('\n') for line in open('friendsNetwork3.txt')]
          rowCount = 0
