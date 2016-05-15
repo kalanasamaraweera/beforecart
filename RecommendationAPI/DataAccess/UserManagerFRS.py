@@ -9,18 +9,16 @@ import csv
 import time
 import datetime
 import json
+from DataAccess import DBConf
 
 class UserManagerFRS(object):
     def __init__(self):
        UserManagerFRS =self
    
-    def getNeo4jConfig(self):
-       lines = [line.rstrip('\n') for line in open('NeoConf.txt')]
-       elements =[]
-       for element in lines:
-           elements.append(element)
+    #def getNeo4jConfig(self):
+
            
-       return elements
+
 
     def createNewUserNode(self,userData):
       
@@ -42,7 +40,8 @@ class UserManagerFRS(object):
        
                #Graph database config
                elements=[]
-               elements =self.getNeo4jConfig()
+               conf= DBConf.DBConf()
+               elements =conf.getNeo4jConfig()
                dbUrl = elements[0]
                dbUser = elements[1]
                dbPass = elements[2]
@@ -63,7 +62,8 @@ class UserManagerFRS(object):
 
     def  getNewUserId(self):
        elements=[]
-       elements =self.getNeo4jConfig()
+       conf= DBConf.DBConf()
+       elements =conf.getNeo4jConfig()
        dbUrl = elements[0]
        dbUser = elements[1]
        dbPass = elements[2]
@@ -83,7 +83,8 @@ class UserManagerFRS(object):
 
         query = "MATCH (n) WHERE n.email = '"+email+"' RETURN n.userId"
         elements=[] 
-        elements = self.getNeo4jConfig()
+        conf= DBConf.DBConf()
+        elements =conf.getNeo4jConfig()        
         dbUrl = elements[0]
         dbUser= elements[1]
         dbPass=elements[2]
@@ -114,7 +115,8 @@ class UserManagerFRS(object):
             if userId != int(0) and property!="" and Val!="":
                 query="MATCH(n {userId:"+str(userId)+"}) SET n."+str(property)+"='"+str(Val)+"' RETURN n.email"
                 elements=[] 
-                elements = self.getNeo4jConfig()
+                conf= DBConf.DBConf()
+                elements =conf.getNeo4jConfig()
                 dbUrl = elements[0]
                 dbUser= elements[1]
                 dbPass=elements[2]
@@ -142,7 +144,8 @@ class UserManagerFRS(object):
         try:
            if userId != 0:
                 elements = []
-                elements = self.getNeo4jConfig()
+                conf= DBConf.DBConf()
+                elements =conf.getNeo4jConfig()
                 graph=Graph(elements[3])
                 batch = graph.cypher.begin()     
                 query = "MATCH(n:User) WHERE n.userId="+str(userId)+" DELETE n"

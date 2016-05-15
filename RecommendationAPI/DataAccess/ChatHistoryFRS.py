@@ -1,9 +1,10 @@
 import pymongo
 import datetime  
 from bson.objectid import ObjectId
+from DataAccess import DBConf
 class ChatHistoryFRS(object):
 
-    MONGODB_URI = 'mongodb://kalana:ys2b7iiway@ds023052.mlab.com:23052/beforecart_chat_history'   
+       
     def __init__(self):
        ChatHistoryFRS =self
   
@@ -26,8 +27,10 @@ class ChatHistoryFRS(object):
 
         ### Database location
 
+        conf = DBConf.DBConf()
+        elements=conf.getMongoConf()
        
-        client  = pymongo.MongoClient(self.MONGODB_URI)
+        client  = pymongo.MongoClient(elements[0])
 
         db = client.get_default_database()
 
@@ -47,7 +50,10 @@ class ChatHistoryFRS(object):
 
     def getAllChatsOfUser(self,email):
 
-        client  = pymongo.MongoClient(self.MONGODB_URI)
+        conf = DBConf.DBConf()
+        elements=conf.getMongoConf()
+       
+        client  = pymongo.MongoClient(elements[0])
 
         db = client.get_default_database()
 

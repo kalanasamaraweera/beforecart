@@ -1,6 +1,7 @@
 from  neo4jrestclient.client import GraphDatabase
 from DataAccess import UserManagerFRS
 from py2neo import Graph ,authenticate 
+from DataAccess import DBConf
 from neo4jrestclient import client
 import csv
 import time
@@ -82,7 +83,10 @@ class FriendshipBuilderFRS(object):
             status =False
             if isFriend == 1:
                 #authenticate("localhost:7474","neo4j","neo4j")
-                graph = Graph("http://beforecat:8ltlAVNJjyaEgW7s7AAp@beforecat.sb05.stations.graphenedb.com:24789/db/data/")       
+                conf = DBConf.DBConf()
+                element=conf.getNeoGraphConfig()
+
+                graph = Graph(element)       
                 batch = graph.cypher.begin()
                 query = """START n=node(*) MATCH n-[rel:FRIEND_OF]-r WHERE n.email='"""+email1+"""' AND r.email='"""+email2+"""' DELETE rel"""
                 batch.append(query,{"em1":email1,"em2":email2})
@@ -105,7 +109,11 @@ class FriendshipBuilderFRS(object):
             if friendshipExists == 0 and alredyRequested == 0 :
                 
                 #authenticate("localhost:7474","neo4j","neo4j")
-                graph=Graph("http://beforecat:8ltlAVNJjyaEgW7s7AAp@beforecat.sb05.stations.graphenedb.com:24789/db/data/")
+
+                conf = DBConf.DBConf()
+                element=conf.getNeoGraphConfig()
+
+                graph = Graph(element)
                 batch = graph.cypher.begin()     
                 query = """MATCH (u1:User {email:'"""+email1+"""'}), (u2:User{email:'"""+email2+"""'}) CREATE (u1)-[:REQUESTED{strength:0}]->(u2)"""
                 batch.append(query,{"email1":email1,"email2":email2})
@@ -125,7 +133,10 @@ class FriendshipBuilderFRS(object):
         try:
             if alredyRequested ==1:
                 #authenticate("localhost:7474","neo4j","neo4j")
-                graph=Graph("http://beforecat:8ltlAVNJjyaEgW7s7AAp@beforecat.sb05.stations.graphenedb.com:24789/db/data/")
+                conf = DBConf.DBConf()
+                element=conf.getNeoGraphConfig()
+
+                graph = Graph(element)
                 batch = graph.cypher.begin()
                 query = """START n=node(*) MATCH n-[rel:REQUESTED]->r WHERE n.email='"""+sender+"""' AND r.email='"""+reciver+"""' DELETE rel"""          
                 batch.append(query,{"sender":sender,"reciver":reciver})
@@ -161,7 +172,10 @@ class FriendshipBuilderFRS(object):
     def makeNewFriendship(self,email1,email2):
         try:
             #authenticate("localhost:7474","neo4j","neo4j")
-            graph=Graph("http://beforecat:8ltlAVNJjyaEgW7s7AAp@beforecat.sb05.stations.graphenedb.com:24789/db/data/")       
+            conf = DBConf.DBConf()
+            element=conf.getNeoGraphConfig()
+
+            graph = Graph(element)       
             batch = graph.cypher.begin()
             now = datetime.datetime.now()
            

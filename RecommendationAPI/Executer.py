@@ -1,6 +1,7 @@
 from DataAccess import FriendshipBuilderFRS
 from DataAccess import ChatHistoryFRS
 from DataAccess import UserManagerFRS 
+from DataAccess import DBConf
 
 # delete all existing nodes and re-build network in databse server using AU-import2.csv
 def buildUserNodesFRS():
@@ -120,10 +121,15 @@ def removeUser():
     b = UserManagerFRS()
     print b.removeUserNode("kalana@gmail.com")
 
+def testConf():
+    b =DBConf()
+    print b.getNeoGraphConfig()
+
 #buildSingleUserRels()
 #changeProperty()
+#testConf()
 #saveUser()
-removeUser()
+#removeUser()
 
     
 

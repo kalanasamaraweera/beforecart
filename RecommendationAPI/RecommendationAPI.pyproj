@@ -26,6 +26,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\DBConf.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DataAccess\UserManagerFRS_Test.py">
       <SubType>Code</SubType>
     </Compile>
@@ -70,6 +73,7 @@
   <ItemGroup>
     <Content Include="AU-import2.csv" />
     <Content Include="convertedChat.txt" />
+    <Content Include="mongoConf.txt" />
     <Content Include="NeoConf.txt" />
     <Content Include="friendsNetwork3.txt" />
   </ItemGroup>
