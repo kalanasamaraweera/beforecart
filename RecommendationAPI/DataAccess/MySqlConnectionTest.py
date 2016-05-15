@@ -1,5 +1,5 @@
 import unittest
-import  MySqlConnection
+from DataAccess import  MySqlConnection
 class Test_MySqlConnectionTest(unittest.TestCase):
     #def test_A(self):
     #    self.fail("Not implemented")

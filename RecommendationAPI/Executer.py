@@ -1,5 +1,6 @@
 from DataAccess import FriendshipBuilderFRS
-from DataAccess import ChatHistoryFRS 
+from DataAccess import ChatHistoryFRS
+from DataAccess import UserManagerFRS 
 
 # delete all existing nodes and re-build network in databse server using AU-import2.csv
 def buildUserNodesFRS():
@@ -91,10 +92,38 @@ def getChats(uid):
     b = ChatHistoryFRS()
     print  b.getAllChatsOfUser(uid)
 
-friendlist=[{'1':'laurene_bennett@gmail.com','2':'stevie.hallo@hotmail.com'}]
-user=eml1
-conv =[{'1':'Whats Up','2':'Problem','3':'Tell Me','user':'Which is better?','4':'That one'}]
-saveChat(user,friendlist,conv)
+
+def saveUser():
+    data= {'username':'kalana','password':'kalana','email':'kalana331@gmail.com','phone':'0728419199','postal':'22342','state':'Colombo','firstname':'Kalana','lastname':'Samaraweera','address':'Gampaha'}
+    b = UserManagerFRS()
+    b.createNewUserNode(data)
+
+def getUserId(email):
+    b = UserManagerFRS()
+    return b.getUserId(email)
+
+#print getUserId('ss@f.c')
+def changeProperty():
+    val ="kalana@gmail.com"
+    prop = "email"
+    email = 'ss@f.c'
+        
+    b =  UserManagerFRS()
+    sts =  b.updateProperty(email,prop,val)
+    print sts
+def buildSingleRel():
+    b =FriendshipBuilderFRS()
+    b.buildSingleUserNetwork()
+
+#buildSingleRel()
+#changeProperty()
+saveUser()
+    
+
+#friendlist=[{'1':'laurene_bennett@gmail.com','2':'stevie.hallo@hotmail.com'}]
+#user=eml1
+#conv =[{'1':'Whats Up','2':'Problem','3':'Tell Me','user':'Which is better?','4':'That one'}]
+#saveChat(user,friendlist,conv)
 
 
 #cus =getChats('rebbecca.didio@didio.com.au')

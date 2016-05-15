@@ -1,4 +1,5 @@
 from  neo4jrestclient.client import GraphDatabase
+from DataAccess import UserManagerFRS
 from py2neo import Graph ,authenticate 
 from neo4jrestclient import client
 import csv
@@ -34,6 +35,17 @@ class FriendshipBuilderFRS(object):
         finally:
             reader.close()
     
+    #Build Sample network
+    def buildSingleUserNetwork(self):
+        lines  = [line.rstrip('\n') for line in open('convertedChat.txt')]
+        for line in lines:
+            item = line.split(";")
+            friendEmail = item[1]
+            self.makeNewFriendship("kalana331@gmail.com",friendEmail)
+            print friendEmail
+             
+             
+
     #create the relationships between users in database refered to friendsNetwork3.txt
     def buildInitFriendsNetworkFRS(self):
          lines = [line.rstrip('\n') for line in open('friendsNetwork3.txt')]

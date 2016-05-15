@@ -11,9 +11,9 @@ class Test_FriendshipBuilderFRS_Test(unittest.TestCase):
 
     def removeExistingRelationship(self):
         b =FriendshipBuilderFRS()
-        val =b.removeExistingRelationship(eml1,eml2)
-        if val != True:
-            self.fail("removeExistingRelationship Test Failed")
+        #val =b.removeExistingRelationship(eml1,eml2)
+        #if val != True:
+         #   self.fail("removeExistingRelationship Test Failed")
     
 
 

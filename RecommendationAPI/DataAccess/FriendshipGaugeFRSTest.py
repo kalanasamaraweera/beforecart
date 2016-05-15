@@ -1,4 +1,5 @@
 import unittest
+from DataAccess import FriendshipGaugeFRS
 
 #Test case for FriendshipGaugeFRS class
 class Test_FriendshipGaugeFRSTest(unittest.TestCase):
