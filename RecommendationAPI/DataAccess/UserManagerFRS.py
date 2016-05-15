@@ -145,19 +145,23 @@ class UserManagerFRS(object):
                 elements = self.getNeo4jConfig()
                 graph=Graph(elements[3])
                 batch = graph.cypher.begin()     
-                query = "MATCH(n:User) WHERE n.userId="+userId+" DELETE n"
+                query = "MATCH(n:User) WHERE n.userId="+str(userId)+" DELETE n"
                 batch.append(query,{"userId":userId})
                 batch.process()
                 batch.commit()
+                
 
-           else: return False
+           
 
                 
 
         except  Exception,e:
             print e.message
             return False
-        finally: return True 
+        finally: 
+                if userId!=0: return True
+                else: return False
+
 
        
         

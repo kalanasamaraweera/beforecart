@@ -94,9 +94,9 @@ def getChats(uid):
 
 
 def saveUser():
-    data= {'username':'kalana','password':'kalana','email':'kalana331@gmail.com','phone':'0728419199','postal':'22342','state':'Colombo','firstname':'Kalana','lastname':'Samaraweera','address':'Gampaha'}
+    data= {'username':'kalana','password':'kalana','email':'kalana@gmail.com','phone':'0728419199','postal':'22342','state':'Colombo','firstname':'Kalana','lastname':'Samaraweera','address':'Gampaha'}
     b = UserManagerFRS()
-    b.createNewUserNode(data)
+    print b.createNewUserNode(data)
 
 def getUserId(email):
     b = UserManagerFRS()
@@ -111,13 +111,20 @@ def changeProperty():
     b =  UserManagerFRS()
     sts =  b.updateProperty(email,prop,val)
     print sts
-def buildSingleRel():
+
+def buildSingleUserRels():
     b =FriendshipBuilderFRS()
     b.buildSingleUserNetwork()
 
-#buildSingleRel()
+def removeUser():
+    b = UserManagerFRS()
+    print b.removeUserNode("kalana@gmail.com")
+
+#buildSingleUserRels()
 #changeProperty()
-saveUser()
+#saveUser()
+removeUser()
+
     
 
 #friendlist=[{'1':'laurene_bennett@gmail.com','2':'stevie.hallo@hotmail.com'}]
