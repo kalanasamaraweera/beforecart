@@ -125,12 +125,22 @@ def testConf():
     b =DBConf()
     print b.getNeoGraphConfig()
 
+def upgrdeRel():
+    b =FriendshipBuilderFRS()
+    print b.upgradeRelationship('breana@yahoo.com','eveline@yahoo.com','strength',12)
+
+def convertSampleChat():
+    b = ChatHistoryFRS()
+    b.convertSampleChat()
+
+convertSampleChat()
+
 #buildSingleUserRels()
 #changeProperty()
 #testConf()
 #saveUser()
 #removeUser()
-
+#upgrdeRel()
     
 
 #friendlist=[{'1':'laurene_bennett@gmail.com','2':'stevie.hallo@hotmail.com'}]

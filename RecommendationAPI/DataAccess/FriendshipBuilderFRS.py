@@ -17,7 +17,11 @@ class FriendshipBuilderFRS(object):
        
     #load the users from csv to server database(500 records)
     def buildInitUserNodesFromCsvFRS(self):
-        graphDatabase = GraphDatabase("http://beforecat.sb05.stations.graphenedb.com:24789/db/data/","beforecat","8ltlAVNJjyaEgW7s7AAp")
+        elements =[]
+        conf = DBConf.DBConf()
+        elements =  conf.getNeo4jConfig()
+
+        graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
         try:
              
             with open("AU-import2.csv", "rb") as infile:
@@ -36,13 +40,15 @@ class FriendshipBuilderFRS(object):
         finally:
             reader.close()
     
-    #Build Sample network
+    #Build Friendships between main user and friends
     def buildSingleUserNetwork(self):
-        lines  = [line.rstrip('\n') for line in open('convertedChat.txt')]
+        lines  = [line.rstrip('\n') for line in open('convertedFriends.txt')]
+        mainUser="kalana331@gmail.com"
         for line in lines:
             item = line.split(";")
             friendEmail = item[1]
-            self.makeNewFriendship("kalana331@gmail.com",friendEmail)
+            self.removeExistingRelationship(mainUser,friendEmail)
+            self.makeNewFriendship(mainUser,friendEmail)
             print friendEmail
              
              
@@ -191,7 +197,11 @@ class FriendshipBuilderFRS(object):
     #Returns 1 [:FRIEND_OF] conn exists; 0 if not exists ; -1 for exception
     def checkExistingFriendshipFRS(self,userEmail,friendEmail):
         try:
-            graphDatabase = GraphDatabase("http://beforecat.sb05.stations.graphenedb.com:24789/db/data/","beforecat","8ltlAVNJjyaEgW7s7AAp")
+            elements =[]
+            conf = DBConf.DBConf()
+            elements =  conf.getNeo4jConfig()
+
+            graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
             response = 0
             query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where  su.email='"+friendEmail+"' AND fu.email ='"+userEmail+"' return fu,su"
             results = graphDatabase.query(query,returns = (client.Node,client.Node))
@@ -210,7 +220,11 @@ class FriendshipBuilderFRS(object):
     #Returns 1 [:FRIEND_OF] conn exists; 0 if not exists ; -1 for exception
     def checkExistingRequestFRS(self,senderEmail,reciverEmail):
         try:
-            graphDatabase = GraphDatabase("http://beforecat.sb02.stations.graphenedb.com:24789/db/data/","beforecat","8ltlAVNJjyaEgW7s7AAp")
+            elements =[]
+            conf = DBConf.DBConf()
+            elements =  conf.getNeo4jConfig()
+
+            graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
             response = 0
             query = "MATCH (fu:User)-[rel:REQUESTED]->(su:User) Where  su.email='"+reciverEmail+"' AND fu.email ='"+senderEmail+"' return fu,su"
             results = graphDatabase.query(query,returns = (client.Node,client.Node))
@@ -231,7 +245,11 @@ class FriendshipBuilderFRS(object):
     # Returns select  all  friends of user
     def selectAllFriends(self,email):
         
-        graphDatabase = GraphDatabase("http://beforecat.sb02.stations.graphenedb.com:24789/db/data/","beforecat","8ltlAVNJjyaEgW7s7AAp")
+        elements =[]
+        conf = DBConf.DBConf()
+        elements =  conf.getNeo4jConfig()
+
+        graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
         query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where  rel.strength=0 AND fu.email ='"+email+"' return  su,rel.strength"
         results =  graphDatabase.query(query,returns = (client.Node,str,client.Node))
         json_object = []
@@ -247,7 +265,11 @@ class FriendshipBuilderFRS(object):
         else:return 0
 
     def getAllFriendRecievedRequests(self,email):
-        graphDatabase = GraphDatabase("http://beforecat.sb02.stations.graphenedb.com:24789/db/data/","beforecat","8ltlAVNJjyaEgW7s7AAp")
+        elements =[]
+        conf = DBConf.DBConf()
+        elements =  conf.getNeo4jConfig()
+
+        graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
         query = "MATCH (fu:User)<-[rel:REQUESTED]-(su:User) Where  rel.strength=0 AND fu.email ='"+email+"' return fu, type(rel), su,rel.strength"
         results =  graphDatabase.query(query,returns = (client.Node,str,client.Node,str))
         json_object=[]
@@ -263,7 +285,11 @@ class FriendshipBuilderFRS(object):
     
         # Return list of Pending requests 
     def getAllPendingFriendRequests(self,email):
-        graphDatabase = GraphDatabase("http://beforecat.sb02.stations.graphenedb.com:24789/db/data/","beforecat","8ltlAVNJjyaEgW7s7AAp")
+        elements =[]
+        conf = DBConf.DBConf()
+        elements =  conf.getNeo4jConfig()
+
+        graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
         query = "MATCH (fu:User)-[rel:REQUESTED]->(su:User) Where  fu.email ='"+email+"' return fu, su,rel.strength"
         results =  graphDatabase.query(query,returns = (client.Node,client.Node,str))
         json_object = []
@@ -275,7 +301,31 @@ class FriendshipBuilderFRS(object):
            json_object.append(element)
         if len(json_object)!=0: return json.dumps(json_object)
         else:return 0
-         
+
+    #Upgrade the edge between users
+    def upgradeRelationship(self,userEm,friendEm,param,val):
+        try:
+            email = ''
+
+           
+            elements =[]
+            conf = DBConf.DBConf()
+            elements =  conf.getNeo4jConfig()
+            graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
+            query = "MATCH (fu {email:'"+str(userEm)+"'})-[rel:FRIEND_OF]-(su:{email:'"+str(friendEm)+"'}) SET rel."+str(param)+"="+str(val)+" RETURN fu.email"
+            results= graphDatabase.query(query,returns = (str))
+           
+            for result in results:
+                email = result[0]
+
+        except Exception ,ex:
+            print str(ex.message)
+            return False
+        finally:
+            if email == userEm:return True
+            else:return  False
+
+
 
 #removes non utf-8 chars from string within cell
     def strip(self,string):

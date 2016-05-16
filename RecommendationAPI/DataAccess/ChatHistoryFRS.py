@@ -1,6 +1,7 @@
 import pymongo
 import datetime  
 from bson.objectid import ObjectId
+
 from DataAccess import DBConf
 class ChatHistoryFRS(object):
 
@@ -71,6 +72,49 @@ class ChatHistoryFRS(object):
           list.append({'time':time,'friends':friends})
        
         return list
+
+    #Convert Auctual names to fake names
+    def convertSampleChat(self):
+
+        documentArray = [line.rstrip('\n') for line in open('convertedFriends.txt')]
+        ucount=0
+
+        #per each line in document
+        for line in documentArray:
+
+            elementArray = line.split(';') 
+            oldName = elementArray[2]
+            newName = elementArray[1]
+            oldName ="\""+oldName+"\""
+            newName ="\""+newName+"\""
+            ucount=ucount+1
+
+            if int(elementArray[3])> 0:
+
+                print ucount
+                f =  open('Messages.txt','r')
+                data = f.read()
+                
+                newData = data.replace(oldName,newName)
+
+                f = open('Messages.txt','w')
+                f.write(newData)
+                f.close()
+                
+
+
+    #Save  Chat History in Database
+
+
+
+
+
+
+            
+
+
+            
+
 
     
 
