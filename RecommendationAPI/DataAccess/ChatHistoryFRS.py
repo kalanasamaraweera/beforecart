@@ -1,6 +1,8 @@
 import pymongo
 import datetime  
 from bson.objectid import ObjectId
+import json
+from pprint import pprint
 
 from DataAccess import DBConf
 class ChatHistoryFRS(object):
@@ -10,7 +12,7 @@ class ChatHistoryFRS(object):
        ChatHistoryFRS =self
   
     #Save chat data set in server database
-    def saveChatHistoryFRS(self,userEmail,friendArr,conversation):
+    def saveChatHistoryFRS(self,userEmail,friendArr,time):
         
         ### sample chat DATA
 
@@ -18,9 +20,9 @@ class ChatHistoryFRS(object):
             
                 {
                     'email':userEmail,
-                    'friends':friendArr,
-                    'time': datetime.datetime.now(),
-                    'conv':conversation
+                    'friend':friendArr,
+                    'savedOn': datetime.datetime.now(),
+                    'time':time
                     
                 }
                             
@@ -104,6 +106,34 @@ class ChatHistoryFRS(object):
 
 
     #Save  Chat History in Database
+    def saveSampleChatData(self):
+         
+        
+            documentArray = [line.rstrip('\n') for line in open('convertedFriends.txt')]
+            doc=  [line.rstrip('\n') for line in open('Replace.txt')]
+            myEmail =  "kalana331@gmail.com"
+            for name  in documentArray:
+                name = name.split(";")
+                for line in doc:
+                    if line.find(name[1]) != -1  and  name!=myEmail:
+                        print "Found=> "+ str(name[1])
+                        try:
+                            lineArray = line.split(",")
+                            print "Date :"+str(lineArray[1])+str(lineArray[2])
+                            print "\n"
+                        except Exception,ex:
+                            print ex.message
+                            continue
+        
+                    
+                    
+
+                    #self.saveChatHistoryFRS(myEmail,name[1],
+                    
+
+
+
+
 
 
 

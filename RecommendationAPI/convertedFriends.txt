@@ -100,4 +100,5 @@
 102;rosendo_jelsma@hotmail.com;Upeksha Vijesingh;4
 102;eveline@yahoo.com;Panchali Wijesinghe;0
 102;tegan_ebershoff@hotmail.com;Isuri Gallage;0
+102;thuro@gmail.com;Ashan Nuwaneth Jayasinghe;68
 

@@ -133,7 +133,11 @@ def convertSampleChat():
     b = ChatHistoryFRS()
     b.convertSampleChat()
 
-convertSampleChat()
+def saveChatData():
+    b = ChatHistoryFRS()
+    b.saveSampleChatData()
+
+saveChatData()
 
 #buildSingleUserRels()
 #changeProperty()
