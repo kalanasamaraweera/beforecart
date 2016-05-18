@@ -21,7 +21,7 @@ class ChatHistoryFRS(object):
                 {
                     'email':userEmail,
                     'friend':friendArr,
-                    'savedOn': datetime.datetime.now(),
+                    
                     'time':time
                     
                 }
@@ -105,25 +105,40 @@ class ChatHistoryFRS(object):
                 
 
 
-    #Save  Chat History in Database
+    #Save Sample Chat History in Database 
+
     def saveSampleChatData(self):
          
         
             documentArray = [line.rstrip('\n') for line in open('convertedFriends.txt')]
             doc=  [line.rstrip('\n') for line in open('Replace.txt')]
             myEmail =  "kalana331@gmail.com"
+
             for name  in documentArray:
+                chatCount = 0
                 name = name.split(";")
+
                 for line in doc:
-                    if line.find(name[1]) != -1  and  name!=myEmail:
+
+                    if line.find(name[1]) != -1  and  name!=myEmail and name[3]>0:
+                        chatCount+=1
                         print "Found=> "+ str(name[1])
+
                         try:
                             lineArray = line.split(",")
-                            print "Date :"+str(lineArray[1])+str(lineArray[2])
-                            print "\n"
+                            datestr(lineArray[1])+str(lineArray[2])
+                            friend = name[1]
+                            self.saveChatHistoryFRS(myEmail,friend,date)
+
+
                         except Exception,ex:
                             print ex.message
                             continue
+                    else:continue
+                
+
+
+
         
                     
                     
