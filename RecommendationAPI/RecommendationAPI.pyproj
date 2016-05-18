@@ -29,6 +29,8 @@
     <Compile Include="DataAccess\DBConf.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DataAccess\RequestHandlerPRS.py" />
+    <Compile Include="Service\SuggestionHandlerPRS.py" />
     <Compile Include="DataAccess\UserManagerFRS_Test.py">
       <SubType>Code</SubType>
     </Compile>
@@ -50,9 +52,6 @@
     <Compile Include="DataAccess\MySqlConnection.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataAccess\MySqlConnectionTest.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DataAccess\UserManagerFRS.py">
       <SubType>Code</SubType>
     </Compile>
@@ -65,10 +64,15 @@
     <Compile Include="DataAccess\FriendshipBuilderFRS.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Service\UpdateHandlerPRS.py" />
+    <Compile Include="Service\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataAccessTest\" />
     <Folder Include="DataAccess\" />
+    <Folder Include="Service\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AU-import2.csv" />
@@ -78,6 +82,7 @@
     <Content Include="NeoConf.txt" />
     <Content Include="friendsNetwork3.txt" />
     <Content Include="Replace.txt" />
+    <Content Include="requirements.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 
