@@ -14,7 +14,7 @@ class MySqlConnection(object):
     def cancelConnection(self):
         self.connection.close()
     
-    def makeConnection(self):
+    def makeConnection(self,query):
         #open connection
        connection =sql.connect("localhost","root","","beforecart")
        
@@ -22,7 +22,7 @@ class MySqlConnection(object):
        cursor = connection.cursor()
 
        #execute SQL query using execute() methods
-       query ="select VERSION()"
+       
        cursor.execcute(query)
        
        #Fetch Result to variable
