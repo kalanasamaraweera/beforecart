@@ -31,7 +31,7 @@
     </Compile>
     <Compile Include="DataAccess\RequestHandlerPRS.py" />
     <Compile Include="Service\SuggestionHandlerPRS.py" />
-    <Compile Include="DataAccess\UserManagerFRS_Test.py">
+    <Compile Include="DataAccessTest\UserManagerFRS_Test.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataAccessTest\__init__.py">
@@ -40,13 +40,13 @@
     <Compile Include="DataAccess\ChatHistoryFRS.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataAccess\FriendshipBuilderFRS_Test.py">
+    <Compile Include="DataAccessTest\FriendshipBuilderFRS_Test.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataAccess\FriendshipGaugeFRS.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataAccess\FriendshipGaugeFRSTest.py">
+    <Compile Include="DataAccessTest\FriendshipGaugeFRSTest.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataAccess\MySqlConnection.py">

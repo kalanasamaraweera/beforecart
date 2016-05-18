@@ -2,9 +2,9 @@ import tornado
 from bson.objectid import ObjectId
 from bson.json_util import dumps, loads
 from slugify import slugify
-from DataAccess import DataAccess
+from DataAccess import RequestHandlerPRS
 
-class SuggestionHandlerPRS(tornado.web.RequestHandler):
+class SuggestionHandler(tornado.web.RequestHandler):
     def initialize(self, db):
         """
         Initializes the instance with a mongodn database instance

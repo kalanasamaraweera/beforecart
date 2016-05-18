@@ -2,6 +2,9 @@ from DataAccess import FriendshipBuilderFRS
 from DataAccess import ChatHistoryFRS
 from DataAccess import UserManagerFRS 
 from DataAccess import DBConf
+from datetime import timedelta as td
+from datetime import datetime
+import random
 
 # delete all existing nodes and re-build network in databse server using AU-import2.csv
 def buildUserNodesFRS():
@@ -105,13 +108,14 @@ def getUserId(email):
 
 #print getUserId('ss@f.c')
 def changeProperty():
-    val ="kalana@gmail.com"
-    prop = "email"
-    email = 'ss@f.c'
+
+    prop = "cat"
+    email = 'kalana331@gmail.com'
         
     b =  UserManagerFRS()
-    sts =  b.updateProperty(email,prop,val)
+    sts =  b.updateProperty(email,prop+str(1),0.23434)
     print sts
+
 
 def buildSingleUserRels():
     b =FriendshipBuilderFRS()
@@ -137,7 +141,8 @@ def saveChatData():
     b = ChatHistoryFRS()
     b.saveSampleChatData()
 
-saveChatData()
+#changeProperty()
+#saveChatData()
 
 #buildSingleUserRels()
 #changeProperty()
@@ -155,6 +160,23 @@ saveChatData()
 
 #cus =getChats('rebbecca.didio@didio.com.au')
 #print cus
+def getRandomdate():
+        b =FriendshipBuilderFRS()
+        arr= b.getRandomDate()
+        print arr[0]
+        print arr[1]
+
+
+getRandomdate()
+
+#today = date.today()
+#print "Today "+ str(today)
+#oneday  = td(weeks=1)
+#print "One Day "+str(oneday)
+#yesterday =today -oneday
+#print "Yesterday"+str(yesterday)
+#tom = today + oneday
+#print"Tommorow" +str(tom)
 
 
 

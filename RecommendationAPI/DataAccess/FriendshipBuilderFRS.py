@@ -3,9 +3,12 @@ from DataAccess import UserManagerFRS
 from py2neo import Graph ,authenticate 
 from DataAccess import DBConf
 from neo4jrestclient import client
+from datetime import timedelta as td
+from datetime import datetime as date
 import csv
 import time
 import datetime
+import random
 import json
 
 #FriendshipBuilderFRS class implements CRUD operations in  Friends Neo4j database
@@ -14,6 +17,24 @@ class FriendshipBuilderFRS(object):
     
     def __init__ (self):
       FriendshipBuilderFRS= self
+
+      # get random date
+    def getRandomDate(self):
+        
+        week  =  random.uniform(28,84)
+        today  =  datetime.date.today()  #Date only        
+       #today  =  datetime.datetime.today() #Entire date
+        gap = td(weeks =week)
+        randomDate= today-gap
+       #print gap.days #print days
+
+        dateArray =[]
+        dateArray.append(randomDate)
+        dateArray.append(gap.days)
+
+        return dateArray
+      
+
        
     #load the users from csv to server database(500 records)
     def buildInitUserNodesFromCsvFRS(self):
@@ -48,8 +69,18 @@ class FriendshipBuilderFRS(object):
             item = line.split(";")
             friendEmail = item[1]
             self.removeExistingRelationship(mainUser,friendEmail)
-            self.makeNewFriendship(mainUser,friendEmail)
-            print friendEmail
+            
+            #self.upgradeRelationship(mainUser,item[1],"strength",random.uniform(0,0.99))
+            
+            if int(item[3])!=0 and self.makeNewFriendship(mainUser,friendEmail)==True:
+                self.upgradeRelationship(mainUser,item[1],"chats",item[3])
+
+                # setting date
+                dr = p.DateRange(dt(2012,1,1),dt(2010,12,31), offset=p.datetools.Hour())
+                hr = dr.map(lambda x: x.hour)
+                dt = p.DataFrame(rand(len(dr),2), dr)
+
+                print ("friend Chats:"+str(item[1])+ dt)
              
              
 
@@ -312,7 +343,7 @@ class FriendshipBuilderFRS(object):
             conf = DBConf.DBConf()
             elements =  conf.getNeo4jConfig()
             graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
-            query = "MATCH (fu {email:'"+str(userEm)+"'})-[rel:FRIEND_OF]-(su:{email:'"+str(friendEm)+"'}) SET rel."+str(param)+"="+str(val)+" RETURN fu.email"
+            query = "MATCH (fu {email:'"+str(userEm)+"'})-[rel:FRIEND_OF]-(su{email:'"+str(friendEm)+"'}) SET rel."+str(param)+"="+str(val)+" RETURN fu.email"
             results= graphDatabase.query(query,returns = (str))
            
             for result in results:
