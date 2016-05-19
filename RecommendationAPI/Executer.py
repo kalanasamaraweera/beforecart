@@ -1,71 +1,72 @@
-from DataAccess import FriendshipBuilderFRS
+from DataAccess import FriendshipManagerFRS
 from DataAccess import ChatHistoryFRS
 from DataAccess import UserManagerFRS 
 from DataAccess import DBConf
 from datetime import timedelta as td
 from datetime import datetime
-from DataAccessTest import FriendshipBuilderFRS_Test
+
 import random
+import json
 
 # delete all existing nodes and re-build network in databse server using AU-import2.csv
 def buildUserNodesFRS():
-    b = FriendshipBuilderFRS()
+    b = FriendshipManagerFRS()
     b.buildInitUserNodesFromCsvFRS()
 
 
 
 #delete existing friendship between two user nodes 
 def breakExistingRelationshipServiceFRS(em1,em2):
-    b =FriendshipBuilderFRS()
+    b =FriendshipManagerFRS()
     return b.removeExistingRelationship(em1,em2)
 
 #breakExistingRelationship()
 
 #make new friendship between users
 def makeNewRelationshipServiceFRS(em1,em2):
-    b= FriendshipBuilderFRS()
+    b= FriendshipManagerFRS()
     b.removeExistingRelationship(em1,em2)
     b.makeNewFriendship(em1,em2)
     
 #Send friend request
 def sendRequestServiceFRS(em1,em2):
-    b = FriendshipBuilderFRS()
+    b = FriendshipManagerFRS()
     return  b.sendFriendRequestFRS(em1,em2)
 
 #Cancel friend request sent by sender
 def cancelRequestBySenderServiceFRS(em1,em2):
-    b =FriendshipBuilderFRS()
+    b =FriendshipManagerFRS()
     return b.cancelFriendRequestFRS(em1,em2)
 
 
 
 #Upgrade [:Requested] relationship to[:FRIEND_OF] 
 def  acceptRequestServiceFRS(em1,em2):
-    b =FriendshipBuilderFRS()
+    b =FriendshipManagerFRS()
     return b.acceptNewFriendshipFRS(em1,em2)
 
 
 #return all the friend nodes of User node
 def getAllFriendsServiceFRS(em1):
     
-     b= FriendshipBuilderFRS()
+     b= FriendshipManagerFRS()
      return b.selectAllFriends(em1)
 
 def getAllRequstsTowardUser(em1):
-    b =FriendshipBuilderFRS()
+    b =FriendshipManagerFRS()
     return b.getAllFriendRecievedRequests(em1)
 
 def getAllSentRequestsByUser(em1):
-    b =FriendshipBuilderFRS()
+    b =FriendshipManagerFRS()
     return b.getAllPendingFriendRequests(em1) 
 
 def checkFriendship(em1,em2):
-    b = FriendshipBuilderFRS()
+    b = FriendshipManagerFRS()
     return b.checkExistingFriendshipFRS(em1,em2)
  
 
 def createNetworkFRS():
-    b= FriendshipBuilderFRS()
+    b= FriendshipManagerFRS()
     b.buildInitFriendsNetworkFRS()      
 
 eml1="rebbecca.didio@didio.com.au"
@@ -119,7 +120,7 @@ def changeProperty():
 
 
 def buildSingleUserRels():
-    b =FriendshipBuilderFRS()
+    b =FriendshipManagerFRS()
     b.buildSingleUserNetwork()
 
 def removeUser():
@@ -131,7 +132,7 @@ def testConf():
     print b.getNeoGraphConfig()
 
 def upgrdeRel():
-    b =FriendshipBuilderFRS()
+    b =FriendshipManagerFRS()
     print b.upgradeRelationship('breana@yahoo.com','eveline@yahoo.com','strength',12)
 
 def convertSampleChat():
@@ -143,7 +144,7 @@ def saveChatData():
     b.saveSampleChatData()
 
 def increaseDuration():
-    b =FriendshipBuilderFRS()
+    b =FriendshipManagerFRS()
     b.increaseDuration("kalana331@gmail.com")
 
 #increaseDuration()
@@ -167,7 +168,7 @@ def increaseDuration():
 #cus =getChats('rebbecca.didio@didio.com.au')
 #print cus
 #def getRandomdate():
-#        b =FriendshipBuilderFRS()
+#        b =FriendshipManagerFRS()
 #        arr= b.getRandomDate()
 #        print arr[0]
 #        print arr[1]
@@ -184,6 +185,14 @@ def increaseDuration():
 #tom = today + oneday
 #print"Tommorow" +str(tom)
 
+def getex():
+    b =FriendshipManagerFRS()
+    arr =b.selectExpertiseOfFriends("kalana331@gmail.com","cat1")
 
+    arr= json.loads(arr)
+    for i in arr:
+        print i['exp']
+
+getex()
 
 

@@ -13,10 +13,10 @@ import json
 
 #FriendshipBuilderFRS class implements CRUD operations in  Friends Neo4j database
 
-class FriendshipBuilderFRS(object):
+class FriendshipManagerFRS(object):
     
     def __init__ (self):
-      FriendshipBuilderFRS= self
+      FriendshipManagerFRS= self
 
       # get random date
     def getRandomDate(self):
@@ -249,7 +249,7 @@ class FriendshipBuilderFRS(object):
     
           
     
-        #Remove existing  [:REQUESTED] type connection and create [:FRIEND_OF] connection ;Build friendship
+    #Remove existing  [:REQUESTED] type connection and create [:FRIEND_OF] connection ;Build friendship
     def acceptNewFriendshipFRS(self,email1,email2):
         alredyRequested = self.checkExistingRequestFRS(email1,email2)
         isFriend = self.checkExistingFriendshipFRS(email1,email2)
@@ -331,7 +331,7 @@ class FriendshipBuilderFRS(object):
           
         
 
-    # Returns select  all  friends of user
+    # Returns select  all  friends of user and relationship info
     def selectAllFriends(self,email):
         
         elements =[]
@@ -339,7 +339,7 @@ class FriendshipBuilderFRS(object):
         elements =  conf.getNeo4jConfig()
 
         graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
-        query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where  rel.strength=0 AND fu.email ='"+email+"' return  su,rel.strength"
+        query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where  rel.strength=0 AND fu.email ='"+email+"' return  su,rel.strength,rel.duration"
         results =  graphDatabase.query(query,returns = (client.Node,str,client.Node))
         json_object = []
         for r in results:
@@ -347,11 +347,35 @@ class FriendshipBuilderFRS(object):
             element['email']=r[0]["email"]
             element['userId']=r[0]["userId"]
             element['strength'] =r[1]
+            element['duration']= r[2]
             json_object.append(element)
                        
         if len(json_object)!=0:
             return json.dumps(json_object)
         else:return 0
+ 
+        #Returns expertised level for product category of friends
+    def selectExpertiseOfFriends(self,userEmail,category):
+        elements =[]
+        conf = DBConf.DBConf()
+        elements =  conf.getNeo4jConfig()
+
+        graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
+        query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where  rel.strength=0 AND fu.email ='"+userEmail+"' return  su."+category+",su.email"
+        results =  graphDatabase.query(query,returns = (str,str))
+        json_object = []
+        for r in results:
+            element={}
+            element['exp']=r[0]
+            element['email']=r[1]
+
+            json_object.append(element)
+                       
+        if len(json_object)!=0:
+            return json.dumps(json_object)
+        else:return 0
+
+
 
     def getAllFriendRecievedRequests(self,email):
         elements =[]

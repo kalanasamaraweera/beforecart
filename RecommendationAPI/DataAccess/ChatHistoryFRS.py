@@ -3,7 +3,7 @@ import datetime
 from bson.objectid import ObjectId
 import json
 from pprint import pprint
-from DataAccess import FriendshipBuilderFRS
+from DataAccess import FriendshipManagerFRS
 import datetime
 
 from DataAccess import DBConf
@@ -44,7 +44,7 @@ class ChatHistoryFRS(object):
 
         #Update Friendship 
         time = datetime.datetime.today()
-        fBuild = FriendshipBuilderFRS.FriendshipBuilderFRS()
+        fBuild = FriendshipManagerFRS.FriendshipManagerFRS()
         fBuild.upgradeRelationship(userEmail,friendArr,"triggered",str(time))
         fBuild.upgradeRelationship(userEmail,friendArr,"duration",str(0))
         

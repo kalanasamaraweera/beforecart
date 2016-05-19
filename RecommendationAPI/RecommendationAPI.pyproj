@@ -7,7 +7,7 @@
     <ProjectGuid>a7e728d6-995b-46a1-9755-65c62c197ab0</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <ProjectTypeGuids>{1b580a1a-fdb3-4b32-83e1-6407eb2722e6};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
-    <StartupFile>DataAccessTest\FriendshipBuilderFRS.py</StartupFile>
+    <StartupFile>Executer.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -29,7 +29,7 @@
     <Compile Include="DataAccessTest\DBConf.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataAccessTest\FriendshipBuilderFRS.py">
+    <Compile Include="DataAccessTest\FriendshipManagerFRS.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataAccessTest\FriendshipGauge.py">
@@ -64,7 +64,7 @@
     <Compile Include="Executer.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataAccess\FriendshipBuilderFRS.py">
+    <Compile Include="DataAccess\FriendshipManagerFRS.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Service\UpdateHandlerPRS.py" />

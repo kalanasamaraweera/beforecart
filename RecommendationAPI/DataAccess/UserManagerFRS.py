@@ -1,4 +1,4 @@
-#Manipualtes the CRUD Operations of Users in MySql
+#Manipualtes the CRUD Operations of User Nodes in remote Neo4j repository
 
 import MySQLdb as sql
 import pymongo as m
