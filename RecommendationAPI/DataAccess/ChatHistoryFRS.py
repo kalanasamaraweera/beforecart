@@ -3,6 +3,8 @@ import datetime
 from bson.objectid import ObjectId
 import json
 from pprint import pprint
+from DataAccess import FriendshipBuilderFRS
+import datetime
 
 from DataAccess import DBConf
 class ChatHistoryFRS(object):
@@ -12,60 +14,53 @@ class ChatHistoryFRS(object):
        ChatHistoryFRS =self
   
     #Save chat data set in server database
-    def saveChatHistoryFRS(self,userEmail,friendArr,time):
+    def saveChatHistoryFRS(self,userEmail,friendArr,time,conv):
         
-        ### sample chat DATA
+        # sample chat template
 
-        CHAT_DATA = [
-            
+        CHAT_DATA = [           
                 {
                     'email':userEmail,
                     'friend':friendArr,
-                    
-                    'time':time
+                    'time':str(datetime.datetime.today()),
+                    'data':conv
                     
                 }
                             
                     ]
 
-        ### Database location
+        # Mongo Database configs
 
         conf = DBConf.DBConf()
         elements=conf.getMongoConf()
-       
         client  = pymongo.MongoClient(elements[0])
-
         db = client.get_default_database()
 
         #Select database to save chat data
-
         chatDatabase = db['beforecart_chat_history']
         
-        ## Insert Sample Chat Data 
-
+        # Insert Sample Chat Data 
         chatDatabase.insert(CHAT_DATA)
 
-
-
-
-    
+        #Update Friendship 
+        time = datetime.datetime.today()
+        fBuild = FriendshipBuilderFRS.FriendshipBuilderFRS()
+        fBuild.upgradeRelationship(userEmail,friendArr,"triggered",str(time))
+        fBuild.upgradeRelationship(userEmail,friendArr,"duration",str(0))
+        
+                  
         #Return chat history of user
-
     def getAllChatsOfUser(self,email):
 
         conf = DBConf.DBConf()
         elements=conf.getMongoConf()
-       
         client  = pymongo.MongoClient(elements[0])
-
         db = client.get_default_database()
 
         #Select database to retrieve chat data
-
         chatDatabase = db['beforecart_chat_history']
 
        # query = {"userId": "1"}
-        
         cursor = chatDatabase.find({'email':{'$eq':email}}).sort('date',1)
         list =[]
         for doc in cursor:
@@ -112,6 +107,7 @@ class ChatHistoryFRS(object):
         
             documentArray = [line.rstrip('\n') for line in open('convertedFriends.txt')]
             doc=  [line.rstrip('\n') for line in open('Replace.txt')]
+            #messageData
             myEmail =  "kalana331@gmail.com"
 
             for name  in documentArray:
@@ -125,10 +121,12 @@ class ChatHistoryFRS(object):
                         print "Found=> "+ str(name[1])
 
                         try:
+
                             lineArray = line.split(",")
                             datestr(lineArray[1])+str(lineArray[2])
                             friend = name[1]
-                            self.saveChatHistoryFRS(myEmail,friend,date)
+                            message=[{"User":'What\'s this\?'},{friend:'It \'s  a shirt'}]
+                            self.saveChatHistoryFRS(myEmail,friend,date,message)
 
 
                         except Exception,ex:
@@ -143,7 +141,7 @@ class ChatHistoryFRS(object):
                     
                     
 
-                    #self.saveChatHistoryFRS(myEmail,name[1],
+                
                     
 
 

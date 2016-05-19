@@ -21,19 +21,61 @@ class FriendshipBuilderFRS(object):
       # get random date
     def getRandomDate(self):
         
-        week  =  random.uniform(28,84)
-        today  =  datetime.date.today()  #Date only        
-       #today  =  datetime.datetime.today() #Entire date
-        gap = td(weeks =week)
-        randomDate= today-gap
-       #print gap.days #print days
+        createdDayCount  =  random.uniform(365,730)
+        lastUpdatedDayCount = random.uniform(100,250)
+        #today  =  datetime.date.today()  #only date    
+        today  =  datetime.datetime.today() #Entire date & time
+        createdGap = td(days =createdDayCount)
+        updatedGap = td(days=lastUpdatedDayCount)
 
-        dateArray =[]
-        dateArray.append(randomDate)
-        dateArray.append(gap.days)
+        createdDate= today-createdGap
+        days= updatedGap.days #print days
+        lastedUpdatedDate = today -updatedGap
+
+        dateArray ={}
+        dateArray[0]= str(createdDate)
+        dateArray[1]=str(lastedUpdatedDate)
+        dateArray[2]=days
 
         return dateArray
+
+
       
+    # Increase friendship duration
+    def increaseDuration(self,userEmail):
+        
+        #db config
+        conf = DBConf.DBConf()
+        elements =  conf.getNeo4jConfig()
+        graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
+        
+        #get user id
+        userMgr = UserManagerFRS.UserManagerFRS()
+        userId = userMgr.getUserId(userEmail)
+        try:
+            #get friendship duration
+            query = "MATCH (fu:User)-[rel:FRIEND_OF]->(su:User) WHERE fu.userId="+str(userId)+"  RETURN rel.duration,su.email"
+            result = graphDatabase.query(query,returns = (str,str))
+            today =datetime.datetime.today()
+            
+            for item in result:
+                 
+                dur =int(item[0])+1
+                print("%s"%str(item[1]))
+                print (str(item[0])+"->"+str(dur))
+
+                #update
+                self.upgradeRelationship(userEmail,item[1],"duration",dur)
+                
+
+
+        except Exception ,ex:
+            print(ex.message)
+            return False
+
+
+
+
 
        
     #load the users from csv to server database(500 records)
@@ -63,8 +105,10 @@ class FriendshipBuilderFRS(object):
     
     #Build Friendships between main user and friends
     def buildSingleUserNetwork(self):
+        
         lines  = [line.rstrip('\n') for line in open('convertedFriends.txt')]
         mainUser="kalana331@gmail.com"
+        
         for line in lines:
             item = line.split(";")
             friendEmail = item[1]
@@ -72,17 +116,27 @@ class FriendshipBuilderFRS(object):
             
             #self.upgradeRelationship(mainUser,item[1],"strength",random.uniform(0,0.99))
             
-            if int(item[3])!=0 and self.makeNewFriendship(mainUser,friendEmail)==True:
-                self.upgradeRelationship(mainUser,item[1],"chats",item[3])
+            self.makeNewFriendship(mainUser,friendEmail)
 
-                # setting date
-                dr = p.DateRange(dt(2012,1,1),dt(2010,12,31), offset=p.datetools.Hour())
-                hr = dr.map(lambda x: x.hour)
-                dt = p.DataFrame(rand(len(dr),2), dr)
+            #update chats
+            self.upgradeRelationship(mainUser,item[1],"chats",item[3])
 
-                print ("friend Chats:"+str(item[1])+ dt)
+            dateArray= self.getRandomDate()
+            #update friendship  duration
+            self.upgradeRelationship(mainUser,item[1],"duration",str(dateArray[2]))
+
+            #update  friendship started date
+            self.upgradeRelationship(mainUser,item[1],"started",dateArray[0])
+
+            #update  friendship started date
+            self.upgradeRelationship(mainUser,item[1],"triggered",dateArray[1])
+
+            print ("Since"+str(dateArray[0]))
+            print ("Updated on "+str(dateArray[1])+" ; before"+str(dateArray[2])+" days")
+            
              
              
+    
 
     #create the relationships between users in database refered to friendsNetwork3.txt
     def buildInitFriendsNetworkFRS(self):
@@ -90,11 +144,14 @@ class FriendshipBuilderFRS(object):
          rowCount = 0
         
          for line in lines:
+
              nameArray = line.split(";")
              nameCount=0
              friends=[]
              user=""
+
              for name in nameArray:
+
                  if(nameCount==0):
                      user=name
                      nameCount =nameCount+1
@@ -102,6 +159,7 @@ class FriendshipBuilderFRS(object):
                  else:   
                      friends.append(name)
                      nameCount =nameCount+1
+
              rowCount = rowCount+1
              
              for friend in friends:
@@ -216,7 +274,7 @@ class FriendshipBuilderFRS(object):
             batch = graph.cypher.begin()
             now = datetime.datetime.now()
            
-            query = """MATCH (u1:User {email:'"""+email1+"""'}), (u2:User{email:'"""+email2+"""'}) MERGE (u1)-[:FRIEND_OF{strength:0,pvotes:0,nvotes:0,chats:0,duration:0,started:'"""+str(now)+""""'}]->(u2)"""
+            query = """MATCH (u1:User {email:'"""+email1+"""'}), (u2:User{email:'"""+email2+"""'}) MERGE (u1)-[:FRIEND_OF{strength:0,pvotes:0,nvotes:0,chats:0,duration:0, triggered:'"""+str(now)+""""', started:'"""+str(now)+""""'}]->(u2)"""
             batch.append(query,{"em1":email1,"em2":email2})
             batch.process()
             batch.commit()
@@ -343,7 +401,7 @@ class FriendshipBuilderFRS(object):
             conf = DBConf.DBConf()
             elements =  conf.getNeo4jConfig()
             graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
-            query = "MATCH (fu {email:'"+str(userEm)+"'})-[rel:FRIEND_OF]-(su{email:'"+str(friendEm)+"'}) SET rel."+str(param)+"="+str(val)+" RETURN fu.email"
+            query = "MATCH (fu {email:'"+str(userEm)+"'})-[rel:FRIEND_OF]-(su{email:'"+str(friendEm)+"'}) SET rel."+str(param)+"='"+str(val)+"' RETURN fu.email"
             results= graphDatabase.query(query,returns = (str))
            
             for result in results:

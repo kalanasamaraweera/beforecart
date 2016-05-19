@@ -23,7 +23,7 @@ class MySqlConnection(object):
 
        #execute SQL query using execute() methods
        
-       cursor.execcute(query)
+       cursor.execute(query)
        
        #Fetch Result to variable
        data = cursor.fetchone()
