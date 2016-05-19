@@ -1,7 +1,7 @@
 from FriendshipManagerFRS import FriendshipManagerFRS
 from UserManagerFRS import UserManagerFRS
 from ChatHistoryFRS import ChatHistoryFRS
-from FriendshipGaugeFRS import FriendshipGaugeFRS
+from SuggestionManagerFRS import SuggestionManagerFRS
 from DBConf import DBConf
 
 

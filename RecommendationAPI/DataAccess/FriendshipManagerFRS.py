@@ -339,20 +339,27 @@ class FriendshipManagerFRS(object):
         elements =  conf.getNeo4jConfig()
 
         graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
-        query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where  rel.strength=0 AND fu.email ='"+email+"' return  su,rel.strength,rel.duration"
-        results =  graphDatabase.query(query,returns = (client.Node,str,client.Node))
-        json_object = []
-        for r in results:
-            element={}
-            element['email']=r[0]["email"]
-            element['userId']=r[0]["userId"]
-            element['strength'] =r[1]
-            element['duration']= r[2]
-            json_object.append(element)
-                       
-        if len(json_object)!=0:
-            return json.dumps(json_object)
-        else:return 0
+        query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where  rel.strength=0 AND fu.email ='"+email+"' return  su.email,rel.strength,rel.duration,rel.chats order by rel.duration"
+        try:
+            results =  graphDatabase.query(query,returns = (str,str,str,str))
+            json_object = []
+            for r in results:
+                element={}
+                element['email']=r[0]
+                
+                element['strength'] =r[1]
+                element['duration']= r[2]
+                element['chats']= r[3]
+                json_object.append(element)
+                
+        
+        except Exception ,ex:
+            print ex.message
+            return 0
+        finally:               
+            if len(json_object)!=0:
+                return json.dumps(json_object)
+            else:return 0
  
         #Returns expertised level for product category of friends
     def selectExpertiseOfFriends(self,userEmail,category):
@@ -361,7 +368,7 @@ class FriendshipManagerFRS(object):
         elements =  conf.getNeo4jConfig()
 
         graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
-        query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where  rel.strength=0 AND fu.email ='"+userEmail+"' return  su."+category+",su.email"
+        query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where  rel.strength=0 AND fu.email ='"+userEmail+"' return  su."+category+",su.email order by su."+category+" desc"
         results =  graphDatabase.query(query,returns = (str,str))
         json_object = []
         for r in results:

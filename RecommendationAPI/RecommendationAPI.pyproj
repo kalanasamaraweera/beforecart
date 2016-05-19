@@ -49,7 +49,7 @@
     <Compile Include="DataAccess\ChatHistoryFRS.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataAccess\FriendshipGaugeFRS.py">
+    <Compile Include="DataAccess\SuggestionManagerFRS.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataAccess\MySqlConnection.py">

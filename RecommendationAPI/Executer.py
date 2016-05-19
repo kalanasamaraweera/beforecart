@@ -1,4 +1,5 @@
 from DataAccess import FriendshipManagerFRS
+from DataAccess import SuggestionManagerFRS
 from DataAccess import ChatHistoryFRS
 from DataAccess import UserManagerFRS 
 from DataAccess import DBConf
@@ -193,6 +194,9 @@ def getex():
     for i in arr:
         print i['exp']
 
-getex()
+def score():
+     s =SuggestionManagerFRS()
+     s.makeFriendshipScore("kalana331@gmail.com")
 
+score()
 

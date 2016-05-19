@@ -154,10 +154,6 @@ class UserManagerFRS(object):
                 batch.commit()
                 
 
-           
-
-                
-
         except  Exception,e:
             print e.message
             return False
@@ -165,6 +161,35 @@ class UserManagerFRS(object):
                 if userId!=0: return True
                 else: return False
 
+
+    #return json array of the exp levels of category from locally
+    def getCategoryExp(self,email):
+
+        elements =[]
+        conf = DBConf.DBConf()
+        elements =  conf.getNeo4jConfig()
+
+        graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
+        query = "MATCH (n) Where  n.email='"+email+"'  return  n.cat1,n.cat3,n.cat4,n.cat5,n.cat6,n.cat7,n.cat8"
+        results =  graphDatabase.query(query,returns = (str,str,str,str,str,str,str,str))
+        json_object = []
+        for r in results:
+
+            element={}
+            element['cat1'] =r[0]
+            element['cat2'] =r[1]
+            element['cat3'] =r[2]
+            element['cat4'] =r[3]
+            element['cat5'] =r[4]
+            element['cat6'] =r[5]
+            element['cat7'] =r[6]
+            element['cat8'] =r[7]
+
+            json_object.append(element)
+                       
+        if len(json_object)!=0:
+            return json.dumps(json_object)
+        else:return 0
 
        
         
