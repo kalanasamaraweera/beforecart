@@ -2,6 +2,7 @@ from  neo4jrestclient.client import GraphDatabase
 from DataAccess import UserManagerFRS
 from py2neo import Graph ,authenticate 
 from DataAccess import DBConf
+
 from neo4jrestclient import client
 from datetime import timedelta as td
 from datetime import datetime as date
@@ -22,18 +23,19 @@ class FriendshipManagerFRS(object):
     def changePosVotes(self,user,friend,operation):
         try:
             rel =self.selectRelationship(user,friend)
+            pVotes=int(rel[2])
             if len(rel)==5:
 
-                pVotes=int(rel[2])
+                
 
                 if operation == '+': 
                     pVotes+=1
                     self.upgradeRelationship(user,friend,"pvotes",pVotes)
 
                 elif operation == '-':
-
-                    pVotes-=1
-                    self.upgradeRelationship(user,friend,"pvotes",pVotes)
+                    if pVotes>=1:
+                        pVotes-=1
+                        self.upgradeRelationship(user,friend,"pvotes",pVotes)
                     
                 else:return -1
 
@@ -43,37 +45,42 @@ class FriendshipManagerFRS(object):
 
         finally:
             if operation =='+' or operation =='-':
-                return 0
+                if pVotes >=1:
+                    return 0
+                return -1
             else : return -1
 
     #change negative votes by one
     def changeNegVotes(self,user,friend,operation):
         try:
-            rel=self.selectRelationship(user,friend) 
+            rel=self.selectRelationship(user,friend)
+            nVotes=int(rel[3])
+            
             if len(rel)==5:
-
-                nVotes=int(rel[3])
 
                 if operation =='+':
 
                     nVotes+=1
                     self.upgradeRelationship(user,friend,"nvotes",nVotes)
-                    return 0
+                    
 
                 elif operation == '-':
-
-                    nVotes-=1
-                    self.upgradeRelationship(user,friend,"nvotes",nVotes)
-                    return 0
+                    if nVotes>=1:
+                        nVotes-=1
+                        self.upgradeRelationship(user,friend,"nvotes",nVotes)
+                    
 
                 else: return -1
+                
 
         except Exception ,e:
             print e.message
             return -1
         finally:
             if operation =='+' or operation =='-':
-                return 0
+                if nVotes>=1:
+                    return 0
+                return -1
             else : return -1
 
 
@@ -406,7 +413,7 @@ class FriendshipManagerFRS(object):
         elements =  conf.getNeo4jConfig()
 
         graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
-        query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where  rel.strength=0 AND fu.email ='"+email+"' return  su.email,rel.strength,rel.duration,rel.chats order by rel.duration"
+        query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where   fu.email ='"+email+"' RETURN  su.email,rel.strength,rel.duration,rel.chats order by toFloat(rel.strength) desc"
         try:
             results =  graphDatabase.query(query,returns = (str,str,str,str))
             json_object = []
@@ -425,8 +432,37 @@ class FriendshipManagerFRS(object):
             return 0
         finally:               
             if len(json_object)!=0:
-                return json.dumps(json_object)
+                return json_object
             else:return 0
+
+    #select friends for Chat
+    def selectFriendsForChatOnExp(self,email,cat):
+        elements =[]
+        conf = DBConf.DBConf()
+        elements =  conf.getNeo4jConfig()
+
+        graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
+        query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where fu.email ='"+email+"' RETURN  su.email,rel.strength,su."+cat+" order by su."+cat+"  desc"
+        try:
+            results =  graphDatabase.query(query,returns = (str,str,str))
+            json_object = []
+            for r in results:
+                element={}
+                element['email']=r[0]
+                element['strength'] =r[1]
+                element[str(cat)]= r[2]
+                json_object.append(element)
+                
+        
+        except Exception ,ex:
+            print ex.message
+            return 0
+        finally:               
+            if len(json_object)!=0:
+                return json_object
+            else:return 0
+
+ 
  
         #Returns expertised level for product category of friends
     def selectExpertiseOfFriends(self,userEmail,category):
@@ -460,20 +496,18 @@ class FriendshipManagerFRS(object):
         try:
             results =  graphDatabase.query(query,returns = (str,str,str,str,str))
             list = []
-            for r in results:
-                element=[]
-                element.append(r[0])
-                element.append(r[1])
-                element.append(r[2])
-                element.append(r[3])
-                element.append(r[4])
-           
-
-                return element
+            for i in results:
+                list.append(i[0])
+                list.append(i[1])            
+                list.append(i[2])          
+                list.append(i[3])
+                list.append(i[4])   
+                          
         except Exception,ex:
             print ex.message
-            element={}
-            return  element
+            elements=[]
+            return  elements
+        finally:return list
                        
 
 
@@ -557,6 +591,9 @@ class FriendshipManagerFRS(object):
         finally:
             chats+=1
             return fMgr.upgradeRelationship(user,friend,"chats",chats)
+
+
+
 
 #removes non utf-8 chars from string within cell
     def strip(self,string):

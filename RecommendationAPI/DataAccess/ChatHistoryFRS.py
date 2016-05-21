@@ -57,7 +57,7 @@ class ChatHistoryFRS(object):
                     #update friendship score
                     sugMgr = SuggestionManagerFRS.SuggestionManagerFRS()
                     score=sugMgr.makeFriendshipScore(userEmail,friend)
-                    score =float(score)/100.0
+                    
                     if score != -1:
                         print "\n Score %s"%score
                         fBuild.upgradeRelationship(userEmail,friend,"strength",str(score))
@@ -173,6 +173,7 @@ class ChatHistoryFRS(object):
                         except Exception,ex:
                             print ex.message
                             continue
+
                     else:continue
                 
 

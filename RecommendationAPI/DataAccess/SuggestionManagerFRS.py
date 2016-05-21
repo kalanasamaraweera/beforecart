@@ -1,15 +1,15 @@
-#This class implements methods which measure friendship between two users.
+#This class implements methods which measure friendship between two users and make appropriate suggestion lists of users
+#to add in chat sessions and add as friends
 #The friendship is measured based on no of interactions between users against time
 #Therefore following class implements a scoring model to measure friend-ship between two user nodes
 #Inorder to measure the friendship it uses
 #   ~ No of chats between user
 #   ~ Duration of relationships
 
- # 1.get all the friends of user from remote database
-
 from DataAccess import FriendshipManagerFRS
 from DataAccess import UserManagerFRS
 
+import operator
 import json
 
 class SuggestionManagerFRS(object):
@@ -17,15 +17,7 @@ class SuggestionManagerFRS(object):
     def __init__(self):
        SuggestionManagerFRS =self
 
-   # get friends 
-    #def suggestFriendsForChat(self,email,category):
-        
-    #    userMgr =  UserManagerFRS.UserManagerFRS()
-    #    friendMgr =FriendshipManagerFRS.FriendshipManagerFRS()
-    #    results = friendMgr.selectExpertiseOfFriends(email,category)
-    #    arr =json.loads(results)
 
-    #    if  arr[0]!=0:
 
 
     def makeFriendshipScore(self,email,friend):
@@ -40,25 +32,29 @@ class SuggestionManagerFRS(object):
       array = friendMgr.selectRelationship(email,friend)
       
       c=0
-      if len(array)==5:
+      try:
+          if len(array)==5:
 
-            c+=1
-            #print "\n Id:"+str(c)
-            #print"User: %s"% str(i['email'])
-            #print "Dur:%s days from last chat" % str(i['duration'])
-            #print "Chats: %s chats"% str(i['chats'])
-            total=-1
-            chatVoteScore=self.scoreChatsNVotes(array[0],array[2],array[3])
-            durationScore=self.scoreDur(array[1])
-            total =self.calculateTotalScore(chatVoteScore,durationScore)
-            #deduct / add  by votes
+                c+=1
+                #print "\n Id:"+str(c)
+                #print"User: %s"% str(i['email'])
+                #print "Dur:%s days from last chat" % str(i['duration'])
+                #print "Chats: %s chats"% str(i['chats'])
+                total=-1
+                chatVoteScore=self.scoreChatsNVotes(array[0],array[2],array[3])
+                durationScore=self.scoreDur(array[1])
+                total =self.calculateTotalScore(chatVoteScore,durationScore)
+                #deduct / add  by votes
 
-            #print "chat score %s"% str(chatScore)
-            #print "duration score %s" % str(durationScore)
-            #print "total score %s"%str(float(total)/float(100))
+                #print "chat score %s"% str(chatScore)
+                #print "duration score %s" % str(durationScore)
+                #print "total score %s"%str(float(total)/float(100))
 
-            "return score"
-            return total
+                "return score"
+                return float(total)/100.0
+    
+      except Exception, e:
+          print str(e.message)
 
               
 
@@ -101,6 +97,7 @@ class SuggestionManagerFRS(object):
         score=self.voteHandler(score,pvotes,nvotes)
         return score
 
+
     #score for votes
     def voteHandler(self,score,pv,nv):
 
@@ -114,6 +111,7 @@ class SuggestionManagerFRS(object):
             elif pv<nv:
                 score-=5
         return score
+
    #score Duration
     def scoreDur(self,dur):
         "duration represents time decay"
@@ -133,6 +131,7 @@ class SuggestionManagerFRS(object):
             return 10
 
 
+    #calculate cumulative score
     def calculateTotalScore(self,chat,duration):
 
         if chat!=None and duration != None:
@@ -142,7 +141,129 @@ class SuggestionManagerFRS(object):
                 chat =0
             if duration  == None:
                 duration = 0
-            return duration+chat
+            return duration + chat
+
+    
+    #sort Decending expertise in 8 product categories
+    def sortUserPreferences(self,user):
+
+        userMgr =UserManagerFRS()
+        categories = userMgr.getCategoryExp(user)
+        
+        #sort list
+        if len(categories)!=0:
+            categories=sorted(categories.items(), key=operator.itemgetter(1))
+        
+        return categories
+
+
+    #get maximum category out of  given list of  product categories
+    def getMaxCategory(self,categories):
+
+        
+        categories = dict(categories)
+        
+        maxIndex=max(categories.items(), key=operator.itemgetter(1))[0] # index of max.
+        maxValue =max(categories.items(), key=operator.itemgetter(1))[1] # max. value
+        
+        maxCat ={maxIndex:maxValue}
+        return maxCat
+
+
+     #prepare list of users for chat on product
+    def makeChatSuggestionList(self,user,category):
+
+        freindMgr = FriendshipManagerFRS()
+        userMgr = UserManagerFRS()
+
+        allFriends = freindMgr.selectAllFriends(user)
+
+        for friend in allFriends:
+
+            email = friend['email']
+    
+            
+    #update all the relationship strength of user
+    def upgradeRelationshipStrength(self,user):
+
+        fMgr = FriendshipManagerFRS()
+        user =str(user)
+        allFriends = fMgr.selectAllFriends(user)
+        
+        for friend in allFriends:
+            score=0
+            try:
+                email = str(friend['email'])
+                score =self.makeFriendshipScore(user,email) #calculate friendship score
+                fMgr.upgradeRelationship(user,email,"strength",score)
+                    
+            except Exception,e:
+                print str(e.message)+" -2"
+                continue
+            finally:print email+"-> STR:"+str(score)
+
+    
+    #refine selected list of users for chat
+    def refineChatList(self,user,category):
+
+        friendMgr = FriendshipManagerFRS()
+        uMgr =UserManagerFRS()
+        expFriends = friendMgr.selectFriendsForChatOnExp(user,category)
+        closeFriends = friendMgr.selectAllFriends(user)
+
+        #print expFriends 
+
+        mixList=self.mixLists(closeFriends,expFriends)
+        
+        for i in  mixList:
+           item =str(i)
+           print item +" count "+str(mixList.count(item))
+
+        return mixList
+
+
+    def mixLists(self,closeFriends,expFriends):
+
+        finalList=[]
+
+        for OutItem in closeFriends:
+            chk =finalList.count(OutItem['email'])
+            if chk==0:
+                finalList.append(OutItem['email'])
+            else:continue
+
+            for InItem  in expFriends:
+                    chkIn =finalList.count(InItem['email'])
+                    if chkIn ==0:
+                        if OutItem!=InItem:
+                            finalList.append(InItem['email'])
+                            break
+
+                    else:continue
+
+        return finalList
+            
+
+                 
+
+
+
+
+
+
+
+        
+    
+   
+    
+        
+        
+
+
+
+
+
+
 
 
 

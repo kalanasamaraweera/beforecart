@@ -11,6 +11,7 @@ import datetime
 import json
 from DataAccess import DBConf
 
+
 class UserManagerFRS(object):
     def __init__(self):
        UserManagerFRS =self
@@ -130,23 +131,27 @@ class UserManagerFRS(object):
         except Exception,e:
             print str(e.message) 
             return False
+
         finally:
                 Id=self.getUserId(upEmail)
                 if userId == Id:
                     return True
                 else: return False
 
-                #Delete User Node
+     #Delete User Node
     def  removeUserNode(self,email):
         userId =0
         userId = self.getUserId(email)
 
         try:
+
            if userId != 0:
+
                 elements = []
                 conf= DBConf.DBConf()
                 elements =conf.getNeo4jConfig()
                 graph=Graph(elements[3])
+
                 batch = graph.cypher.begin()     
                 query = "MATCH(n:User) WHERE n.userId="+str(userId)+" DELETE n"
                 batch.append(query,{"userId":userId})
@@ -157,39 +162,58 @@ class UserManagerFRS(object):
         except  Exception,e:
             print e.message
             return False
+
         finally: 
                 if userId!=0: return True
                 else: return False
 
 
-    #return json array of the exp levels of category from locally
+    #return  list of the expertise levels of 8 product categories from locally
     def getCategoryExp(self,email):
 
-        elements =[]
-        conf = DBConf.DBConf()
-        elements =  conf.getNeo4jConfig()
+        try:
+            
+            conf = DBConf.DBConf()
+            elements =  conf.getNeo4jConfig()
+            graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
 
-        graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
-        query = "MATCH (n) Where  n.email='"+email+"'  return  n.cat1,n.cat3,n.cat4,n.cat5,n.cat6,n.cat7,n.cat8"
-        results =  graphDatabase.query(query,returns = (str,str,str,str,str,str,str,str))
-        json_object = []
-        for r in results:
+            query = "MATCH (n) Where  n.email='"+email+"'  return  n.cat1,n.cat2,n.cat3,n.cat4,n.cat5,n.cat6,n.cat7,n.cat8"
+            results=  graphDatabase.query(query,returns = (str,str,str,str,str,str,str,str))
+            for r in results:
+                elements ={}
+                elements ={1:r[0],2:r[1],3:r[2], 4:r[3],5:r[4],6:r[5],7:r[6],8:r[7]}
+                return elements               
+            
 
-            element={}
-            element['cat1'] =r[0]
-            element['cat2'] =r[1]
-            element['cat3'] =r[2]
-            element['cat4'] =r[3]
-            element['cat5'] =r[4]
-            element['cat6'] =r[5]
-            element['cat7'] =r[6]
-            element['cat8'] =r[7]
+                
+        except Exception ,e:
+            print e.message
+            return []
+    
+    def getUserNode(self,email):
 
-            json_object.append(element)
+        try:
+            
+            conf = DBConf.DBConf()
+            elements =  conf.getNeo4jConfig()
+            graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
+
+            query = "MATCH (n) Where  n.email='"+email+"'  return  n.userId,n.firstName,n.email"
+            results=  graphDatabase.query(query,returns = (str,str,str))
+            for r in results:
+                elements ={}
+                elements['userId']= r[0]
+                elements['firstName']=r[1]
+                elements['email'] =r[2]
+                return elements               
+            
+                
+        except Exception ,e:
+            print e.message
+            return []
+
                        
-        if len(json_object)!=0:
-            return json.dumps(json_object)
-        else:return 0
+       
 
        
         

@@ -6,6 +6,7 @@ from DataAccess import DBConf
 from datetime import timedelta as td
 from datetime import datetime
 
+
 import random
 import json
 
@@ -156,7 +157,7 @@ def saveChatData():
     b.saveSampleChatData()
 
 def increaseChats():
-    b =ChatHistoryFRS()
+    b =FriendshipManagerFRS()
     b.increaseChatCount("kalana331@gmail.com","idella@hotmail.com")
 
 
@@ -176,7 +177,20 @@ def changePVotes():
     b =FriendshipManagerFRS()
     user="kalana331@gmail.com"
     friend ="rebbecca.didio@didio.com.au"
-    print b.changePosVotes(user,friend,'+')
+    print b.changePosVotes(user,friend,'-')
+
+def strenUpdate():
+        m =SuggestionManagerFRS()
+        m.upgradeRelationshipStrength("kalana331@gmail.com")
+
+
+def refineChatList():
+    user="kalana331@gmail.com"
+    cat="cat1"
+    f =SuggestionManagerFRS()
+    f.refineChatList(user,cat)
+refineChatList()   
+
 
 #changePVotes()
 #increaseChats()
