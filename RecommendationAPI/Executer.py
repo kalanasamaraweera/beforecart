@@ -172,8 +172,13 @@ def increaseDuration():
 #    b =ChatHistoryFRS()
 #    b.saveChatHistoryFRS("kalana331@gmail.com",friends,chatlist)
 
+def changePVotes():
+    b =FriendshipManagerFRS()
+    user="kalana331@gmail.com"
+    friend ="rebbecca.didio@didio.com.au"
+    print b.changePosVotes(user,friend,'+')
 
-
+#changePVotes()
 #increaseChats()
 #saveChat()
 #increaseDuration()
@@ -189,7 +194,7 @@ def increaseDuration():
     
 
 
-saveChat()
+#saveChat()
 
 
 #getChats('kalana331@gmail.com')

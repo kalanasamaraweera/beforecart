@@ -27,19 +27,27 @@ class FriendshipManagerFRS(object):
                 pVotes=int(rel[2])
 
                 if operation == '+': 
-                    pVotes+=pVotes
+                    pVotes+=1
                     self.upgradeRelationship(user,friend,"pvotes",pVotes)
 
                 elif operation == '-':
 
-                    pVotes-=pVotes
+                    pVotes-=1
                     self.upgradeRelationship(user,friend,"pvotes",pVotes)
+                    
+                else:return -1
 
         except Exception ,e:
             print e.message  
+            return -1
+
+        finally:
+            if operation =='+' or operation =='-':
+                return 0
+            else : return -1
 
     #change negative votes by one
-    def changeNegVotes(self,email,friend,operation):
+    def changeNegVotes(self,user,friend,operation):
         try:
             rel=self.selectRelationship(user,friend) 
             if len(rel)==5:
@@ -48,16 +56,25 @@ class FriendshipManagerFRS(object):
 
                 if operation =='+':
 
-                    nVotes+=nVotes
+                    nVotes+=1
                     self.upgradeRelationship(user,friend,"nvotes",nVotes)
+                    return 0
 
                 elif operation == '-':
 
-                    nVotes-=nVotes
+                    nVotes-=1
                     self.upgradeRelationship(user,friend,"nvotes",nVotes)
+                    return 0
+
+                else: return -1
 
         except Exception ,e:
             print e.message
+            return -1
+        finally:
+            if operation =='+' or operation =='-':
+                return 0
+            else : return -1
 
 
       # get random date
