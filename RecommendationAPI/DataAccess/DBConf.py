@@ -24,3 +24,6 @@ class DBConf(object):
            
        return elements
 
+    def getMySqlConf(self):
+       lines = [line.rstrip('\n') for line in open('MySqlConf.txt')]
+

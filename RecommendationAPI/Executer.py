@@ -91,13 +91,24 @@ eml3="laurene_bennett@gmail.com"
 
 #ChatHistoryFRS--------
 
-def saveChat(email,friendList,conv):
+def saveChat():
+    friendlist={'1':'rebbecca.didio@didio.com.au','2':'stevie.hallo@hotmail.com'}
+    user="kalana331@gmail.com"
+    conv =[{'1':'Whats Up','2':'Problem','3':'Tell Me','user':'Which is better?','4':'That one'}]
     b = ChatHistoryFRS()
-    print b.saveChatHistoryFRS(email,friendList,conv)
+    conv=str(json.dumps(conv))
+    b.saveChatHistoryFRS(user,friendlist,conv)
 
 def getChats(uid):
     b = ChatHistoryFRS()
-    print  b.getAllChatsOfUser(uid)
+    chats=  b.getAllChatsOfUser(uid)
+    cont=0
+    for chat in chats:
+        cont+=1
+        print "\n"+str(cont)
+        print chat['friend']
+        print chat['time']
+
 
 
 def saveUser():
@@ -144,10 +155,27 @@ def saveChatData():
     b = ChatHistoryFRS()
     b.saveSampleChatData()
 
+def increaseChats():
+    b =ChatHistoryFRS()
+    b.increaseChatCount("kalana331@gmail.com","idella@hotmail.com")
+
+
 def increaseDuration():
     b =FriendshipManagerFRS()
     b.increaseDuration("kalana331@gmail.com")
 
+#def saveChat():
+#    friends =["idella@hotmail.com","stevie.hallo@hotmail.com"]
+#    chatlist =[]
+#    chatlist.append({"stevie":"whats the best shirt"})
+#    chatlist.append({"me":"blue one"})
+#    b =ChatHistoryFRS()
+#    b.saveChatHistoryFRS("kalana331@gmail.com",friends,chatlist)
+
+
+
+#increaseChats()
+#saveChat()
 #increaseDuration()
 #changeProperty()
 #saveChatData()
@@ -160,14 +188,13 @@ def increaseDuration():
 #upgrdeRel()
     
 
-#friendlist=[{'1':'laurene_bennett@gmail.com','2':'stevie.hallo@hotmail.com'}]
-#user=eml1
-#conv =[{'1':'Whats Up','2':'Problem','3':'Tell Me','user':'Which is better?','4':'That one'}]
-#saveChat(user,friendlist,conv)
+
+saveChat()
 
 
-#cus =getChats('rebbecca.didio@didio.com.au')
-#print cus
+#getChats('kalana331@gmail.com')
+
+
 #def getRandomdate():
 #        b =FriendshipManagerFRS()
 #        arr= b.getRandomDate()
@@ -194,9 +221,9 @@ def getex():
     for i in arr:
         print i['exp']
 
-def score():
-     s =SuggestionManagerFRS()
-     s.makeFriendshipScore("kalana331@gmail.com")
+#def score():
+#     s =SuggestionManagerFRS()
+#     s.makeFriendshipScore("kalana331@gmail.com")
 
-score()
+#score()
 

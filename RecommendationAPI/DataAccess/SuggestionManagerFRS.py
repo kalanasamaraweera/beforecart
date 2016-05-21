@@ -28,7 +28,7 @@ class SuggestionManagerFRS(object):
     #    if  arr[0]!=0:
 
 
-    def makeFriendshipScore(self,email):
+    def makeFriendshipScore(self,email,friend):
       
       """ score friendship """
     # * the total score will be out of 100 %
@@ -37,39 +37,35 @@ class SuggestionManagerFRS(object):
 
       friendMgr =FriendshipManagerFRS()
 
-      array = friendMgr.selectAllFriends(email)
-      array =json.loads(array)
+      array = friendMgr.selectRelationship(email,friend)
+      
       c=0
-      if array!=0:
-          for i in array:
-              c+=1
-              print "\n Id:"+str(c)
-              print"User: %s"% str(i['email'])
-              print "Dur:%s days from last chat" % str(i['duration'])
-              print "Chats: %s chats"% str(i['chats'])
+      if len(array)==5:
 
-              noOfChats  = i['chats']
-              duration = i['duration']
-              user = i['email']
-              
+            c+=1
+            #print "\n Id:"+str(c)
+            #print"User: %s"% str(i['email'])
+            #print "Dur:%s days from last chat" % str(i['duration'])
+            #print "Chats: %s chats"% str(i['chats'])
+            total=-1
+            chatVoteScore=self.scoreChatsNVotes(array[0],array[2],array[3])
+            durationScore=self.scoreDur(array[1])
+            total =self.calculateTotalScore(chatVoteScore,durationScore)
+            #deduct / add  by votes
 
+            #print "chat score %s"% str(chatScore)
+            #print "duration score %s" % str(durationScore)
+            #print "total score %s"%str(float(total)/float(100))
 
+            "return score"
+            return total
 
-
-              chatScore=self.scoreChats(noOfChats)
-              durationScore=self.scoreDur(duration)
-             
-              total =self.calculateTotalScore(chatScore,durationScore)
-
-              print "chat score %s"% str(chatScore)
-              print "duration score %s" % str(durationScore)
-              print "total score %s"%str(float(total)/float(100))
               
 
               
 
     
-    def scoreChats(self,chats):
+    def scoreChatsNVotes(self,chats,pvotes,nvotes):
         "Score Chats represents the affnity score"
         # 0 : 0
         # >250 : 60
@@ -80,23 +76,44 @@ class SuggestionManagerFRS(object):
         #150-250:50
          
         chats =int(chats)
+        pvotes= int(pvotes)
+        nvotes = int(nvotes)
 
-        if chats == 0:  #no chats
-            return 0
+        if chats == 0:  #no chats  no marks
+            if pvotes>nvotes:#if pvotes>=nvotes socre:+5 only ;else return 0
+                return 5
+            else:return 0
 
-        if 250<chats:   #more than 250 chats
-            return 60
-
-        if  0<chats and chats <= 25:
-            return 10
+        if 250<chats:   # chats more than 250  full marks
+            if nvotes>pvotes :#chats ?votes-5only
+                return  55
+            else:return 60
+            
+        score=0
+        if  0<chats and chats <= 25: 
+            score= 10
         elif 25<chats and chats<=50:
-            return 20
+            score= 20
         elif  chats<50 and chats<=150:
-            return 30
+            score= 30
         elif 150<chats and chats<=250:
-            return 40
+            score= 40
+        score=self.voteHandler(score,pvotes,nvotes)
+        return score
 
+    #score for votes
+    def voteHandler(self,score,pv,nv):
 
+        pv =int(pv)
+        nv= int(nv)
+
+        if score>=5:
+        
+            if pv>= nv:
+                score+=5
+            elif pv<nv:
+                score-=5
+        return score
    #score Duration
     def scoreDur(self,dur):
         "duration represents time decay"

@@ -17,6 +17,48 @@ class FriendshipManagerFRS(object):
     
     def __init__ (self):
       FriendshipManagerFRS= self
+    
+      #increse positive votes  by one
+    def changePosVotes(self,user,friend,operation):
+        try:
+            rel =self.selectRelationship(user,friend)
+            if len(rel)==5:
+
+                pVotes=int(rel[2])
+
+                if operation == '+': 
+                    pVotes+=pVotes
+                    self.upgradeRelationship(user,friend,"pvotes",pVotes)
+
+                elif operation == '-':
+
+                    pVotes-=pVotes
+                    self.upgradeRelationship(user,friend,"pvotes",pVotes)
+
+        except Exception ,e:
+            print e.message  
+
+    #change negative votes by one
+    def changeNegVotes(self,email,friend,operation):
+        try:
+            rel=self.selectRelationship(user,friend) 
+            if len(rel)==5:
+
+                nVotes=int(rel[3])
+
+                if operation =='+':
+
+                    nVotes+=nVotes
+                    self.upgradeRelationship(user,friend,"nvotes",nVotes)
+
+                elif operation == '-':
+
+                    nVotes-=nVotes
+                    self.upgradeRelationship(user,friend,"nvotes",nVotes)
+
+        except Exception ,e:
+            print e.message
+
 
       # get random date
     def getRandomDate(self):
@@ -114,10 +156,17 @@ class FriendshipManagerFRS(object):
             friendEmail = item[1]
             self.removeExistingRelationship(mainUser,friendEmail)
             
-            #self.upgradeRelationship(mainUser,item[1],"strength",random.uniform(0,0.99))
+
             
             self.makeNewFriendship(mainUser,friendEmail)
 
+            #update votes
+            pvotes  =  random.uniform(0,100)
+            nvotes = random.uniform(0,100)
+            self.upgradeRelationship(mainUser,item[1],"pvotes",int(pvotes))
+            self.upgradeRelationship(mainUser,item[1],"nvotes",int(nvotes))
+
+            #self.upgradeRelationship(mainUser,item[1],"strength",random.uniform(0,0.99))
             #update chats
             self.upgradeRelationship(mainUser,item[1],"chats",item[3])
 
@@ -131,6 +180,7 @@ class FriendshipManagerFRS(object):
             #update  friendship started date
             self.upgradeRelationship(mainUser,item[1],"triggered",dateArray[1])
 
+            print(str(mainUser)+"->"+str(friendEmail))
             print ("Since"+str(dateArray[0]))
             print ("Updated on "+str(dateArray[1])+" ; before"+str(dateArray[2])+" days")
             
@@ -382,6 +432,34 @@ class FriendshipManagerFRS(object):
             return json.dumps(json_object)
         else:return 0
 
+    #select relationship
+    def selectRelationship(self,user,friend):
+        elements =[]
+        conf = DBConf.DBConf()
+        elements =  conf.getNeo4jConfig()
+
+        graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
+        query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where  fu.email ='"+user+"' AND  su.email='"+friend+"' return rel.chats, rel.duration,rel.pvotes,rel.nvotes,rel.strength"
+        try:
+            results =  graphDatabase.query(query,returns = (str,str,str,str,str))
+            list = []
+            for r in results:
+                element=[]
+                element.append(r[0])
+                element.append(r[1])
+                element.append(r[2])
+                element.append(r[3])
+                element.append(r[4])
+           
+
+                return element
+        except Exception,ex:
+            print ex.message
+            element={}
+            return  element
+                       
+
+
 
 
     def getAllFriendRecievedRequests(self,email):
@@ -445,7 +523,23 @@ class FriendshipManagerFRS(object):
             if email == userEm:return True
             else:return  False
 
+    #increase chat count
+    def increaseChatCount(self,user,friend):
 
+        #get chat count
+        fMgr = FriendshipManagerFRS()
+        results = fMgr.selectRelationship(user,friend)
+        try:
+            chats=0
+            if len(results) !=0:
+                chats=int(results[0])
+        except Exception ,ex:
+            print ex.message
+            return 0
+        #save new chat count in neo4j
+        finally:
+            chats+=1
+            return fMgr.upgradeRelationship(user,friend,"chats",chats)
 
 #removes non utf-8 chars from string within cell
     def strip(self,string):

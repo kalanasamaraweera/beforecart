@@ -16,7 +16,7 @@ class MySqlConnection(object):
     
     def makeConnection(self,query):
         #open connection
-       connection =sql.connect("localhost","root","","beforecart")
+       connection =sql.connect("localhost","root","","beforecart") #localhost-url with port; root -username- ""-password beforecart-database_name
        
        #prepare a cursor object using cusor() method
        cursor = connection.cursor()

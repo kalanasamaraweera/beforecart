@@ -82,6 +82,7 @@
     <Content Include="convertedFriends.txt" />
     <Content Include="Messages.txt" />
     <Content Include="mongoConf.txt" />
+    <Content Include="MySqlConf.txt" />
     <Content Include="NeoConf.txt" />
     <Content Include="friendsNetwork3.txt" />
     <Content Include="Replace.txt" />

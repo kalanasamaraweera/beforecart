@@ -4,6 +4,7 @@ from bson.objectid import ObjectId
 import json
 from pprint import pprint
 from DataAccess import FriendshipManagerFRS
+from DataAccess import SuggestionManagerFRS
 import datetime
 
 from DataAccess import DBConf
@@ -14,7 +15,7 @@ class ChatHistoryFRS(object):
        ChatHistoryFRS =self
   
     #Save chat data set in server database
-    def saveChatHistoryFRS(self,userEmail,friendArr,time,conv):
+    def saveChatHistoryFRS(self,userEmail,friendArr,conv):
         
         # sample chat template
 
@@ -40,13 +41,53 @@ class ChatHistoryFRS(object):
         chatDatabase = db['beforecart_chat_history']
         
         # Insert Sample Chat Data 
-        chatDatabase.insert(CHAT_DATA)
+       #chatDatabase.insert(CHAT_DATA)
 
-        #Update Friendship 
-        time = datetime.datetime.today()
-        fBuild = FriendshipManagerFRS.FriendshipManagerFRS()
-        fBuild.upgradeRelationship(userEmail,friendArr,"triggered",str(time))
-        fBuild.upgradeRelationship(userEmail,friendArr,"duration",str(0))
+        if len(friendArr)>1: # if multiple friends
+
+            for id,friend in friendArr.iteritems():
+
+                #Update properties 
+                time = datetime.datetime.today()
+                try:
+                    fBuild = FriendshipManagerFRS()
+                    fBuild.upgradeRelationship(userEmail,friend,"triggered",str(time))
+                    fBuild.upgradeRelationship(userEmail,friend,"duration",str(0))
+                    fBuild.increaseChatCount(userEmail,friend)
+                    #update friendship score
+                    sugMgr = SuggestionManagerFRS.SuggestionManagerFRS()
+                    score=sugMgr.makeFriendshipScore(userEmail,friend)
+                    score =float(score)/100.0
+                    if score != -1:
+                        print "\n Score %s"%score
+                        fBuild.upgradeRelationship(userEmail,friend,"strength",str(score))
+
+                    
+
+                except Exception,e:
+                    print e.message
+                    continue
+                
+
+
+        else:   #Update relationship properties
+                time = datetime.datetime.today()
+                try:
+                    fBuild = FriendshipManagerFRS()
+                    fBuild.upgradeRelationship(userEmail,friendArr,"triggered",str(time))
+                    fBuild.upgradeRelationship(userEmail,friendArr,"duration",str(0))
+                    fBuild.increaseChatCount(userEmail,friendArr)
+                    sugMgr = SuggestionManagerFRS.SuggestionManagerFRS()
+                    score=sugMgr.makeFriendshipScore(userEmail)
+                    fBuild.upgradeRelationship(userEmail,friendArr,"strength",str(score))
+                    print "/n Score %s"%str(score)
+                    print userEmail+"-"+friendArr
+
+                except Exception,e:
+                    print e.message
+
+
+
         
                   
         #Return chat history of user
