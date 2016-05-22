@@ -19,7 +19,7 @@ class FriendshipManagerFRS(object):
     def __init__ (self):
       FriendshipManagerFRS= self
     
-      #increse positive votes  by one
+      #change positive votes  by one
     def changePosVotes(self,user,friend,operation):
         try:
             rel =self.selectRelationship(user,friend)
@@ -63,15 +63,13 @@ class FriendshipManagerFRS(object):
                     nVotes+=1
                     self.upgradeRelationship(user,friend,"nvotes",nVotes)
                     
-
                 elif operation == '-':
                     if nVotes>=1:
                         nVotes-=1
                         self.upgradeRelationship(user,friend,"nvotes",nVotes)
                     
-
                 else: return -1
-                
+           
 
         except Exception ,e:
             print e.message
@@ -140,8 +138,10 @@ class FriendshipManagerFRS(object):
             return False
 
 
+   
 
 
+        
 
        
     #load the users from csv to server database(500 records)

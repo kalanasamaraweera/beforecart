@@ -189,8 +189,18 @@ def refineChatList():
     cat="cat1"
     f =SuggestionManagerFRS()
     f.refineChatList(user,cat)
-refineChatList()   
 
+def buildFriendsOfFriendNetwork():
+     f =SuggestionManagerFRS()
+     f.buildFriendsOfFriendNetwork()
+
+buildFriendsOfFriendNetwork()
+
+def destructFriendOfFriendNetwork():
+    f=SuggestionManagerFRS()
+    f.destructFriendOfFriendNetwork()
+
+#destructFriendOfFriendNetwork()
 
 #changePVotes()
 #increaseChats()

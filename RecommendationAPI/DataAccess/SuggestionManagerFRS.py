@@ -11,6 +11,7 @@ from DataAccess import UserManagerFRS
 
 import operator
 import json
+import random
 
 class SuggestionManagerFRS(object):
 
@@ -215,13 +216,13 @@ class SuggestionManagerFRS(object):
 
         mixList=self.mixLists(closeFriends,expFriends)
         
-        for i in  mixList:
-           item =str(i)
-           print item +" count "+str(mixList.count(item))
+        #for i in  mixList:
+        #   item =str(i)
+        #   print item +" count "+str(mixList.count(item))
 
         return mixList
 
-
+    #merge two user lists with same length and remove reducdency
     def mixLists(self,closeFriends,expFriends):
 
         finalList=[]
@@ -242,7 +243,86 @@ class SuggestionManagerFRS(object):
                     else:continue
 
         return finalList
-            
+
+    #suggest New Friends
+
+
+      #replace existing relationship with random values   
+    #def replaceRandomValuesInRel(self,fEmail,sEmail):
+
+    #    #generating values
+    #    fMgr = FriendshipManagerFRS()
+    #    dates = fMgr.getRandomDate()
+    #    chats = int(random.uniform(0,200))
+    #    nVotes = int(random.uniform(0,200))
+    #    pVotes = int(random.uniform(0,200)) 
+    #    score= 0
+
+    #    try:
+    #    #update relationship
+    #        fMgr.upgradeRelationship(fEmail,sEmail,"chats",str(chats))
+    #        fMgr.upgradeRelationship(fEmail,sEmail,"nVotes",str(nVotes))
+    #        fMgr.upgradeRelationship(fEmail,sEmail,"pVotes",str(pVotes))
+    #        fMgr.upgradeRelationship(fEmail,sEmail,"started",str(dates[0]))
+    #        fMgr.upgradeRelationship(fEmail,sEmail,"triggered",str(dates[1]))
+    #        fMgr.upgradeRelationship(fEmail,sEmail,"duration",str(dates[2]))
+
+    #    except Exception ,e:
+    #        print e.message
+    #        return False
+        
+    #    finally:
+
+    #        #calculate and save frienship score
+    #        score = self.makeFriendshipScore(fEmail,sEmail)
+    #        print "Strength"+str(score)
+    #        fMgr.upgradeRelationship(fEmail,sEmail,"strength",str(score))
+
+
+         
+      #build friend of friend network
+    #users from uid 1-104 will be linked with  users between uid 200-250
+    #def buildFriendsOfFriendNetwork(self):
+
+    #    email = "kalana331@gmail.com"
+    #    uMgr =UserManagerFRS()
+    #    fMgr =FriendshipManagerFRS() 
+    #    friends = fMgr.selectAllFriends(email)
+
+    #    for friend in friends:
+
+    #        fEmail= str( friend['email'])
+    #        fUid = uMgr.getUserId(fEmail)
+
+    #        if fUid!=0:
+    #            #pick random user
+    #            randId= random.uniform(200,250)
+    #            randId=str(int(randId))
+    #            uEmail =str(uMgr.getUserEmail(randId))
+    #            fMgr.makeNewFriendship(fEmail,uEmail)
+    #            self.replaceRandomValuesInRel(fEmail,uEmail)
+    #            print str(fUid)+"->"+str(randId)+";"+str(fEmail)+"->"+str(uEmail)
+                 
+                
+                
+    
+    #remove freind of friend network
+    # all relationships from uid 1-103  linked with  users between uid 200-250 get removed
+    #def destructFriendOfFriendNetwork(self):
+    #    uMgr = UserManagerFRS()
+    #    #create user ids
+    #    for userId in range(200,251):
+    #        userId =str(userId)
+    #        uEmail = str(uMgr.getUserEmail(userId))
+    #        print uEmail
+    #        try:
+    #            status=False
+    #            status = uMgr.removeAllRels(uEmail)
+    #        except Exception,e:
+    #            print e.message
+    #            print uEmail+" failed"
+    #            continue
+    #        finally:print status
 
                  
 

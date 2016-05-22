@@ -102,6 +102,29 @@ class UserManagerFRS(object):
             return userId
         else: return 0
 
+    def getUserEmail(self,Id):
+
+        query = "MATCH (n) WHERE n.userId = '"+Id+"' RETURN n.email"
+        elements=[] 
+        conf= DBConf.DBConf()
+        elements =conf.getNeo4jConfig()        
+        dbUrl = elements[0]
+        dbUser= elements[1]
+        dbPass=elements[2]
+        graph = GraphDatabase(dbUrl,dbUser,dbPass)
+        results= graph.query(query,returns = (str))
+
+        cnt =0
+        userId =0
+        for res in results:
+            cnt+=1
+            
+            userId = res[0]
+        if cnt == 1:
+            return userId
+        else: return 0
+
+        
     def checkUserExists(self,email):
         userId  =self.getUserId(email)
         if userId != 0:
@@ -167,6 +190,34 @@ class UserManagerFRS(object):
                 if userId!=0: return True
                 else: return False
 
+    #remove all relationships of node
+    def removeAllRels(self,email):
+        userId =0
+        userId = self.getUserId(email)
+
+        try:
+
+           if userId != 0:
+
+                elements = []
+                conf= DBConf.DBConf()
+                elements =conf.getNeo4jConfig()
+                graph=Graph(elements[3])
+
+                batch = graph.cypher.begin()     
+                query = "MATCH(n:User)-[r:FRIEND_OF]-(m:User) WHERE n.userId='"+str(userId)+"' DELETE r"
+                batch.append(query,{"userId":userId})
+                batch.process()
+                batch.commit()
+                
+
+        except  Exception,e:
+            print e.message
+            return False
+
+        finally: 
+                if userId!=0: return True
+                else: return False
 
     #return  list of the expertise levels of 8 product categories from locally
     def getCategoryExp(self,email):
