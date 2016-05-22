@@ -244,7 +244,31 @@ class SuggestionManagerFRS(object):
 
         return finalList
 
-    #suggest New Friends
+    #suggest New Friends for User
+    def suggestNewFriends(self,email):
+        
+        #get favourite product category
+        fMgr =FriendshipManagerFRS()
+        categories =self.sortUserPreferences(email)
+        maxCat = self.getMaxCategory(categories)
+        key =0
+        value=0
+
+        for index in maxCat:
+            key = index
+            value = maxCat[index]
+            break
+        category= "cat"+str(key)
+
+        #select the friends of friends with favouration to the same category(sorted desc) which user node does
+        candidates =fMgr.selectFriendsForFriendship(email,category)
+        
+        #dispatch
+        for user in candidates:
+            print str(user['email'])+"->"+str(user[category])
+
+
+
 
 
       #replace existing relationship with random values   

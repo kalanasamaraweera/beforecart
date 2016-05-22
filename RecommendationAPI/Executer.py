@@ -194,11 +194,17 @@ def buildFriendsOfFriendNetwork():
      f =SuggestionManagerFRS()
      f.buildFriendsOfFriendNetwork()
 
-buildFriendsOfFriendNetwork()
+#buildFriendsOfFriendNetwork()
 
 def destructFriendOfFriendNetwork():
     f=SuggestionManagerFRS()
     f.destructFriendOfFriendNetwork()
+
+def suggestNewFriends():
+    f = SuggestionManagerFRS()
+    f.suggestNewFriends("kalana331@gmail.com")
+
+suggestNewFriends()
 
 #destructFriendOfFriendNetwork()
 

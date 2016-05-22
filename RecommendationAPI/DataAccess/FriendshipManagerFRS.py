@@ -464,7 +464,7 @@ class FriendshipManagerFRS(object):
 
  
  
-        #Returns expertised level for product category of friends
+    #Returns expertised level for product category of friends
     def selectExpertiseOfFriends(self,userEmail,category):
         elements =[]
         conf = DBConf.DBConf()
@@ -484,6 +484,38 @@ class FriendshipManagerFRS(object):
         if len(json_object)!=0:
             return json.dumps(json_object)
         else:return 0
+
+    #Returns friends of freinds of an user node sorted in descending order for given product category
+    def selectFriendsForFriendship(self, email,category):
+        elements =[]
+        conf = DBConf.DBConf()
+        elements =  conf.getNeo4jConfig()
+
+        graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
+        query= "match (u:User{email:'"+email+"'})-[rel1:FRIEND_OF]-(m)-[rel2:FRIEND_OF]-(n:User) where NOT (n)-[:FRIEND_OF]-(u) return distinct id(n) as Id,n,n.userId,n.email,n.firstName,n."+category+"  order by n."+str(category)+" desc"
+        results =  graphDatabase.query(query,returns = (str,client.Node,str,str,str))
+        candidates =[]
+        for r in results:
+            
+            #print str( r[2])+"->"+str(r[4])
+            try:
+                user ={}
+                user['userId']=r[2]
+                user['email'] =r[3]
+                user['fristName']= r[4]
+                user[str(category)]= float( r[5])
+                
+            except Exception,e:
+                print e.message
+                continue
+            finally:
+                #print user
+                candidates.append(user)
+
+        return candidates
+
+
+            
 
     #select relationship
     def selectRelationship(self,user,friend):
