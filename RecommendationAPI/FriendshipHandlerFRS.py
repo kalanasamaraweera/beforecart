@@ -48,8 +48,8 @@ class suggest_new_pals_frs:
             return json.dumps(list)
         else:
             logging.error('suggestNewFriends(email) returned nothing.\n Cannot make suggestions to empty email address ')
-            list = []
-            return list
+            list = [{'ERROR':'Unable to find UserId'}]
+            return json.dumps(list)
 
 #pick friends for chat
 
