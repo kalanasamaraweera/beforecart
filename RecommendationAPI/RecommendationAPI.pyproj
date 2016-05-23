@@ -83,6 +83,7 @@
   <ItemGroup>
     <Content Include="AU-import2.csv" />
     <Content Include="convertedFriends.txt" />
+    <Content Include="log.txt" />
     <Content Include="Messages.txt" />
     <Content Include="mongoConf.txt" />
     <Content Include="MySqlConf.txt" />

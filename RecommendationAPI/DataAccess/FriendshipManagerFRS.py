@@ -502,7 +502,7 @@ class FriendshipManagerFRS(object):
                 user ={}
                 user['userId']=r[2]
                 user['email'] =r[3]
-                user['fristName']= r[4]
+                user['firstName']= r[4]
                 user[str(category)]= float( r[5])
                 
             except Exception,e:

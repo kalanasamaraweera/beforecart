@@ -264,8 +264,10 @@ class SuggestionManagerFRS(object):
         candidates =fMgr.selectFriendsForFriendship(email,category)
         
         #dispatch
-        for user in candidates:
-            print str(user['email'])+"->"+str(user[category])
+        #for user in candidates:
+        #    print str(user['email'])+"->"+str(user[category])
+
+        return candidates
 
 
 

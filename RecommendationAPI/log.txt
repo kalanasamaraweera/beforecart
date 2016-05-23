@@ -1,0 +1,37 @@
+INFO:root: Invoked suggest_new_pals_frs in FriendshipHandlerFRS.py 
+ TIME :2016-05-23 13:44:01.663000
+ Returned:
+
+INFO:root:{'cat3': 0.96155765, 'userId': '46', 'email': 'luz_broccoli@hotmail.com', 'firstName': 'Luz'}
+INFO:root:{'cat3': 0.95769527, 'userId': '22', 'email': 'ndaleo@daleo.net.au', 'firstName': 'Norah'}
+INFO:root:{'cat3': 0.89278951, 'userId': '62', 'email': 'lou.kriner@hotmail.com', 'firstName': 'Lou'}
+INFO:root:{'cat3': 0.864319831, 'userId': '27', 'email': 'laura.bourbonnais@yahoo.com', 'firstName': 'Laura'}
+INFO:root:{'cat3': 0.850193607, 'userId': '14', 'email': 'paulina_maker@maker.net.au', 'firstName': 'Paulina'}
+INFO:root:{'cat3': 0.837760948, 'userId': '59', 'email': 'carlota.gephardt@gephardt.com.au', 'firstName': 'Carlota'}
+INFO:root:{'cat3': 0.833483905, 'userId': '87', 'email': 'edison.sumera@sumera.net.au', 'firstName': 'Edison'}
+INFO:root:{'cat3': 0.817568081, 'userId': '51', 'email': 'kflitcroft@hotmail.com', 'firstName': 'Katlyn'}
+INFO:root:{'cat3': 0.804707271, 'userId': '217', 'email': 'gennie.pastorino@gmail.com', 'firstName': 'Gennie'}
+INFO:root:{'cat3': 0.761922616, 'userId': '9', 'email': 'vince_siena@yahoo.com', 'firstName': 'Vince'}
+INFO:root:{'cat3': 0.738487723, 'userId': '85', 'email': 'brittney@lolley.net.au', 'firstName': 'Brittney'}
+INFO:root:{'cat3': 0.562721206, 'userId': '52', 'email': 'csoros@gmail.com', 'firstName': 'Cassie'}
+INFO:root:{'cat3': 0.558981557, 'userId': '103', 'email': 'tegan_ebershoff@hotmail.com', 'firstName': 'Tegan'}
+INFO:root:{'cat3': 0.523499078, 'userId': '35', 'email': 'shaun.rael@rael.com.au', 'firstName': 'Shaun'}
+INFO:root:{'cat3': 0.500476645, 'userId': '104', 'email': 'thuro@gmail.com', 'firstName': 'Tracie'}
+INFO:root:{'cat3': 0.483369439, 'userId': '214', 'email': 'christiane@gmail.com', 'firstName': 'Christiane'}
+INFO:root:{'cat3': 0.476905081, 'userId': '218', 'email': 'tkenfield@kenfield.com.au', 'firstName': 'Tamra'}
+INFO:root:{'cat3': 0.42746878, 'userId': '235', 'email': 'tamie@hollimon.com.au', 'firstName': 'Tamie'}
+INFO:root:{'cat3': 0.402011035, 'userId': '96', 'email': 'rosamond.amlin@gmail.com', 'firstName': 'Rosamond'}
+INFO:root:{'cat3': 0.391550034, 'userId': '84', 'email': 'reta.qazi@yahoo.com', 'firstName': 'Reta'}
+INFO:root:{'cat3': 0.324416447, 'userId': '236', 'email': 'lettie_hessenthaler@hessenthaler.net.au', 'firstName': 'Lettie'}
+INFO:root:{'cat3': 0.32234, 'userId': '501', 'email': 'kalana331@gmail.com', 'firstName': 'Kalana'}
+INFO:root:{'cat3': 0.286622244, 'userId': '53', 'email': 'rolf_gene@gene.com.au', 'firstName': 'Rolf'}
+INFO:root:{'cat3': 0.268460114, 'userId': '237', 'email': 'chaya_muhlbauer@muhlbauer.net.au', 'firstName': 'Chaya'}
+INFO:root:{'cat3': 0.24380912, 'userId': '36', 'email': 'olobosco@hotmail.com', 'firstName': 'Oren'}
+INFO:root:{'cat3': 0.215171836, 'userId': '7', 'email': 'sklar@hotmail.com', 'firstName': 'Sherill'}
+INFO:root:{'cat3': 0.206825321, 'userId': '99', 'email': 'gerri@yahoo.com', 'firstName': 'Gerri'}
+INFO:root:{'cat3': 0.201718864, 'userId': '20', 'email': 'albert.sonier@gmail.com', 'firstName': 'Albert'}
+INFO:root:{'cat3': 0.183971096, 'userId': '54', 'email': 'darnell_moothart@yahoo.com', 'firstName': 'Darnell'}
+INFO:root:{'cat3': 0.13171188, 'userId': '93', 'email': 'leatha_block@gmail.com', 'firstName': 'Leatha'}
+INFO:root:{'cat3': 0.090720718, 'userId': '75', 'email': 'ehandler@yahoo.com', 'firstName': 'Elenora'}
+INFO:root:{'cat3': 0.087534856, 'userId': '83', 'email': 'moira.qadir@gmail.com', 'firstName': 'Moira'}
+INFO:root:{'cat3': 0.042534903, 'userId': '230', 'email': 'susana.baumgarter@yahoo.com', 'firstName': 'Susana'}

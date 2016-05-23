@@ -104,25 +104,25 @@ class UserManagerFRS(object):
 
     def getUserEmail(self,Id):
 
-        query = "MATCH (n) WHERE n.userId = '"+Id+"' RETURN n.email"
+        Id =str(Id)
         elements=[] 
         conf= DBConf.DBConf()
         elements =conf.getNeo4jConfig()        
         dbUrl = elements[0]
         dbUser= elements[1]
         dbPass=elements[2]
-        graph = GraphDatabase(dbUrl,dbUser,dbPass)
-        results= graph.query(query,returns = (str))
-
-        cnt =0
-        userId =0
-        for res in results:
-            cnt+=1
-            
-            userId = res[0]
-        if cnt == 1:
-            return userId
-        else: return 0
+        try:
+            graph = GraphDatabase(dbUrl,dbUser,dbPass)
+            query = "MATCH (n) WHERE n.userId = '"+Id+"' RETURN n.email"
+            results= graph.query(query,returns = (str))
+            email=''
+            for res in results:
+                email =res[0]
+                break
+        except Exception ,ex:
+            print ex.message
+        finally:
+            return email
 
         
     def checkUserExists(self,email):
