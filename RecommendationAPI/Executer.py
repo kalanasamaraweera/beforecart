@@ -210,7 +210,7 @@ def getFriendAllExpList():
     f = FriendshipManagerFRS()
     f.getFriendAllExpList("kalana331@gmail.com")
 
-getFriendAllExpList()
+#getFriendAllExpList()
 #destructFriendOfFriendNetwork()
 
 #changePVotes()

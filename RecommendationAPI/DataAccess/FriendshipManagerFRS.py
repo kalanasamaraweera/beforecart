@@ -544,7 +544,7 @@ class FriendshipManagerFRS(object):
 
 
 
-
+    
     def getAllFriendRecievedRequests(self,email):
         elements =[]
         conf = DBConf.DBConf()
@@ -554,6 +554,7 @@ class FriendshipManagerFRS(object):
         query = "MATCH (fu:User)<-[rel:REQUESTED]-(su:User) Where  rel.strength=0 AND fu.email ='"+email+"' return fu, type(rel), su,rel.strength"
         results =  graphDatabase.query(query,returns = (client.Node,str,client.Node,str))
         json_object=[]
+
         for r in results:
            
            #print "(%s)-STRENGTH:%s" % (r[2]["email"],r[3])
@@ -561,6 +562,7 @@ class FriendshipManagerFRS(object):
            element['email']=r[2]["email"]
            element['userId']=r[2]["userId"]
            json_object.append(element)
+
         if len(json_object)!=0: return json.dumps(json_object)
         else : return 0
     
@@ -583,12 +585,10 @@ class FriendshipManagerFRS(object):
         if len(json_object)!=0: return json.dumps(json_object)
         else:return 0
 
-    #Upgrade the edge between users
+    #Upgrade the edge properties between  two user nodes
     def upgradeRelationship(self,userEm,friendEm,param,val):
         try:
             email = ''
-
-           
             elements =[]
             conf = DBConf.DBConf()
             elements =  conf.getNeo4jConfig()
@@ -612,10 +612,12 @@ class FriendshipManagerFRS(object):
         #get chat count
         
         results = self.selectRelationship(user,friend)
+
         try:
             chats=0
             if len(results) !=0:
                 chats=int(results[0])
+
         except Exception ,ex:
             print ex.message
             return 0
@@ -632,36 +634,65 @@ class FriendshipManagerFRS(object):
             conf = DBConf.DBConf()
             elements =  conf.getNeo4jConfig()
             graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
+
         except Exception,e:
             print  e.message
             return False
+
         finally:
             
             query = "match (n)-[rel:FRIEND_OF]-(m) where n.email='"+email+"' return m.cat1,m.cat2,m.cat3,m.cat4,m.cat5,m.cat6,m.cat7,m.cat8,rel.strength,m.userId"
+            
             try:
                 friends =[]
                 results= graphDatabase.query(query,returns = (str,str,str,str,str,str,str,str,str,str))
                 for r in results:
+
+                    categories ={} #prepare category expertise dictionary
+                    categories['cat1']=r[0]
+                    categories['cat2']=r[1]
+                    categories['cat3']=r[2]
+                    categories['cat4']=r[3]
+                    categories['cat5']=r[4]
+                    categories['cat6']=r[5]
+                    categories['cat7']=r[6]
+                    categories['cat8']=r[7]
+
+                    mean =self.calculateCumulativeExpScore(categories) #calculate mean  for product expertise
+
                     friend ={}
-                    friend['cat1']=r[0]
-                    friend['cat2']=r[1]
-                    friend['cat3']=r[2]
-                    friend['cat4']=r[3]
-                    friend['cat5']=r[4]
-                    friend['cat6']=r[5]
-                    friend['cat7']=r[6]
-                    friend['cat8']=r[7]
-                    friend['strength']=r[8]
-                    friend['userId']=r[9]
+                    friend['mean'] =mean
+                    friend['strength']=float(r[8])*100
+                    friend['userId']=  r[9]
+                    
                     
                     friends.append(friend)
 
             except Exception,e:
                 print e.message
                 return False
-        print friends    
+
+        #print friends    
         return friends
-        
+    
+    #calculate mean expertise for all product categories
+    def calculateCumulativeExpScore(self,categories):
+        mean= 0.0 
+        if len(categories)==8:
+            
+            amount = 8.0 # product categories
+            
+            cat1 = float(categories['cat1'])
+            cat2 = float(categories['cat2'])                   
+            cat3 = float(categories['cat3'])
+            cat4 = float(categories['cat4'])
+            cat5 = float(categories['cat5'])
+            cat6 = float(categories['cat6'])
+            cat7 = float(categories['cat7'])
+            cat8 = float(categories['cat8'])
+
+            mean = float((cat1+cat2+cat3+cat4+cat5+cat6+cat7+cat8)/amount)*100
+        return mean
 
 #removes non utf-8 chars from string within cell
     def strip(self,string):
