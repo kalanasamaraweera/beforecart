@@ -122,7 +122,7 @@ class UserManagerFRS(object):
                 email =res[0]
                 break
         except Exception ,ex:
-            logging.log(str(ex.message))
+            print str(ex.message)
         finally:
             return email
 

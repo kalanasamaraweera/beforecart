@@ -171,17 +171,8 @@ class SuggestionManagerFRS(object):
         return maxCat
 
 
-     #prepare list of users for chat on product
-    def makeChatSuggestionList(self,user,category):
+    
 
-        freindMgr = FriendshipManagerFRS()
-        userMgr = UserManagerFRS()
-
-        allFriends = freindMgr.selectAllFriends(user)
-
-        for friend in allFriends:
-
-            email = friend['email']
     
             
     #update all the relationship strength of user
@@ -205,22 +196,30 @@ class SuggestionManagerFRS(object):
 
     
     #refine selected list of users for chat
-    def refineChatList(self,user,category):
-
+    def refineChatList(self,user,catId):
+        categoryKey ="cat"+catId
         friendMgr = FriendshipManagerFRS()
         uMgr =UserManagerFRS()
-        expFriends = friendMgr.selectFriendsForChatOnExp(user,category)
+
+        #sorted on expereince about product category
+        expFriends = friendMgr.selectFriendsForChatOnExp(user,categoryKey)
+
+        #sorted on relationship strength
         closeFriends = friendMgr.selectAllFriends(user)
 
-        #print expFriends 
+        #merge the lists
 
         mixList=self.mixLists(closeFriends,expFriends)
-        
-        #for i in  mixList:
-        #   item =str(i)
-        #   print item +" count "+str(mixList.count(item))
 
-        return mixList
+        #perpare final list
+        finalList =[]
+        for item in mixList:
+         friend={'friend':str(item)}
+         finalList.append(friend)
+         
+
+
+        return finalList
 
     #merge two user lists with same length and remove reducdency
     def mixLists(self,closeFriends,expFriends):

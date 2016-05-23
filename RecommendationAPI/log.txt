@@ -1,9 +1,24 @@
 INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): beforecat.sb05.stations.graphenedb.com
-ERROR:root:suggestNewFriends(email) returned nothing.
- Cannot make suggestions empty email address 
-INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (2): beforecat.sb05.stations.graphenedb.com
-ERROR:root:suggestNewFriends(email) returned nothing.
- Cannot make suggestions empty email address 
-INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (3): beforecat.sb05.stations.graphenedb.com
-ERROR:root:suggestNewFriends(email) returned nothing.
- Cannot make suggestions empty email address 
+DEBUG:requests.packages.urllib3.connectionpool:"GET /db/data/ HTTP/1.1" 200 1060
+DEBUG:requests.packages.urllib3.connectionpool:"POST /db/data/transaction/commit HTTP/1.1" 200 91
+DEBUG:requests.packages.urllib3.connectionpool:"GET /db/data/ HTTP/1.1" 200 1060
+DEBUG:requests.packages.urllib3.connectionpool:"POST /db/data/transaction/commit HTTP/1.1" 200 5982
+DEBUG:requests.packages.urllib3.connectionpool:"GET /db/data/ HTTP/1.1" 200 1060
+DEBUG:requests.packages.urllib3.connectionpool:"POST /db/data/transaction/commit HTTP/1.1" 200 5630
+DEBUG:requests.packages.urllib3.connectionpool:"GET /db/data/ HTTP/1.1" 200 1060
+DEBUG:requests.packages.urllib3.connectionpool:"POST /db/data/transaction/commit HTTP/1.1" 200 97
+DEBUG:requests.packages.urllib3.connectionpool:"GET /db/data/ HTTP/1.1" 200 1060
+DEBUG:requests.packages.urllib3.connectionpool:"POST /db/data/transaction/commit HTTP/1.1" 200 1283
+DEBUG:requests.packages.urllib3.connectionpool:"GET /db/data/ HTTP/1.1" 200 1060
+DEBUG:requests.packages.urllib3.connectionpool:"POST /db/data/transaction/commit HTTP/1.1" 200 1094
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): beforecat.sb05.stations.graphenedb.com
+DEBUG:requests.packages.urllib3.connectionpool:"GET /db/data/ HTTP/1.1" 200 1060
+DEBUG:requests.packages.urllib3.connectionpool:"POST /db/data/transaction/commit HTTP/1.1" 200 97
+DEBUG:requests.packages.urllib3.connectionpool:"GET /db/data/ HTTP/1.1" 200 1060
+DEBUG:requests.packages.urllib3.connectionpool:"POST /db/data/transaction/commit HTTP/1.1" 200 1283
+DEBUG:requests.packages.urllib3.connectionpool:"GET /db/data/ HTTP/1.1" 200 1060
+DEBUG:requests.packages.urllib3.connectionpool:"POST /db/data/transaction/commit HTTP/1.1" 200 1094
+INFO:root:suggest_for_chat_frs in FriendHandlerFRS invoked 
+ TIME:2016-05-23 16:35:57.226000
+ Response:
+[{'friend': 'kalana331@gmail.com'}, {'friend': 'ndaleo@daleo.net.au'}, {'friend': 'malcom@leja.com.au'}, {'friend': 'lou.kriner@hotmail.com'}, {'friend': 'olobosco@hotmail.com'}, {'friend': 'laura.bourbonnais@yahoo.com'}, {'friend': 'rolf_gene@gene.com.au'}, {'friend': 'paulina_maker@maker.net.au'}, {'friend': 'brittney@lolley.net.au'}, {'friend': 'kflitcroft@hotmail.com'}, {'friend': 'albert.sonier@gmail.com'}, {'friend': 'tegan_ebershoff@hotmail.com'}, {'friend': 'shaun.rael@rael.com.au'}, {'friend': 'rosamond.amlin@gmail.com'}, {'friend': 'ehandler@yahoo.com'}, {'friend': 'sklar@hotmail.com'}, {'friend': 'darnell_moothart@yahoo.com'}]
