@@ -39,6 +39,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataAccess\RequestHandlerPRS.py" />
+    <Compile Include="Runner.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Service\Sample.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Service\SuggestionHandlerPRS.py" />
     <Compile Include="DataAccessTest\UserManagerFRS_Test.py">
       <SubType>Code</SubType>

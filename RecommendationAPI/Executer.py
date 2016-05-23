@@ -5,10 +5,11 @@ from DataAccess import UserManagerFRS
 from DataAccess import DBConf
 from datetime import timedelta as td
 from datetime import datetime
-
+from Service import Sample
 
 import random
 import json
+
 
 # delete all existing nodes and re-build network in databse server using AU-import2.csv
 def buildUserNodesFRS():
@@ -204,8 +205,12 @@ def suggestNewFriends():
     f = SuggestionManagerFRS()
     f.suggestNewFriends("kalana331@gmail.com")
 
-suggestNewFriends()
+#suggestNewFriends()
+def getFriendAllExpList():
+    f = FriendshipManagerFRS()
+    f.getFriendAllExpList("kalana331@gmail.com")
 
+getFriendAllExpList()
 #destructFriendOfFriendNetwork()
 
 #changePVotes()

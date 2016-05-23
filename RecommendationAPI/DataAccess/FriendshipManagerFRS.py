@@ -610,8 +610,8 @@ class FriendshipManagerFRS(object):
     def increaseChatCount(self,user,friend):
 
         #get chat count
-        fMgr = FriendshipManagerFRS()
-        results = fMgr.selectRelationship(user,friend)
+        
+        results = self.selectRelationship(user,friend)
         try:
             chats=0
             if len(results) !=0:
@@ -622,10 +622,46 @@ class FriendshipManagerFRS(object):
         #save new chat count in neo4j
         finally:
             chats+=1
-            return fMgr.upgradeRelationship(user,friend,"chats",chats)
+            return self.upgradeRelationship(user,friend,"chats",chats)
 
 
+    #return all the category exp values of each friend with  relationship strength
+    def getFriendAllExpList(self,email):
+        try:
+            elements =[]
+            conf = DBConf.DBConf()
+            elements =  conf.getNeo4jConfig()
+            graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
+        except Exception,e:
+            print  e.message
+            return False
+        finally:
+            
+            query = "match (n)-[rel:FRIEND_OF]-(m) where n.email='"+email+"' return m.cat1,m.cat2,m.cat3,m.cat4,m.cat5,m.cat6,m.cat7,m.cat8,rel.strength,m.userId"
+            try:
+                friends =[]
+                results= graphDatabase.query(query,returns = (str,str,str,str,str,str,str,str,str,str))
+                for r in results:
+                    friend ={}
+                    friend['cat1']=r[0]
+                    friend['cat2']=r[1]
+                    friend['cat3']=r[2]
+                    friend['cat4']=r[3]
+                    friend['cat5']=r[4]
+                    friend['cat6']=r[5]
+                    friend['cat7']=r[6]
+                    friend['cat8']=r[7]
+                    friend['strength']=r[8]
+                    friend['userId']=r[9]
+                    
+                    friends.append(friend)
 
+            except Exception,e:
+                print e.message
+                return False
+        print friends    
+        return friends
+        
 
 #removes non utf-8 chars from string within cell
     def strip(self,string):

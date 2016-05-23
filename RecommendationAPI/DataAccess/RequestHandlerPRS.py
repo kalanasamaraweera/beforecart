@@ -5,8 +5,9 @@ import pymongo
 from tornado.options import  options
 from tornado import ioloop, web
 
-from Service import SuggestionHandlerPRS
+
 from Service import UpdateHandlerPRS
+from Service import SuggestionHandlerPRS 
 from tornado.options import define
 
 define("port", default=9915, help="port", type=int)
