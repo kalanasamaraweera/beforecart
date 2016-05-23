@@ -24,24 +24,32 @@ application =web.application(routes,globals())
 #pick friends to make new relationships
 
 class suggest_new_pals_frs:
+
     def GET(self,userId):
+
+        logging.basicConfig(filename='log.txt',level=logging.DEBUG)
         sMgr = SuggestionManagerFRS()
         uMgr =UserManagerFRS()
 
         email = uMgr.getUserEmail(userId)
-        users = sMgr.suggestNewFriends(email)
-        list =[]
-        logging.basicConfig(filename='log.txt',level=logging.DEBUG)
-        logging.info(" Invoked suggest_new_pals_frs in FriendshipHandlerFRS.py \n TIME :"+ str(datetime.datetime.today())+"\n Returned:\n")
-        for user in users:
+        if email != '':
+            users = sMgr.suggestNewFriends(email)
+            list =[]
+
+            logging.info(" Invoked suggest_new_pals_frs in FriendshipHandlerFRS.py \n TIME :"+ str(datetime.datetime.today())+"\n Returned:\n")
+            for user in users:
             
-            logging.info(str(user))
-            item ={}
-            item['firstname']= user['firstName']
-            item['email']= user['email']
-            item['userId'] =user['userId']
-            list.append(item)
-        return json.dumps(list)
+                logging.info(str(user))
+                item ={}
+                item['firstname']= user['firstName']
+                item['email']= user['email']
+                item['userId'] =user['userId']
+                list.append(item)
+            return json.dumps(list)
+        else:
+            logging.error('suggestNewFriends(email) returned nothing.\n Cannot make suggestions to empty email address ')
+            list = []
+            return list
 
 #pick friends for chat
 

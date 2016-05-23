@@ -9,6 +9,7 @@ import csv
 import time
 import datetime
 import json
+import logging
 from DataAccess import DBConf
 
 
@@ -111,16 +112,17 @@ class UserManagerFRS(object):
         dbUrl = elements[0]
         dbUser= elements[1]
         dbPass=elements[2]
+        email=''
         try:
             graph = GraphDatabase(dbUrl,dbUser,dbPass)
             query = "MATCH (n) WHERE n.userId = '"+Id+"' RETURN n.email"
             results= graph.query(query,returns = (str))
-            email=''
+            
             for res in results:
                 email =res[0]
                 break
         except Exception ,ex:
-            print ex.message
+            logging.log(str(ex.message))
         finally:
             return email
 
