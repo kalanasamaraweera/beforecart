@@ -110,7 +110,7 @@ class SuggestionManagerFRS(object):
 
         if score>=5:
         
-            if pv>= nv:
+            if pv> nv:
                 score+=5
             elif pv<nv:
                 score-=5
