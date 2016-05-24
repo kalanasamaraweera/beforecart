@@ -405,7 +405,7 @@ class FriendshipManagerFRS(object):
           
         
 
-    # Returns select  all  friends of user and relationship info
+    # Returns select  all  friends of user and relationship info; sorted desc on relationship strength
     def selectAllFriends(self,email):
         
         elements =[]

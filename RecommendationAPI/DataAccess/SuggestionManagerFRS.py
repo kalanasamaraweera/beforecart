@@ -68,9 +68,9 @@ class SuggestionManagerFRS(object):
         # >250 : 60
         # 0-25 : 10
         #25-50 : 20
-        #50-100 :30
-        #100-150:40
-        #150-250:50
+        #50-150 :30
+        #150-250:40
+        #250-500:50
          
         chats =int(chats)
         pvotes= int(pvotes)
@@ -81,7 +81,7 @@ class SuggestionManagerFRS(object):
                 return 5
             else:return 0
 
-        if 250<chats:   # chats more than 250  full marks
+        if 500<chats:   # chats more than 250  full marks
             if nvotes>pvotes :#chats ?votes-5only
                 return  55
             else:return 60
@@ -95,6 +95,9 @@ class SuggestionManagerFRS(object):
             score= 30
         elif 150<chats and chats<=250:
             score= 40
+        elif 250<chats and chats<=500:
+            score  =50 
+
         score=self.voteHandler(score,pvotes,nvotes)
         return score
 

@@ -7,7 +7,7 @@
     <ProjectGuid>a7e728d6-995b-46a1-9755-65c62c197ab0</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <ProjectTypeGuids>{1b580a1a-fdb3-4b32-83e1-6407eb2722e6};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
-    <StartupFile>FriendshipHandlerFRS.py</StartupFile>
+    <StartupFile>Executer.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -26,29 +26,14 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DataAccessTest\DBConf.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DataAccessTest\FriendshipManagerFRS.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DataAccessTest\FriendshipGauge.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DataAccess\DBConf.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataAccess\RequestHandlerPRS.py" />
-    <Compile Include="FriendshipHandlerFRS.py">
+    <Compile Include="Service.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Service\SuggestionHandlerPRS.py" />
-    <Compile Include="DataAccessTest\UserManagerFRS_Test.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DataAccessTest\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DataAccess\ChatHistoryFRS.py">
       <SubType>Code</SubType>
     </Compile>
@@ -74,11 +59,17 @@
     <Compile Include="Service\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tests\SuggestionManagerTestFRS.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tests\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DataAccessTest\" />
     <Folder Include="DataAccess\" />
     <Folder Include="Service\" />
+    <Folder Include="Tests\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AU-import2.csv" />

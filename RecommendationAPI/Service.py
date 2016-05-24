@@ -13,7 +13,8 @@ import json
 
 routes = (
             '/newpals/(.*)' , 'suggest_new_pals_frs',   #FRS
-            '/chatpals/(.*)/(.*)' , 'suggest_for_chat_frs'   #FRS
+            '/chatpals/(.*)/(.*)' , 'suggest_for_chat_frs',   #FRS
+            '/upgraderels/(.*)','upgrade_rels_frs'
          )
 
 
@@ -78,7 +79,9 @@ class  suggest_for_chat_frs:
             logging.error('Invalid catId .\n The category id must me a value between [1-8]\n')
         list = [{'ERROR':'Could not process request'}]
         return json.dumps(list)
-                  
+ 
+    
+ #Upgrade relationships with all friends                    
 
 'FRS Service calls ends'
 
