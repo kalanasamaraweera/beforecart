@@ -1,32 +1,21 @@
-
+#!flask/bin/python
+from flask import Flask
+import logging
+import datetime
+import json
 from DataAccess import FriendshipManagerFRS
 from DataAccess import SuggestionManagerFRS
 from DataAccess import ChatHistoryFRS
 from DataAccess import UserManagerFRS 
 from DataAccess import DBConf
-import logging
-import datetime
 
-import web
-import xml.etree.ElementTree as ET
-import json
-
-routes = (
-            '/newpals/(.*)' , 'suggest_new_pals_frs',   #FRS
-            '/chatpals/(.*)/(.*)' , 'suggest_for_chat_frs',   #FRS
-            '/upgraderels/(.*)','upgrade_rels_frs'
-         )
+#initiate app
+app = Flask(__name__)
 
 
-application =web.application(routes,globals())
-
-'FRS Service calls implemented  below'
-
-#pick friends to make new relationships
-
-class suggest_new_pals_frs:
-
-    def GET(self,userId):
+#return proposed firend list to build new friendships
+@app.route('/newpals/<int:userId>', methods=['GET'])
+def suggestNewFriends(userId):
 
         logging.basicConfig(filename='log.txt',level=logging.DEBUG) #initaite logging
         sMgr = SuggestionManagerFRS() # refer Data Access
@@ -54,11 +43,9 @@ class suggest_new_pals_frs:
             list = [{'ERROR':'Unable to find UserId in server'}]
             return json.dumps(list)
 
-#pick friends for chat
-class  suggest_for_chat_frs:
-    
-    def GET(self,userId,catId):
-
+#return list of friends to join for chat
+@app.route('/chatpals/<int:userId>/<int:catId>', methods=['GET'])
+def suggestFriendsForChat(userId,catId):
         logging.basicConfig(filename='log.txt',level=logging.DEBUG)
         catId=  int(catId)
 
@@ -81,11 +68,7 @@ class  suggest_for_chat_frs:
             logging.error('Invalid catId .\n The category id must me a value between [1-8]\n')
         list = [{'ERROR':'Could not process request'}]
         return json.dumps(list)
- 
-    
- #Upgrade relationships with all friends                    
 
-'FRS Service calls ends'
 
-if __name__=="__main__":
-    application.run()
+if __name__ == '__main__':
+    app.run(debug=True)
