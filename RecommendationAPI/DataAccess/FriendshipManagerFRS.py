@@ -611,16 +611,17 @@ class FriendshipManagerFRS(object):
 
         #get chat count
         
-        results = self.selectRelationship(user,friend)
+        
 
         try:
             chats=0
+            results = self.selectRelationship(user,friend)
             if len(results) !=0:
                 chats=int(results[0])
 
         except Exception ,ex:
             print ex.message
-            return 0
+            return False
         #save new chat count in neo4j
         finally:
             chats+=1

@@ -150,7 +150,7 @@ class saveNewChatFRS(tornado.web.RequestHandler):
                     # if chat saved successfully
                     if result==True:
                         print ('chat saved successfully')
-                        self.write('200')
+                        self.write_error(400)
                     else:
                         print ('chat did not saved server error')
                         self.write_error(500)

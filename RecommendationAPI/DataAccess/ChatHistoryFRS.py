@@ -43,30 +43,35 @@ class ChatHistoryFRS(object):
         
 
         # Insert Sample Chat Data 
-        chatDatabase.insert(CHAT_DATA)
+        #chatDatabase.insert(CHAT_DATA)
 
-        if len(friendArr)>1: # if multiple friends
+        if len(friendArr)>=1: # if multiple friends
             
             hasException = False
-            
+            scoreStatus =False
             #dispatch request
             for friend in friendArr:
+
                 print friend['user']
                 #Update properties 
                 time = datetime.datetime.today()
                 try:
+                    
                     fBuild = FriendshipManagerFRS()
-                    fBuild.upgradeRelationship(userEmail,str(friend['user']),"triggered",str(time))
-                    fBuild.upgradeRelationship(userEmail,str(friend['user']),"duration",str(0))
-                    fBuild.increaseChatCount(userEmail,str(friend['user']))
+
+                    #update of chat-count,duration, triggerd date
+                    ts=fBuild.upgradeRelationship(userEmail,str(friend['user']),"triggered",str(time))
+                    ds=fBuild.upgradeRelationship(userEmail,str(friend['user']),"duration",str(0))
+                    cnt=fBuild.increaseChatCount(userEmail,str(friend['user']))
 
                     #update friendship score
                     sugMgr = SuggestionManagerFRS.SuggestionManagerFRS()
                     score=sugMgr.makeFriendshipScore(userEmail,friend['user'])
-                    
-                    if score != -1:
+
+                    #if update of chat-count,duration, triggerd date are success
+                    if ts ==True and ds ==True and cnt ==True:
                         print "\n Score %s"%score
-                        fBuild.upgradeRelationship(userEmail,str(friend['user']),"strength",str(score))
+                        scoreStatus=fBuild.upgradeRelationship(userEmail,str(friend['user']),"strength",str(score))
 
                     
 
@@ -75,34 +80,9 @@ class ChatHistoryFRS(object):
                     hasException =True
                     continue
                 
-                finally:
-                    if hasException ==  True:
-                        return False
-                    else: return True
+            if hasException ==False and scoreStatus == True:
+                return True
                 
-
-
-        else:   #Update relationship properties
-                time = datetime.datetime.today()
-
-                try:
-                    fBuild = FriendshipManagerFRS()
-                    fBuild.upgradeRelationship(userEmail,friendArr,"triggered",str(time))
-                    fBuild.upgradeRelationship(userEmail,friendArr,"duration",str(0))
-                    fBuild.increaseChatCount(userEmail,friendArr)
-                    sugMgr = SuggestionManagerFRS.SuggestionManagerFRS()
-                    score=sugMgr.makeFriendshipScore(userEmail)
-                    fBuild.upgradeRelationship(userEmail,friendArr,"strength",str(score))
-                    print "/n Score %s"%str(score)
-                    print userEmail+"-"+friendArr
-
-                except Exception,e:
-                    print e.message
-                    return False
-
-                finally: return True
-
-
 
         
                   
