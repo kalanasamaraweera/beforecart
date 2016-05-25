@@ -1,8 +1,11 @@
 #!flask/bin/python
 from flask import Flask
+from flask import request
+from flask import abort
 import logging
 import datetime
 import json
+
 from DataAccess import FriendshipManagerFRS
 from DataAccess import SuggestionManagerFRS
 from DataAccess import ChatHistoryFRS
@@ -12,7 +15,7 @@ from DataAccess import DBConf
 #initiate app
 app = Flask(__name__)
 
-
+""" methods for Friends Recommendation System FRS """
 #return proposed firend list to build new friendships
 @app.route('/newpals/<int:userId>', methods=['GET'])
 def suggestNewFriends(userId):
@@ -43,6 +46,7 @@ def suggestNewFriends(userId):
             list = [{'ERROR':'Unable to find UserId in server'}]
             return json.dumps(list)
 
+
 #return list of friends to join for chat
 @app.route('/chatpals/<int:userId>/<int:catId>', methods=['GET'])
 def suggestFriendsForChat(userId,catId):
@@ -63,12 +67,27 @@ def suggestFriendsForChat(userId,catId):
 
         if email=='':
             logging.error('getUserEmail(Id) returned nothing.\n Cannot make suggestions to empty email address \n')
+            list = [{'ERROR':'Could not process request'}]
+            return json.dumps(list)
+            #abort(418)
         
         if catId<=0 or catId>=9:
             logging.error('Invalid catId .\n The category id must me a value between [1-8]\n')
-        list = [{'ERROR':'Could not process request'}]
-        return json.dumps(list)
+            #abort(418)
+            list = [{'ERROR':'Could not process request'}]
+            return json.dumps(list)
 
+
+#save chat data 
+@app.route('/todo/api/v1.0/tasks',methods=['POST'])
+def create_task():
+    tasks =[]
+    value = request.json
+    return json.dumps(value)
+
+
+
+"""end of friend recommendation system"""
 
 if __name__ == '__main__':
     app.run(debug=True)

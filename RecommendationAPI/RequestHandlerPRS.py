@@ -46,7 +46,7 @@ def init_db(db):
 
 static_path = options.static_path
 
-app = tornado.web.Application([(r'/api/suggestions', SuggestionHandler, dict(db=db)),(r'/api/updateSuggestions', UpdateHandler, dict(db=db))],
+app = tornado.web.Application([(r'/api/suggestions', SuggestionHandlerPRS, dict(db=db)),(r'/api/updateSuggestions', UpdateHandler, dict(db=db))],
                         static_path=static_path,
                         autoreload=True
 )
