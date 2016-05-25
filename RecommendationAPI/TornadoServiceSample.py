@@ -14,8 +14,9 @@ from tornado import gen
 from tornado.ioloop import IOLoop
 import sqlite3 as sqlite
 import tornado.web
-
-
+import tornado.options
+tornado.options.parse_command_line()
+import logging
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -31,7 +32,11 @@ class MainHandler(tornado.web.RequestHandler):
  
 class UserHandler(tornado.web.RequestHandler) :
     def get(self):
-
+        
+        #logging.basicConfig(filename='notes.txt',level=logging.DEBUG)
+        #logging.info(" Invoked suggest_new_pals_frs in")
+        
+        
         name = self.get_argument('name', 'Kalana')
         self.write('GET-Welcome '+str(name))   
     def post(self):

@@ -61,7 +61,7 @@ def suggestFriendsForChat(userId,catId):
         if email != '' and 0<catId<9:
 
              suggestedList= sMgr.refineChatList(email,str(catId))
-             logging.info('suggest_for_chat_frs in FriendHandlerFRS invoked \n TIME:'+str(datetime.datetime.today())+"\n Response:\n"+str(suggestedList))
+             logging.error('suggest_for_chat_frs in FriendHandlerFRS invoked \n TIME:'+str(datetime.datetime.today())+"\n Response:\n"+str(suggestedList))
              
              return json.dumps(suggestedList)
 
