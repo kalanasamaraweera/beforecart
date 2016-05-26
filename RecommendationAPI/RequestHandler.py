@@ -176,7 +176,7 @@ class CreateUserFRS(tornado.web.RequestHandler):
         #declare user data  dictionary
         data ={}
 
-        #fetch data
+        #dispatch request data into dictionary
         username = self.get_argument('username','')
         data['username'] = str(username)
       
@@ -195,7 +195,7 @@ class CreateUserFRS(tornado.web.RequestHandler):
         email = self.get_argument('email','')
         data['email'] = str(email)
 
-        address = self.get_argument('address','')
+        address = str(self.get_argument('address',''))
         data['address'] = str(address)
        
         state = str(self.get_argument('state',''))
@@ -207,7 +207,7 @@ class CreateUserFRS(tornado.web.RequestHandler):
         #invoke data access
         uMgr =UserManagerFRS()
 
-        #validate data
+        #validate data in dictionary
         isValid = uMgr.validateUserData(data)
 
         #if userdata is valid
@@ -219,7 +219,7 @@ class CreateUserFRS(tornado.web.RequestHandler):
             #saved in success 0< return new user id
             if retVal >0 :
                 self.write(str(retVal))
-                self.set_status(202)
+                self.set_status(201)
 
             # already an  user exists for given email
             elif retVal == -1:  
@@ -250,7 +250,7 @@ class SendFriendRequest(tornado.web.RequestHandler):
          targetUserId = str(self.get_argument('targetUserId','0'))
          
          #if user ids are valid >0
-         if int(actionUserId) != 0 and int(targetUserId) !=0:
+         if int(actionUserId) != 0 and int(targetUserId) !=0 and int(actionUserId) != int(targetUserId):
          
              #get user emails   
              aEmail = str(uMgr.getUserEmail(actionUserId)) #action user email
@@ -280,8 +280,109 @@ class SendFriendRequest(tornado.web.RequestHandler):
          else: #invalid user ids
             self.set_status(404)
             self.write('404')
-          
+       
+#return all sent and pending friend requests by user
+class AllPendingRequests(tornado.web.RequestHandler):
 
+    def get(self):
+
+        #filter user id from request
+        userId = str(self.get_argument('userId','0'))
+
+        #check userId is in request
+        if int(userId)>0:
+            
+            #create UserManager object
+            uMgr = UserManagerFRS()
+            fMgr = FriendshipManagerFRS()
+
+            #get email of user
+            email = uMgr.getUserEmail(userId)
+            if email != '':
+                #get all pending request
+                response = str(fMgr.getAllPendingFriendRequests(email))
+                self.write(response)
+            else:
+                #email not found
+                self.write(404)
+                self.write('404')
+
+        else:
+            #bad request
+            self.set_status(400)
+            self.write('400') 
+
+#return all recieved requests
+class AllRecievedRequests(tornado.web.RequestHandler):
+    
+        def get(self):
+
+            #get user id from request
+            userId = str(self.get_argument('userId','0'))
+            
+            #check user id is valid >0
+            if int(userId) > 0:
+
+                #invoke Data Access
+                uMgr =UserManagerFRS()
+                fMgr =FriendshipManagerFRS()
+
+                #get email 
+                email = uMgr.getUserEmail(userId)
+                
+                # if validate email not empty
+                if email != '':
+                        #get request list
+                    requestSet =str( fMgr.getAllFriendRecievedRequests(email))
+                    self.write(requestSet)
+
+                else:
+                    #bad request
+                    self.set_status(400) 
+                    self.write('400')
+
+            #user id invalid
+            else:
+                #bad request
+                self.set_status(400)
+                self.write('400') 
+
+#return all friends of user 
+class AllFriendsOfUser(tornado.web.RequestHandler):
+    
+    def get(self):
+
+            #get user id from request
+            userId = str(self.get_argument('userId','0'))
+            
+            #check user id is valid >0
+            if int(userId) > 0:
+
+                #invoke Data Access
+                uMgr =UserManagerFRS()
+                fMgr =FriendshipManagerFRS()
+
+                #get email 
+                email = uMgr.getUserEmail(userId)
+                
+                # if validate email not empty
+                if email != '':
+                    
+                    #get request list
+                    requestSet = str(json.dumps(fMgr.selectAllFriends(email)))
+                    self.write(requestSet)
+
+
+                else:
+                    #bad request
+                    self.set_status(400) 
+                    self.write('400')
+
+            #user id invalid
+            else:
+                #bad request
+                self.set_status(400)
+                self.write('400') 
 
 
 class BeforeCartAPI(tornado.web.Application):
@@ -293,7 +394,10 @@ class BeforeCartAPI(tornado.web.Application):
                 (r"/beforecart/frs/newfriends/?",SuggestNewFriendsFRS),
                 (r"/beforecart/frs/savechat/?",saveNewChatFRS),
                 (r"/beforecart/frs/createuser/?",CreateUserFRS),
-                (r"/beforecart/frs/friendrequest/?",SendFriendRequest)
+                (r"/beforecart/frs/sendrequest/?",SendFriendRequest),
+                (r"/beforecart/frs/sentrequests/?",AllPendingRequests),
+                (r"/beforecart/frs/recievedrequests/?",AllRecievedRequests),
+                (r"/beforecart/frs/allfriends/?",AllFriendsOfUser)
             ]
         tornado.web.Application.__init__(self,handlers)
 

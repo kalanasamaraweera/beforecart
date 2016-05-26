@@ -567,9 +567,6 @@ class FriendshipManagerFRS(object):
             return  elements
         finally:return list
                        
-
-
-
     
     def getAllFriendRecievedRequests(self,email):
         elements =[]
@@ -589,10 +586,10 @@ class FriendshipManagerFRS(object):
            element['userId']=r[2]["userId"]
            json_object.append(element)
 
-        if len(json_object)!=0: return json.dumps(json_object)
-        else : return 0
+        if len(json_object)==0: return 0
+        else : return json.dumps(json_object)
     
-        # Return list of Pending requests 
+        # Return list of sent Pending requests 
     def getAllPendingFriendRequests(self,email):
         elements =[]
         conf = DBConf.DBConf()
