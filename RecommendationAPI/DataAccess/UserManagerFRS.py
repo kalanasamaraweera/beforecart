@@ -25,19 +25,20 @@ class UserManagerFRS(object):
     def createNewUserNode(self,userData):
       
        sts = self.checkUserExists(userData['email'])
+       Id=0
        if sts == False:
            try: #user details
                username=userData['username']
                password =userData['password']
                email =userData['email']
-               firstName =userData['firstname']
-               lastName =userData['lastname']
+               firstName =userData['firstName']
+               lastName =userData['lastName']
                phone = userData['phone']
                address = userData['address']
                postal =userData['postal']
                state=userData['state']
 
-               Id=self.getNewUserId()
+               Id=int(self.getNewUserId())
        
        
                #Graph database config
@@ -51,13 +52,13 @@ class UserManagerFRS(object):
 
                db =GraphDatabase(dbUrl,dbUser,dbPass)
                user = db.labels.create("User")
-               prop = db.nodes.create(userId=Id,username=username,password=password,email=email,firstName=firstName,lastName=lastName,phone=phone,state=state,address=address,postal=postal,cat1=0,cat2=0,cat3=0,cat4=0,cat5=0,cat6=0,cat7=0,cat8=0)
+               prop = db.nodes.create(userId=str(Id),username=username,password=password,email=email,firstName=firstName,lastName=lastName,phone=phone,state=state,address=address,postal=postal,cat1=0,cat2=0,cat3=0,cat4=0,cat5=0,cat6=0,cat7=0,cat8=0)
                user.add(prop)
                db.flush(True)
 
-           except Exception:return False
-           finally:return True
-       else : return False
+           except Exception:return 0
+           finally:return Id
+       else : return -1
     
          
 

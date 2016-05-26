@@ -59,7 +59,8 @@ class SuggestNewFriendsFRS(tornado.web.RequestHandler):
                 item['email']= user['email']
                 item['userId'] =user['userId']
                 list.append(item) 
-            #write results            
+            #write results
+            print list            
             self.write(json.dumps(list))
         else:
             print ("Invalid userID or couldn't refine email;\n userId:"+str(userId)+" email="+str(email))
@@ -88,18 +89,20 @@ class SuggestFriendsForChatFRS(tornado.web.RequestHandler):
               #get suggestion list
               suggestedList= sMgr.refineChatList(email,str(catId))
               print ("response: 200- Results:\n"+str(suggestedList))
+              self.set_status(200)
               self.write(json.dumps(suggestedList))
               return
 
             #invalid email
             else:
                print("Invalid Email ;\n userId:"+str(userId))
-               self.set_status(400)
-               return   self.write_error(400)                    
+               self.set_status(404)
+               self.write_error(404)                    
             
         else:
             print ("Invalid userID or catId ;\n userId:"+str(userId))
-            self.set_status(400)
+            self.set_status(406)
+            self.write_error(406)
 
 
 #save a concluded chat data in db
@@ -129,7 +132,7 @@ class saveNewChatFRS(tornado.web.RequestHandler):
 
         except Exception ,e:
             print e.message
-            self.write_error(500)
+            self.write_error(417)
         finally:
             #if data is not empty
             if userId !='' and friends !='' and chatData != '':
@@ -150,21 +153,129 @@ class saveNewChatFRS(tornado.web.RequestHandler):
                     # if chat saved successfully
                     if result==True:
                         print ('chat saved successfully')
-                        self.write_error(400)
+                        self.write('1')
                     else:
-                        print ('chat did not saved server error')
-                        self.write_error(500)
+                        print ('saving chat returned error.Chat saved with errors ')
+                        self.write(417)
                 else:
-                    self.write_error(500)
+                    print 'Could not fnd matching email address .Chat did not saved in server '
+                    self.write_error(404)
             else:
-                print 'invalid data'
-                self.write_error(500)
+                print 'invalid data given Id'+str(userId)+","+str(datetime.datetime.today())
+                self.write_error(203)
     
     #get method
     def get(self):
         print ('get method is not supported')
-        self.write_error(500)
+        self.write_error(501)
 
+class CreateUserFRS(tornado.web.RequestHandler):
+    #create new user
+    def post(self):
+        
+        #retreive data
+        data ={}
+        #validate data
+        username = self.get_argument('username','')
+        if username != '':
+            data['username'] = str(username)
+        else:
+            self.set_status(406)           
+            self.write("username is empty")
+            return 
+
+        password = self.get_argument('password','')
+        if password !='':
+            data['password'] = str(password)
+        else:
+            self.set_status(406)           
+            self.write('password is  empty')
+            return 
+
+        
+        firstName = self.get_argument('firstName','')
+        if firstName != '':
+            data['firstName'] = str(firstName)
+
+        else:
+            self.set_status(406)             
+            self.write(' first name is empty')
+            return 
+
+
+        lastName = self.get_argument('lastName','')
+        if lastName !='':
+            data['lastName'] = str(lastName)
+        else:
+            self.set_status(406)  
+            self.write('empty last name')
+            return 
+        
+
+        phone = str(self.get_argument('phone',''))
+        
+        if len(phone)== 10:
+            data['phone'] = str(phone)
+        else:
+            self.set_status(406)  
+            self.write('invalid phone number' )
+            return 
+         
+                                        
+        email = self.get_argument('email','')
+        if email != '':
+            data['email'] = str(email)
+        else:
+            self.set_status(406)  
+            self.write('empty email')
+            return 
+
+        
+        address = self.get_argument('address','')
+        if address != '':
+            data['address'] = str(address)
+        else:
+            self.set_status(406)  
+            self.write('empty address')
+            return 
+
+        state = str(self.get_argument('state',''))
+        if state != '':
+            data['state'] = state
+        else:
+            self.set_status(406)  
+            self.write('empty state')
+            return 
+
+        postal = str(self.get_argument('postal',''))
+        if len(postal) == 5:
+            data['postal'] = postal
+
+        else:
+            self.set_status(406)  
+            self.write('invalid postal code')
+            return 
+        
+                    
+        #invoke data access
+        uMgr =UserManagerFRS()
+        
+        #create new user node
+        retVal = uMgr.createNewUserNode(data)
+
+        #saved in success 0< else =0
+        if retVal >0 :
+            self.write(str(retVal))
+            self.set_status(202)
+        elif retVal == -1:
+            self.set_status(409)
+            self.write('-1')
+        elif retVal == 0:
+            self.set_status(417)
+            self.write('417')
+           
+
+        
 
 
 class BeforeCartAPI(tornado.web.Application):
@@ -174,7 +285,8 @@ class BeforeCartAPI(tornado.web.Application):
                 (r"/?",SuggestNewFriendsFRS),
                 (r"/beforecart/frs/chatlist/?",SuggestFriendsForChatFRS),
                 (r"/beforecart/frs/newfriends/?",SuggestNewFriendsFRS),
-                (r"/beforecart/frs/savechat/?",saveNewChatFRS)
+                (r"/beforecart/frs/savechat/?",saveNewChatFRS),
+                (r"/beforecart/frs/createuser/?",CreateUserFRS)
             ]
         tornado.web.Application.__init__(self,handlers)
 
