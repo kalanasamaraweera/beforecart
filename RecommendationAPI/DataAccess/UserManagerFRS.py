@@ -266,7 +266,62 @@ class UserManagerFRS(object):
             print e.message
             return []
 
-                       
+    def validateUserData(self,data):
+    
+        username = data['username']
+        if username == '':
+            print  'empty username'
+            return False
+            
+
+        password =  data['password']
+        if password =='':
+            print  'empty password'
+            return False
+        
+        
+        firstName = data['firstName']
+        if firstName == '':
+            print  'empty first name'
+            return False
+
+
+        lastName = data['lastName']
+        if lastName =='':
+            print ' empty last name'
+            return False
+
+   
+        phone = str(data['phone'])
+        if len(phone)!= 10:
+            print ' invalid phone ;digits != 10'
+            return False
+
+                                 
+        email = data['email']
+        if email == '':
+            print 'invalid email'
+            return False
+
+    
+        address = data['address']
+        if address == '':
+             print 'empty address'
+             return False
+       
+
+        state = data['state']
+        if state == '':
+            print 'empty state'
+            return False
+       
+
+        postal = str(data['postal'])
+        if len(postal) != 5:
+            print 'empty postal'
+            return False
+
+        return True  
        
 
        

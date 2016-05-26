@@ -161,7 +161,7 @@ class saveNewChatFRS(tornado.web.RequestHandler):
                     print 'Could not fnd matching email address .Chat did not saved in server '
                     self.write_error(404)
             else:
-                print 'invalid data given Id'+str(userId)+","+str(datetime.datetime.today())
+                print 'invalid data given for userId'+str(userId)+",on "+str(datetime.datetime.today())
                 self.write_error(203)
     
     #get method
@@ -173,106 +173,73 @@ class CreateUserFRS(tornado.web.RequestHandler):
     #create new user
     def post(self):
         
-        #retreive data
+        #declare user data  dictionary
         data ={}
-        #validate data
+
+        #fetch data
         username = self.get_argument('username','')
-        if username != '':
-            data['username'] = str(username)
-        else:
-            self.set_status(406)           
-            self.write("username is empty")
-            return 
-
+        data['username'] = str(username)
+      
         password = self.get_argument('password','')
-        if password !='':
-            data['password'] = str(password)
-        else:
-            self.set_status(406)           
-            self.write('password is  empty')
-            return 
-
+        data['password'] = str(password)
         
         firstName = self.get_argument('firstName','')
-        if firstName != '':
-            data['firstName'] = str(firstName)
-
-        else:
-            self.set_status(406)             
-            self.write(' first name is empty')
-            return 
-
+        data['firstName'] = str(firstName)
 
         lastName = self.get_argument('lastName','')
-        if lastName !='':
-            data['lastName'] = str(lastName)
-        else:
-            self.set_status(406)  
-            self.write('empty last name')
-            return 
-        
-
+        data['lastName'] = str(lastName)
+      
         phone = str(self.get_argument('phone',''))
-        
-        if len(phone)== 10:
-            data['phone'] = str(phone)
-        else:
-            self.set_status(406)  
-            self.write('invalid phone number' )
-            return 
-         
-                                        
+        data['phone'] = str(phone)
+                                       
         email = self.get_argument('email','')
-        if email != '':
-            data['email'] = str(email)
-        else:
-            self.set_status(406)  
-            self.write('empty email')
-            return 
+        data['email'] = str(email)
 
-        
         address = self.get_argument('address','')
-        if address != '':
-            data['address'] = str(address)
-        else:
-            self.set_status(406)  
-            self.write('empty address')
-            return 
-
+        data['address'] = str(address)
+       
         state = str(self.get_argument('state',''))
-        if state != '':
-            data['state'] = state
-        else:
-            self.set_status(406)  
-            self.write('empty state')
-            return 
-
+        data['state'] = state
+      
         postal = str(self.get_argument('postal',''))
-        if len(postal) == 5:
-            data['postal'] = postal
+        data['postal'] = postal
 
-        else:
-            self.set_status(406)  
-            self.write('invalid postal code')
-            return 
-        
-                    
         #invoke data access
         uMgr =UserManagerFRS()
-        
-        #create new user node
-        retVal = uMgr.createNewUserNode(data)
 
-        #saved in success 0< else =0
-        if retVal >0 :
-            self.write(str(retVal))
-            self.set_status(202)
-        elif retVal == -1:
-            self.set_status(409)
-            self.write('-1')
-        elif retVal == 0:
-            self.set_status(417)
-            self.write('417')
+        #validate data
+        isValid = uMgr.validateUserData(data)
+
+        #if userdata is valid
+        if isValid == True:
+            
+            #create new user node
+            retVal = uMgr.createNewUserNode(data)
+
+            #saved in success 0< return new user id
+            if retVal >0 :
+                self.write(str(retVal))
+                self.set_status(202)
+
+            # already an  user exists for given email
+            elif retVal == -1:  
+                self.set_status(409)
+                self.write('-1')
+
+            #exception in data access
+            elif retVal == 0:
+                self.set_status(417)
+                self.write('0')
+                
+        else: #validation failed
+            self.write('0')
+                   
+      
+        
+                    
+
+        
+
            
 
         
