@@ -138,7 +138,26 @@ class FriendshipManagerFRS(object):
             return False
 
 
-   
+    #delete all relationships of node i.e: MUST execute before removing node
+    def removeAllRelationships(self,email):
+        try:
+            
+            conf = DBConf.DBConf()
+            element=conf.getNeoGraphConfig()
+
+            graph = Graph(element)       
+            batch = graph.cypher.begin()
+            query = """ match(n)-[rel]-(m) WHERE n.email='"""+email+"""' DELETE rel"""
+            batch.append(query,{"em1":email1,"em2":email2})
+            batch.process()
+            batch.commit()
+                
+            
+        except Exception:
+            return False
+        finally:
+            if isFriend ==1 :return True
+            return False
 
 
         
@@ -272,28 +291,35 @@ class FriendshipManagerFRS(object):
     #Send a friend request to  a user
     #Create new [:REQUESTED] type connection
     def sendFriendRequestFRS(self,email1,email2):
+
         friendshipExists=self.checkExistingFriendshipFRS(email1,email2)
         alredyRequested = self.checkExistingRequestFRS(email1,email2)
-        try:
-            if friendshipExists == 0 and alredyRequested == 0 :
-                
-                #authenticate("localhost:7474","neo4j","neo4j")
 
-                conf = DBConf.DBConf()
-                element=conf.getNeoGraphConfig()
+        if friendshipExists == 0 and alredyRequested == 0 :
+            try:
+            
+                    conf = DBConf.DBConf()
+                    element=conf.getNeoGraphConfig()
+                    graph = Graph(element)
+                    batch = graph.cypher.begin()     
+                    query = """MATCH (u1:User {email:'"""+email1+"""'}), (u2:User{email:'"""+email2+"""'}) CREATE (u1)-[:REQUESTED{strength:0}]->(u2)"""
+                    batch.append(query,{"email1":email1,"email2":email2})
+                    batch.process()
+                    batch.commit()
+            except Exception:
+                return False
+            finally:
+                if friendshipExists == 0 and alredyRequested == 0 :
+                    return True
+                else : return False
+        else: 
+            if friendshipExists >0:     print 'exsisting friendship between'+str(email1)+","+str(email2)+ "attempted to rebuild,"+str(datetime.datetime.today)
+            elif friendshipExists== -1: print 'error in checking friendship ,'+str(datetime.datetime.today)
 
-                graph = Graph(element)
-                batch = graph.cypher.begin()     
-                query = """MATCH (u1:User {email:'"""+email1+"""'}), (u2:User{email:'"""+email2+"""'}) CREATE (u1)-[:REQUESTED{strength:0}]->(u2)"""
-                batch.append(query,{"email1":email1,"email2":email2})
-                batch.process()
-                batch.commit()
-        except Exception:
+            if alredyRequested !=0: print 'already requested '+str(email1)+","+str(email2)+ ";time"+str(datetime.datetime.today)
+
+
             return False
-        finally:
-            if friendshipExists == 0 and alredyRequested == 0 :
-                return True
-            else : return False
         
 
     #Cancel a friend request

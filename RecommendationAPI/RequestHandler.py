@@ -158,7 +158,7 @@ class saveNewChatFRS(tornado.web.RequestHandler):
                         print ('saving chat returned error.Chat saved with errors ')
                         self.write(417)
                 else:
-                    print 'Could not fnd matching email address .Chat did not saved in server '
+                    print 'Could not find matching email address .Chat did not saved in server userId'+str(userId)+" on,"+str(datetime.datetime.today())
                     self.write_error(404)
             else:
                 print 'invalid data given for userId'+str(userId)+",on "+str(datetime.datetime.today())
@@ -236,13 +236,52 @@ class CreateUserFRS(tornado.web.RequestHandler):
                    
       
         
-                    
+class SendFriendRequest(tornado.web.RequestHandler):
 
-        
+    # send friendship request to an user
+     def get(self):
+             
+         uMgr = UserManagerFRS()
+         fMgr = FriendshipManagerFRS()
+         isMade =False #relationship status 
 
-           
+         #filter  user ids from client request
+         actionUserId = str(self.get_argument('actionUserId','0'))
+         targetUserId = str(self.get_argument('targetUserId','0'))
+         
+         #if user ids are valid >0
+         if int(actionUserId) != 0 and int(targetUserId) !=0:
+         
+             #get user emails   
+             aEmail = str(uMgr.getUserEmail(actionUserId)) #action user email
+             tEmail = str(uMgr.getUserEmail(targetUserId) )#targeted user email
 
-        
+             #if emails are not empty 
+             if aEmail != '' and tEmail != '':
+                 
+                 # make friendship request
+                 isMade = fMgr.sendFriendRequestFRS(aEmail,tEmail)
+
+                 #if friend request made
+                 if isMade==True:
+                     #accepted
+                    self.set_status(202) 
+                    self.write('200')
+
+                 else: 
+                     #exception occured   
+                    self.set_status(417) 
+                    self.write('417')   
+                              
+             else:#either one email is/are empty
+                self.set_status(404) 
+                self.write('404')            
+
+         else: #invalid user ids
+            self.set_status(404)
+            self.write('404')
+          
+
 
 
 class BeforeCartAPI(tornado.web.Application):
@@ -253,7 +292,8 @@ class BeforeCartAPI(tornado.web.Application):
                 (r"/beforecart/frs/chatlist/?",SuggestFriendsForChatFRS),
                 (r"/beforecart/frs/newfriends/?",SuggestNewFriendsFRS),
                 (r"/beforecart/frs/savechat/?",saveNewChatFRS),
-                (r"/beforecart/frs/createuser/?",CreateUserFRS)
+                (r"/beforecart/frs/createuser/?",CreateUserFRS),
+                (r"/beforecart/frs/friendrequest/?",SendFriendRequest)
             ]
         tornado.web.Application.__init__(self,handlers)
 
