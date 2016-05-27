@@ -351,7 +351,7 @@ class FriendshipManagerFRS(object):
             else :return False
     
    
-    
+      
           
     
     #Remove existing  [:REQUESTED] type connection and create [:FRIEND_OF] connection ;Build friendship

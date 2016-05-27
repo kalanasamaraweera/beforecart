@@ -65,7 +65,7 @@ class SuggestNewFriendsFRS(tornado.web.RequestHandler):
         else:
             print ("Invalid userID or couldn't refine email;\n userId:"+str(userId)+" email="+str(email))
             self.set_status(400)
-            self.write_error(400) 
+            self.write('400') 
 
 #suggest freinds for chat
 class SuggestFriendsForChatFRS(tornado.web.RequestHandler):
@@ -97,12 +97,12 @@ class SuggestFriendsForChatFRS(tornado.web.RequestHandler):
             else:
                print("Invalid Email ;\n userId:"+str(userId))
                self.set_status(404)
-               self.write_error(404)                    
+               self.write('404')                    
             
         else:
             print ("Invalid userID or catId ;\n userId:"+str(userId))
             self.set_status(406)
-            self.write_error(406)
+            self.write('406')
 
 
 #save a concluded chat data in db
@@ -156,10 +156,10 @@ class saveNewChatFRS(tornado.web.RequestHandler):
                         self.write('1')
                     else:
                         print ('saving chat returned error.Chat saved with errors ')
-                        self.write(417)
+                        self.write('417')
                 else:
                     print 'Could not find matching email address .Chat did not saved in server userId'+str(userId)+" on,"+str(datetime.datetime.today())
-                    self.write_error(404)
+                    self.write('404')
             else:
                 print 'invalid data given for userId'+str(userId)+",on "+str(datetime.datetime.today())
                 self.write_error(203)
@@ -305,12 +305,12 @@ class AllPendingRequests(tornado.web.RequestHandler):
             else:
                 #email not found
                 self.write(404)
-                self.write('404')
+                self.write('')
 
         else:
             #bad request
             self.set_status(400)
-            self.write('400') 
+            self.write('') 
 
 #return all recieved requests
 class AllRecievedRequests(tornado.web.RequestHandler):
@@ -339,13 +339,13 @@ class AllRecievedRequests(tornado.web.RequestHandler):
                 else:
                     #bad request
                     self.set_status(400) 
-                    self.write('400')
+                    self.write('')
 
             #user id invalid
             else:
                 #bad request
                 self.set_status(400)
-                self.write('400')
+                self.write('')
                  
 
 #accept a recieved  friend request
@@ -475,13 +475,43 @@ class AllFriendsOfUser(tornado.web.RequestHandler):
                 else:
                     #bad request
                     self.set_status(400) 
-                    self.write('400')
+                    self.write('')
 
             #user id invalid
             else:
                 #bad request
                 self.set_status(400)
-                self.write('400') 
+                self.write('') 
+
+
+#Search Friends/Users
+class FindUserRequest(tornado.web.RequestHandler):
+    
+    def get(self):
+    
+        #filter user id
+        key = str(self.get_argument('key',''))
+        userId =str(self.get_argument('userId','0'))
+        
+        #if key id  is not empty
+        if key != '' and int(userId) >0:
+            
+            #invoke data access
+            uMgr = UserManagerFRS()
+            results = uMgr.searchUser(str(key),userId)
+
+            if results !='0':
+            #convert results to json
+                 results =json.dumps(results)
+                 self.write(results)
+            else:
+                self.write('')
+
+            
+
+        else:
+           self.set_status(417)
+           self.write('')
 
 
 
@@ -500,8 +530,8 @@ class BeforeCartAPI(tornado.web.Application):
                 (r"/beforecart/frs/recievedrequests/?",AllRecievedRequests),
                 (r"/beforecart/frs/allfriends/?",AllFriendsOfUser),
                 (r"/beforecart/frs/acceptrequest/?",AcceptFriendRequest),
-                (r"/beforecart/frs/rejectrequest/?",RejectFriendRequest)
-                
+                (r"/beforecart/frs/rejectrequest/?",RejectFriendRequest),
+                (r"/beforecart/frs/finduser/?",FindUserRequest)                
             ]
         tornado.web.Application.__init__(self,handlers)
 

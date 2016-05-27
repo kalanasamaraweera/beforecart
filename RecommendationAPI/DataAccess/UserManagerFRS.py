@@ -243,6 +243,35 @@ class UserManagerFRS(object):
         except Exception ,e:
             print e.message
             return []
+
+    #Return a set of matching users
+    def searchUser(self,key,userId):
+        try:
+            
+            conf = DBConf.DBConf()
+            elements =  conf.getNeo4jConfig()
+            graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
+
+            query = "MATCH (n) Where  n.email=~'"+key+".*' or n.firstName=~'"+key+".*' or n.lastName=~'"+key+".*'  return  n.userId,n.firstName,n.email"
+            results=  graphDatabase.query(query,returns = (str,str,str))
+            userDict =[]
+            for r in results:
+                elements ={}
+                if userId != r[0]:
+                    elements['userId']= r[0]
+                    elements['firstName']=r[1]
+                    elements['email'] =r[2]
+                    userDict.append(elements)
+
+                         
+            
+                
+        except Exception ,e:
+            print e.message
+            return "{'userId':'0'}"
+        finally:
+            return userDict
+
     
     def getUserNode(self,email):
 
@@ -259,12 +288,15 @@ class UserManagerFRS(object):
                 elements['userId']= r[0]
                 elements['firstName']=r[1]
                 elements['email'] =r[2]
-                return elements               
-            
+                if elements['email'] == email:
+                    break               
+                else:continue
                 
         except Exception ,e:
             print e.message
-            return []
+            return '0'
+        finally:return elements
+
 
     def validateUserData(self,data):
     
