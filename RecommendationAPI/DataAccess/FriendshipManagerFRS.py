@@ -307,11 +307,15 @@ class FriendshipManagerFRS(object):
                     batch.process()
                     batch.commit()
             except Exception:
+                print 'couldn\'t send friend request'+str(email1)+":"+str(email2)+""
                 return False
             finally:
                 if friendshipExists == 0 and alredyRequested == 0 :
+                    print " friend request created"+str(email1)+"-"+str(email2)
                     return True
-                else : return False
+                else : 
+                    return False
+                    print 'couldn\'t send friend request'+str(email1)+":"+str(email2)+""                        
         else: 
             if friendshipExists >0:     print 'exsisting friendship between'+str(email1)+","+str(email2)+ "attempted to rebuild,"+str(datetime.datetime.today)
             elif friendshipExists== -1: print 'error in checking friendship ,'+str(datetime.datetime.today)
@@ -333,12 +337,13 @@ class FriendshipManagerFRS(object):
 
                 graph = Graph(element)
                 batch = graph.cypher.begin()
-                query = """START n=node(*) MATCH n-[rel:REQUESTED]->r WHERE n.email='"""+sender+"""' AND r.email='"""+reciver+"""' DELETE rel"""          
+                query = """START n=node(*) MATCH n-[rel:REQUESTED]-r WHERE n.email='"""+sender+"""' AND r.email='"""+reciver+"""' DELETE rel"""          
                 batch.append(query,{"sender":sender,"reciver":reciver})
                 batch.process()
                 batch.commit()
                 return True
-        except Exception:
+        except Exception,e:
+            print e.message
             return False
         finally:
             if alredyRequested ==1:
@@ -395,9 +400,9 @@ class FriendshipManagerFRS(object):
             query = "MATCH (fu:User)-[rel:FRIEND_OF]-(su:User) Where  su.email='"+friendEmail+"' AND fu.email ='"+userEmail+"' return fu,su"
             results = graphDatabase.query(query,returns = (client.Node,client.Node))
             for r in results:
-                if r[1]["email"] != "":
+                if r[1]["email"] == friendEmail:
                    response =1
-                   return response
+                   
             
             
         except Exception:
@@ -408,26 +413,33 @@ class FriendshipManagerFRS(object):
 
     #Returns 1 [:FRIEND_OF] conn exists; 0 if not exists ; -1 for exception
     def checkExistingRequestFRS(self,senderEmail,reciverEmail):
-        try:
+        
             elements =[]
             conf = DBConf.DBConf()
             elements =  conf.getNeo4jConfig()
 
             graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
             response = 0
-            query = "MATCH (fu:User)-[rel:REQUESTED]->(su:User) Where  su.email='"+reciverEmail+"' AND fu.email ='"+senderEmail+"' return fu,su"
-            results = graphDatabase.query(query,returns = (client.Node,client.Node))
-            for r in results:
-                if r[1]["email"] != "":
-                   response =1
-                   return response
+            query = "MATCH (fu:User)-[rel:REQUESTED]->(su:User) Where  su.email='"+reciverEmail+"' AND fu.email ='"+senderEmail+"' return fu.email as fu,su.email as su"
+            try:
+                results = graphDatabase.query(query,returns = (str,str))
+                for r in results:
+                    if r[0] == senderEmail and r[1]==reciverEmail :
+                       response =1
+                       break
+                    else:
+                        response =0
+                        break
+                
+                   #return response
             
             
-        except Exception:
-            response =-1
-            return response
-        finally:
-            return response
+            except Exception,e:
+                response =-1
+                print e.message
+                return response
+            finally:
+                return response
           
         
 
@@ -518,7 +530,7 @@ class FriendshipManagerFRS(object):
         elements =  conf.getNeo4jConfig()
 
         graphDatabase = GraphDatabase(elements[0],elements[1],elements[2])
-        query= "match (u:User{email:'"+email+"'})-[rel1:FRIEND_OF]-(m)-[rel2:FRIEND_OF]-(n:User) where NOT (n)-[:FRIEND_OF]-(u) return distinct id(n) as Id,n,n.userId,n.email,n.firstName,n."+category+"  order by n."+str(category)+" desc"
+        query= "match (u:User{email:'"+email+"'})-[rel1:FRIEND_OF]-(m)-[rel2:FRIEND_OF]-(n:User) where NOT (n)-[:FRIEND_OF]-(u) or (n)-[:REQUESTED]-(m) return distinct id(n) as Id,n,n.userId,n.email,n.firstName,n."+category+"  order by n."+str(category)+" desc"
         results =  graphDatabase.query(query,returns = (str,client.Node,str,str,str))
         candidates =[]
         for r in results:
@@ -535,7 +547,8 @@ class FriendshipManagerFRS(object):
                 print e.message
                 continue
             finally:
-                #print user
+                #check user already has a relationship
+                
                 candidates.append(user)
 
         return candidates

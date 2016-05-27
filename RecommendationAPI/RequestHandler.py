@@ -47,7 +47,7 @@ class SuggestNewFriendsFRS(tornado.web.RequestHandler):
 
         if email != '' and int( userId) != 0: #validate request
             
-            print (" Invoked suggest_new_pals_frs in FriendshipHandlerFRS.py \n TIME :"+ str(datetime.datetime.today())+"\n Returned:\n")
+           # print (" Invoked suggest_new_pals_frs in FriendshipHandlerFRS.py \n TIME :"+ str(datetime.datetime.today())+"\n Returned:\n")
             #get list of users
             list = []
             users = sMgr.suggestNewFriends(email)
@@ -347,6 +347,58 @@ class AllRecievedRequests(tornado.web.RequestHandler):
                 self.set_status(400)
                 self.write('400') 
 
+#accept a recieved  friend request
+class AcceptFriendRequest(tornado.web.RequestHandler):
+
+    def get(self):
+
+        # filter userId and friendId
+        userId = str(self.get_argument('userId','0'))
+        friendId = str(self.get_argument('friendId','0'))
+
+        #check ids are empty
+        if userId !='0' and friendId !='0':
+
+            #invoke data access
+            uMgr =UserManagerFRS()
+
+            #get emails
+            userEmail = uMgr.getUserEmail(userId)
+            friendEmail = uMgr.getUserEmail(friendId)
+
+            #check emails
+            if userEmail !='' and friendEmail != '':
+
+                #create FriendMgr. object
+                fMgr = FriendshipManagerFRS()
+
+                #build new friendship ; friend-sender, user-reciver
+                status = fMgr.acceptNewFriendshipFRS(friendEmail,userEmail)
+
+                #build new friend relationship
+                if status == True:
+                    self.set_status(200)
+                    self.write('200')
+
+                else:
+                    #exception failed
+                    self.set_status(417) 
+                    self.write('417')
+
+            else:#no emails
+                self.set_status(404)
+                self.write('404')
+
+        else:#no user ids
+            self.set_status(404)
+            self.write('404')
+
+
+
+
+
+
+
 #return all friends of user 
 class AllFriendsOfUser(tornado.web.RequestHandler):
     
@@ -385,6 +437,8 @@ class AllFriendsOfUser(tornado.web.RequestHandler):
                 self.write('400') 
 
 
+
+
 class BeforeCartAPI(tornado.web.Application):
     def __init__(self):
         handlers = [
@@ -397,7 +451,8 @@ class BeforeCartAPI(tornado.web.Application):
                 (r"/beforecart/frs/sendrequest/?",SendFriendRequest),
                 (r"/beforecart/frs/sentrequests/?",AllPendingRequests),
                 (r"/beforecart/frs/recievedrequests/?",AllRecievedRequests),
-                (r"/beforecart/frs/allfriends/?",AllFriendsOfUser)
+                (r"/beforecart/frs/allfriends/?",AllFriendsOfUser),
+                (r"/beforecart/frs/acceptrequest/?",AcceptFriendRequest)
             ]
         tornado.web.Application.__init__(self,handlers)
 

@@ -23,7 +23,7 @@ def breakExistingRelationshipServiceFRS(em1,em2):
     b =FriendshipManagerFRS()
     return b.removeExistingRelationship(em1,em2)
 
-#breakExistingRelationship()
+#breakExistingRelationshipServiceFRS('kalana331@gmail.com','k@g.com')
 
 #make new friendship between users
 def makeNewRelationshipServiceFRS(em1,em2):
