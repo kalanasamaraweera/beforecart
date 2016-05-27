@@ -246,8 +246,8 @@ class SendFriendRequest(tornado.web.RequestHandler):
          isMade =False #relationship status 
 
          #filter  user ids from client request
-         actionUserId = str(self.get_argument('actionUserId','0'))
-         targetUserId = str(self.get_argument('targetUserId','0'))
+         actionUserId = str(self.get_argument('userId','0')) #action user
+         targetUserId = str(self.get_argument('friendId','0')) #tagert user
          
          #if user ids are valid >0
          if int(actionUserId) != 0 and int(targetUserId) !=0 and int(actionUserId) != int(targetUserId):
@@ -345,7 +345,8 @@ class AllRecievedRequests(tornado.web.RequestHandler):
             else:
                 #bad request
                 self.set_status(400)
-                self.write('400') 
+                self.write('400')
+                 
 
 #accept a recieved  friend request
 class AcceptFriendRequest(tornado.web.RequestHandler):
@@ -394,7 +395,53 @@ class AcceptFriendRequest(tornado.web.RequestHandler):
             self.write('404')
 
 
+#Reject friend request 
+class RejectFriendRequest(tornado.web.RequestHandler):
+    
+    def get(self):
 
+        # filter userId and friendId
+        userId = str(self.get_argument('userId','0'))
+        friendId = str(self.get_argument('friendId','0'))
+
+        #check ids are empty
+        if userId !='0' and friendId !='0':
+
+            #invoke data access
+            uMgr =UserManagerFRS()
+
+            #get emails
+            userEmail = uMgr.getUserEmail(userId)
+            friendEmail = uMgr.getUserEmail(friendId)
+
+            #check emails
+            if userEmail !='' and friendEmail != '':
+
+                #create FriendMgr. object
+                fMgr = FriendshipManagerFRS()
+
+                #remove existing relation request
+                status = fMgr.cancelFriendRequestFRS(friendEmail,userEmail)
+
+                #build new friend relationship
+                if status == True:
+                    self.set_status(200)
+                    self.write('200')
+
+                else:
+                    #exception failed
+                    self.set_status(417) 
+                    self.write('417')
+
+            else:#no emails
+                self.set_status(404)
+                self.write('404')
+
+        else:#no user ids
+            self.set_status(404)
+            self.write('404')
+
+ 
 
 
 
@@ -452,7 +499,9 @@ class BeforeCartAPI(tornado.web.Application):
                 (r"/beforecart/frs/sentrequests/?",AllPendingRequests),
                 (r"/beforecart/frs/recievedrequests/?",AllRecievedRequests),
                 (r"/beforecart/frs/allfriends/?",AllFriendsOfUser),
-                (r"/beforecart/frs/acceptrequest/?",AcceptFriendRequest)
+                (r"/beforecart/frs/acceptrequest/?",AcceptFriendRequest),
+                (r"/beforecart/frs/rejectrequest/?",RejectFriendRequest)
+                
             ]
         tornado.web.Application.__init__(self,handlers)
 
