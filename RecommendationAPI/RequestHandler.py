@@ -233,11 +233,14 @@ class CreateUserFRS(tornado.web.RequestHandler):
                 
         else: #validation failed
             self.write('0')
-  
+ 
+#update user data
+            
+             
 #delete existing user node                 
 class RemoveUserFRS(tornado.web.RequestHandler): 
     
-    def get(self):
+    def delete(self):
 
         #get user id  
         userId  = self.get_argument('userId', '0')
