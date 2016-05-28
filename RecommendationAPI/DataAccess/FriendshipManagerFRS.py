@@ -542,7 +542,7 @@ class FriendshipManagerFRS(object):
                 user['userId']=r[2]
                 user['email'] =r[3]
                 user['firstName']= r[4]
-                user[str(category)]= float( r[5])
+                user['exp']= str(category)+"-"+str( float( r[5]))
                 
             except Exception,e:
                 print e.message
@@ -665,7 +665,7 @@ class FriendshipManagerFRS(object):
             return self.upgradeRelationship(user,friend,"chats",chats)
 
 
-    #return all the category exp values of each friend with  relationship strength
+    #return  teh mean of all the category exp values of each friend with  respective relationship strength
     def getFriendAllExpList(self,email):
         try:
             elements =[]

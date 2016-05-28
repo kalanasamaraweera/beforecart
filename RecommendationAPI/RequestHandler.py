@@ -53,14 +53,15 @@ class SuggestNewFriendsFRS(tornado.web.RequestHandler):
             users = sMgr.suggestNewFriends(email)
             for user in users: 
                 #filter required fields of user
-                print("User:"+str(user))
+                #print("User:"+str(user))
                 item ={}               
                 item['firstname']= user['firstName']
                 item['email']= user['email']
                 item['userId'] =user['userId']
+                item['exp'] = user['exp']
                 list.append(item) 
             #write results
-            print list            
+           #print list            
             self.write(json.dumps(list))
         else:
             print ("Invalid userID or couldn't refine email;\n userId:"+str(userId)+" email="+str(email))
@@ -88,7 +89,7 @@ class SuggestFriendsForChatFRS(tornado.web.RequestHandler):
 
               #get suggestion list
               suggestedList= sMgr.refineChatList(email,str(catId))
-              print ("response: 200- Results:\n"+str(suggestedList))
+              #print ("response: 200- Results:\n"+str(suggestedList))
               self.set_status(200)
               self.write(json.dumps(suggestedList))
               return
@@ -601,8 +602,10 @@ class AllFriendsOfUserFRS(tornado.web.RequestHandler):
                 if email != '':
                     
                     #get request list
-                    requestSet = str(json.dumps(fMgr.selectAllFriends(email)))
-                    self.write(requestSet)
+                    resultSet = str(json.dumps(fMgr.selectAllFriends(email)))
+                    print "view-all-users request from "+ str(userId)+" at "+str(datetime.datetime.today())
+                    self.set_status(200)
+                    self.write(resultSet)
 
 
                 else:

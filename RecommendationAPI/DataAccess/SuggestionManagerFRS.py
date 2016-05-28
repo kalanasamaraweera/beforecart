@@ -148,7 +148,7 @@ class SuggestionManagerFRS(object):
             return duration + chat
 
     
-    #sort Decending expertise in 8 product categories
+    #sort the 8 product category  values of user in decending order
     def sortUserPreferences(self,user):
 
         userMgr =UserManagerFRS()
@@ -200,16 +200,18 @@ class SuggestionManagerFRS(object):
     
     #refine selected list of users for chat
     def refineChatList(self,user,catId):
+
         categoryKey ="cat"+catId
+       
         friendMgr = FriendshipManagerFRS()
         uMgr =UserManagerFRS()
 
         #sorted on expereince about product category
         expFriends = friendMgr.selectFriendsForChatOnExp(user,categoryKey)
-
+        print "sorted friendlist from highest experience about product category: \n \n"+str( expFriends)
         #sorted on relationship strength
         closeFriends = friendMgr.selectAllFriends(user)
-
+        print "\n\nsorted friendlist from highest relationship strength :\n \n"+str(closeFriends)       
         #merge the lists
 
         mixList=self.mixLists(closeFriends,expFriends)
@@ -220,7 +222,7 @@ class SuggestionManagerFRS(object):
          friend={'friend':str(item)}
          finalList.append(friend)
          
-
+      
 
         return finalList
 
@@ -253,6 +255,9 @@ class SuggestionManagerFRS(object):
         fMgr =FriendshipManagerFRS()
         categories =self.sortUserPreferences(email)
         maxCat = self.getMaxCategory(categories)
+        print "product category favourations of user: "+str(email)+" are :\n"+str(categories)
+        print "most favourite category of user is : cat-"+str(maxCat)
+        print '\ntherefore the friends of friends of user are suggested sorted according to this category value'
         key =0
         value=0
 
