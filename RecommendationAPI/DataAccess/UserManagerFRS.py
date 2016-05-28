@@ -137,12 +137,12 @@ class UserManagerFRS(object):
     
 
         #Change property
-    def updateProperty(self,userEmail,property,Val):
-        upEmail=''
+    def updateProperty(self,userId,property,Val):
+        Id=0
         try:
-            userId =self.getUserId(userEmail)
+           
             if userId != int(0) and property!="" and Val!="":
-                query="MATCH(n {userId:"+str(userId)+"}) SET n."+str(property)+"='"+str(Val)+"' RETURN n.email"
+                query="MATCH(n {userId:'"+str(userId)+"'}) SET n."+str(property)+"='"+str(Val)+"' RETURN n.userId"
                 elements=[] 
                 conf= DBConf.DBConf()
                 elements =conf.getNeo4jConfig()
@@ -154,15 +154,15 @@ class UserManagerFRS(object):
            
                 for result in results:
                
-                    upEmail = result[0]
+                    Id = result[0]
 
         except Exception,e:
             print str(e.message) 
             return False
 
         finally:
-                Id=self.getUserId(upEmail)
-                if userId == Id:
+                
+                if int( userId )== int( Id):
                     return True
                 else: return False
 

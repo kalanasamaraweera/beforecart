@@ -235,8 +235,93 @@ class CreateUserFRS(tornado.web.RequestHandler):
             self.write('0')
  
 #update user data
+class UpdateUserDetailsFRS(tornado.web.RequestHandler):
+
+    def post(self):
+        #declare user data  dictionary
+        data ={}
+
+        #dispatch request data into dictionary
+        username = self.get_argument('userId','0')
+        data['userId'] = str(username)
+        if int(data['userId'])>0:
+
+            #get request data
+            username = self.get_argument('username','')
+            data['username'] = str(username)
+      
+            password = self.get_argument('password','')
+            data['password'] = str(password)
+        
+            firstName = self.get_argument('firstName','')
+            data['firstName'] = str(firstName)
+
+            lastName = self.get_argument('lastName','')
+            data['lastName'] = str(lastName)
+      
+            phone = str(self.get_argument('phone',''))
+            data['phone'] = str(phone)
+                                       
+            email = self.get_argument('email','')
+            data['email'] = str(email)
+
+            address = str(self.get_argument('address',''))
+            data['address'] = str(address)
+       
+            state = str(self.get_argument('state',''))
+            data['state'] = state
+      
+            postal = str(self.get_argument('postal',''))
+            data['postal'] = postal
+
+            #invoke data access
+            uMgr =UserManagerFRS()
+            #uMgr.validateUserData(data)
             
-             
+            
+
+            #if userdata is valid
+            if int(data['userId'] )> 0:
+                #update properties
+               for key in data:
+
+                   if str(data[key]) !=  '' :
+
+                        #if phone is invalid
+                        if key =='phone' and len(data[key]) != 10:
+                            print 'phone  not updated invalid length'
+                            continue
+
+                        #if postal code is invalid
+                        if key =='postal' and len(data[key]) !=5:
+                            print 'postal not updated length != 5'
+                            continue
+
+                        #update  property
+                        sts=uMgr.updateProperty(data['userId'],key,data[key])
+
+                        #if update is success
+                        if sts == True:
+                            print "KEY: "+str(key)+":VAL "+str(data[key])+" UPDATED"
+
+                        else:
+                            print "KEY: "+str(key)+"VAL: "+str(data[key])+" NOT UPDATED"
+
+                   else: print str(key)+" IS SKIPPED"
+
+               self.write('200')
+
+               print "USER_ID: "+str(data['userId'])+' IS UPDATED'
+
+               self.set_status(200)
+
+            else: #validation failed
+               self.write('417')
+        else:
+            self.set_status(404)
+            self.write('404')          
+
+
 #delete existing user node                 
 class RemoveUserFRS(tornado.web.RequestHandler): 
     
@@ -580,8 +665,8 @@ class BeforeCartAPI(tornado.web.Application):
                 (r"/beforecart/frs/acceptrequest/?",AcceptFriendRequestFRS),
                 (r"/beforecart/frs/rejectrequest/?",RejectFriendRequestFRS),
                 (r"/beforecart/frs/finduser/?",FindUserRequestFRS),
-                (r"/beforecart/frs/removeuser/?",RemoveUserFRS)
-                              
+                (r"/beforecart/frs/removeuser/?",RemoveUserFRS),
+                (r"/beforecart/frs/updateuser/?",UpdateUserDetailsFRS)                          
             ]
         tornado.web.Application.__init__(self,handlers)
 
