@@ -233,10 +233,55 @@ class CreateUserFRS(tornado.web.RequestHandler):
                 
         else: #validation failed
             self.write('0')
-                   
-      
+  
+#delete existing user node                 
+class RemoveUserFRS(tornado.web.RequestHandler): 
+    
+    def get(self):
+
+        #get user id  
+        userId  = self.get_argument('userId', '0')
+        #check id validity
+        if int(userId)>0:
+            
+            uMgr =  UserManagerFRS()
+            fMgr = FriendshipManagerFRS()
+            #get email of user
+            email = uMgr.getUserEmail(userId)
+
+            #check email validity
+            if email !='':
+
+                #remove all relationships
+                relRemovalSts =fMgr.removeAllRelationships(email)
+                #remove user node
+                removalSts = uMgr.removeUserNode(email)
+
+                # if node removed successfully
+                if removalSts ==True and relRemovalSts==True :
+                    self.write('200')
+                    self.set_status(200)
+
+                else:
+                    self.write('417')
+                    self.set_status(417)
+            
+            #no such email found
+            else:
+                self.write('404')
+                self.set_status(404)
+
+
+        # given user id invalid
+        else:
+            self.write('406')
+            self.set_status(417)
+
         
-class SendFriendRequest(tornado.web.RequestHandler):
+
+             
+        
+class SendFriendRequestFRS(tornado.web.RequestHandler):
 
     # send friendship request to an user
      def get(self):
@@ -282,7 +327,7 @@ class SendFriendRequest(tornado.web.RequestHandler):
             self.write('404')
        
 #return all sent and pending friend requests by user
-class AllPendingRequests(tornado.web.RequestHandler):
+class AllPendingRequestsFRS(tornado.web.RequestHandler):
 
     def get(self):
 
@@ -313,7 +358,7 @@ class AllPendingRequests(tornado.web.RequestHandler):
             self.write('') 
 
 #return all recieved requests
-class AllRecievedRequests(tornado.web.RequestHandler):
+class AllRecievedRequestsFRS(tornado.web.RequestHandler):
     
         def get(self):
 
@@ -349,7 +394,7 @@ class AllRecievedRequests(tornado.web.RequestHandler):
                  
 
 #accept a recieved  friend request
-class AcceptFriendRequest(tornado.web.RequestHandler):
+class AcceptFriendRequestFRS(tornado.web.RequestHandler):
 
     def get(self):
 
@@ -396,7 +441,7 @@ class AcceptFriendRequest(tornado.web.RequestHandler):
 
 
 #Reject friend request 
-class RejectFriendRequest(tornado.web.RequestHandler):
+class RejectFriendRequestFRS(tornado.web.RequestHandler):
     
     def get(self):
 
@@ -447,7 +492,7 @@ class RejectFriendRequest(tornado.web.RequestHandler):
 
 
 #return all friends of user 
-class AllFriendsOfUser(tornado.web.RequestHandler):
+class AllFriendsOfUserFRS(tornado.web.RequestHandler):
     
     def get(self):
 
@@ -485,7 +530,7 @@ class AllFriendsOfUser(tornado.web.RequestHandler):
 
 
 #Search Friends/Users
-class FindUserRequest(tornado.web.RequestHandler):
+class FindUserRequestFRS(tornado.web.RequestHandler):
     
     def get(self):
     
@@ -525,13 +570,15 @@ class BeforeCartAPI(tornado.web.Application):
                 (r"/beforecart/frs/newfriends/?",SuggestNewFriendsFRS),
                 (r"/beforecart/frs/savechat/?",saveNewChatFRS),
                 (r"/beforecart/frs/createuser/?",CreateUserFRS),
-                (r"/beforecart/frs/sendrequest/?",SendFriendRequest),
-                (r"/beforecart/frs/sentrequests/?",AllPendingRequests),
-                (r"/beforecart/frs/recievedrequests/?",AllRecievedRequests),
-                (r"/beforecart/frs/allfriends/?",AllFriendsOfUser),
-                (r"/beforecart/frs/acceptrequest/?",AcceptFriendRequest),
-                (r"/beforecart/frs/rejectrequest/?",RejectFriendRequest),
-                (r"/beforecart/frs/finduser/?",FindUserRequest)                
+                (r"/beforecart/frs/sendrequest/?",SendFriendRequestFRS),
+                (r"/beforecart/frs/sentrequests/?",AllPendingRequestsFRS),
+                (r"/beforecart/frs/recievedrequests/?",AllRecievedRequestsFRS),
+                (r"/beforecart/frs/allfriends/?",AllFriendsOfUserFRS),
+                (r"/beforecart/frs/acceptrequest/?",AcceptFriendRequestFRS),
+                (r"/beforecart/frs/rejectrequest/?",RejectFriendRequestFRS),
+                (r"/beforecart/frs/finduser/?",FindUserRequestFRS),
+                (r"/beforecart/frs/removeuser/?",RemoveUserFRS)
+                              
             ]
         tornado.web.Application.__init__(self,handlers)
 

@@ -148,16 +148,17 @@ class FriendshipManagerFRS(object):
             graph = Graph(element)       
             batch = graph.cypher.begin()
             query = """ match(n)-[rel]-(m) WHERE n.email='"""+email+"""' DELETE rel"""
-            batch.append(query,{"em1":email1,"em2":email2})
+            batch.append(query,{"email":email})
             batch.process()
             batch.commit()
                 
             
-        except Exception:
+        except Exception,e:
+            print e.message
             return False
         finally:
-            if isFriend ==1 :return True
-            return False
+            return True
+            
 
 
         

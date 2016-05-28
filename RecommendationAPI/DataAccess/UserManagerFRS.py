@@ -124,6 +124,7 @@ class UserManagerFRS(object):
                 break
         except Exception ,ex:
             print str(ex.message)
+            return ''
         finally:
             return email
 
@@ -133,6 +134,7 @@ class UserManagerFRS(object):
         if userId != 0:
             return True
         else :return False
+    
 
         #Change property
     def updateProperty(self,userEmail,property,Val):
@@ -179,7 +181,7 @@ class UserManagerFRS(object):
                 graph=Graph(elements[3])
 
                 batch = graph.cypher.begin()     
-                query = "MATCH(n:User) WHERE n.userId="+str(userId)+" DELETE n"
+                query = "MATCH(n:User) WHERE n.userId='"+str(userId)+"' DELETE n"
                 batch.append(query,{"userId":userId})
                 batch.process()
                 batch.commit()
